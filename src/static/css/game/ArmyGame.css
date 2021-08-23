@@ -1,0 +1,112 @@
+.army-game__scroll-block {
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: calc(100vh - 4em);
+}
+
+.army-game__statistic {
+    color: #FFF;
+    text-align: left;
+    margin: 1.6em 2em;
+    font-size: 1.25em;
+    width: 50vw;
+}
+
+.army-game__statistic span {
+    float: right;
+    margin-right: 4em;
+    font-weight: 600;
+}
+
+.army-game__spendings__list {
+    color: #FFF;
+    list-style: none;
+    text-align: left;
+    margin-left: 5em;
+    padding: 0;
+    width: 50vw;
+}
+
+.army-game__spendings__list__item {
+    margin-bottom: 0.5em;
+    display: grid;
+    grid-template-columns: 15vw 20vw 25vw;
+    line-height: 165%;
+}
+
+.army-game__squads {
+    color: #ffffff;
+}
+
+.army-game__squads__heading {
+    text-align: left;
+    font-size: 1.25em;
+    margin-left: 2.5em;
+}
+
+.army-game__squads__list {
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+    width: 95vw;
+    margin-left: 1.25em;
+    border: 1px;
+    position: relative;
+}
+
+.army-game__squads__list > thead {
+    font-weight: 600;
+}
+
+.army-game__squads__list > thead th {
+    border-bottom: 2px solid #FFF;
+    position: sticky;
+    top: -0.25em;
+    background-color: var(--dark-gray);
+}
+
+.army-game__squads__list__item > td {
+    border-top: 2px solid #FFF;
+    padding: 0.5em 0;
+}
+
+.army-game__squads__list__item > td:last-child {
+    width: 15vw;
+}
+
+.army-game__squads__list__item > td:nth-child(6) {
+    width: 20vw;
+}
+
+.army-game__squads__list__item > th {
+    padding: 0.7em 0;
+}
+
+.army-game__squads__btn {
+    width: 1.1em;
+}
+
+.army-game__squads__list button {
+    background-color: var(--dark-gray);
+    border: 2px solid #FFF;
+    width: 2em;
+    font-size: 1em;
+    line-height: 0;
+    padding: 0;
+    height: 2em;
+    margin: 0 0.5em;
+}
+
+.army-game__squads__list button:disabled {
+    background-color: #999;
+}
+
+.army-game__squads__units {
+    height: 2.5em;
+}
+
+.army-game__new-squad__submit + .army-game__redact__price {
+    margin-left: 20%;
+    line-height: 180%;
+    width: 35%;
+    text-align: right;
+}

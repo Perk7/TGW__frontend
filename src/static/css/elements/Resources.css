@@ -1,0 +1,118 @@
+.resources-game__scroll {
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 0.5em 1em;
+    margin-left: 10vw;
+    width: 76vw;
+    margin-top: 10vh;
+    background-color: var(--dark-gray);
+
+}
+
+.resources-game__list {
+    width: 100%;
+    color: #FFF;
+    list-style-type: none;
+
+}
+
+.resources-game__item_heading {
+    width: 23%;
+    text-align: left;
+    padding: 0.5em 0;
+}
+
+.resources-game__item_heading:first-child {
+    width: 30%;
+}
+
+.resources-game__item {
+    width: 23%;
+    text-align: right;
+    padding: 0.5em 0;
+}
+
+.resources-game__item_heading > span {
+    margin-left: 7%;
+}
+
+.resources-game__item_heading > span::before {
+    content: '- ';
+}
+
+.resources-game__item:first-child {
+    width: 30%;
+}
+
+.resources-game__redactor {
+    max-height: 75vh;
+    overflow-y: auto;
+
+    padding: 0.5em 1em;
+    margin-left: 20vw;
+    width: 56vw;
+    margin-top: 15vh;
+    background-color: var(--dark-gray);
+    z-index: 500;
+
+    color: #fff;
+}
+
+.resources-game__redactor__quit {
+    position: absolute;
+    left: 81vw;
+    top: 15vh;
+}
+
+.resources-game__redactor__heading {
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid #FFF;
+    padding-bottom: 0.5em;
+}
+
+.resources-game__redactor__info {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5em 0 1em;
+}
+
+.resources-game__redactor__list > span {
+    text-align: center;
+    padding-bottom: 1em;
+    display: inline-block;
+}
+
+.resources-game__redactor__btn {
+    background-color: var(--gray);
+    margin-bottom: 0.3em;
+    padding: 0.5em 1em;
+    width: 100%;
+    color: #fff;
+    font-size: 1em;
+    border: 0;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+@keyframes resource_clicked {
+    0% {
+        background-color: var(--more);
+    }
+    100% {
+        background-color: var(--gray);
+    }
+}
+
+.resources-game__redactor__btn_anim {
+    animation: resource_clicked 2s;
+}
+
+.resources-game__redactor__btn__percent {
+    background-color: var(--light-black);
+    display: inline-block;
+    height: 100%;
+    width: 25%;
+    text-align: center;
+}

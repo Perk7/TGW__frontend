@@ -1,0 +1,427 @@
+  @keyframes ButtonAnimate {
+  0% {
+    color: #000;
+    background-color: #FFF; }
+  100% {
+    color: #FFF;
+    background-color: #222; } }
+
+  @keyframes ReverseButtonAnimate {
+    0% {
+      color: #FFF;
+      background-color: #222; }
+    100% {
+      color: #000000;
+      background-color: #FFF; } }
+
+  :root {
+    --gray: #919191;
+    --dark-gray: #717171;
+    --dark-black: #2b2b2b;
+    --light-black: #555555;
+    --light-gray: #c4c4c4;
+
+    --flag: 1.777777777777778;
+    --icon: 1.0625;
+
+    --selected: #3051db;
+    --progress: #1d3692;
+
+    --less: #911414;
+    --more: #0a7d0a;
+    --more-light: #2cd760;
+    --less-light: #d70202;
+  }
+
+  html {
+    overflow: hidden;
+    user-select: none;
+  }
+
+  .html-overflow {
+    overflow: auto;
+  }
+
+/* Main Styles */
+
+    .view {
+      width: 100vw;
+      height: 150vh;
+      font-size: 2vw;
+      background-color: #000;
+      background: #000 url('../img/MainMenuBg.jpg') no-repeat;
+      background-size: 100vw;
+
+      padding-top: 4vw;
+      padding-left: 5vw;
+    }
+
+    .game__view {
+      width: 100vw;
+      height: 100vh;
+      background-color: var(--light-black);
+      font-size: 2vw;
+    }
+
+    .game__header {
+      background-color: rgba(0, 0, 0, 0.25);
+      color: #FFFFFF;
+      height: 1.5em;
+      padding: 0.7em 1.5em;
+      text-align: left;
+      font-size: 1.3em;
+
+      vertical-align: bottom;
+    }
+
+    .game__header > * {
+      display: inline-block;
+    }
+
+    .game__header__name {
+      text-align: left;
+      width: 17em;
+    }
+
+    .game__header__info {
+      width: 16em;
+      text-align: right;
+    }
+
+    .game__header__info > img:first-child {
+      margin-right: 1em;
+    }
+
+  .game__header__quit {
+      color: #FFFFFF;
+      text-decoration: none;
+      width: 1.1em;
+      text-align: center;
+      line-height: 0.8em;
+      font-size: 1.6em;
+      float: right;
+    }
+
+  .game__header__quit:before {
+    content: '';
+    display: inline-block;
+    height: 1em;
+    vertical-align: middle;
+  }
+
+    .game__header__tutorial {
+      color: #FFFFFF;
+      text-decoration: none;
+      width: 1.5em;
+      height: 1.5em;
+      margin-right: 0.5em;
+      border: 2px solid #FFF;
+      border-radius: 0.2em;
+      background-color: #343434;
+      float: right;
+      text-align: center;
+      font-size: 1em;
+    }
+
+    .game__header__quit:active, .game__header__quit:visited {
+      color: #FFF;
+    }
+
+  .flag {
+      background-image: url('../img/flags.svg');
+      display: inline-block;
+      background-size: 100%;
+    }
+
+    .icon {
+      background-image: url('../img/list-icons.svg');
+      display: inline-block;
+      background-size: 100%;
+    }
+
+    .side-header {
+      text-align: left;
+    }
+
+    .side-heading {
+      display: inline;
+      color: #FFF;
+      font-size: 2.5em;
+      font-weight: 400;
+      margin: 0;
+      margin-left: 1em;
+    }
+
+    .dark-view {
+      width: 100vw;
+      height: 100vh;
+      background-color: #000;
+      font-size: 2vw;
+      padding-top: 4vw;
+      padding-left: 5vw;
+    }
+
+    .header__btn_back {
+      display: inline;
+      background-color: #fff;
+      border: 2px solid #FFF;
+      border-radius: 0.5em;
+      padding: 0.15em 0.5em 0.4em;
+      color: #000;
+      font-size: 2em;
+      line-height: 20%;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .header__btn_back:hover {
+      background-color: #222;
+      color: #FFF;
+      animation: ButtonAnimate 0.8s ease;
+    }
+
+    .header__btn_back:active, .header__btn_back:focus {
+      outline: none;
+      -webkit-tap-highlight-color: rgba(0,0,0,0);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+  .icons {
+    height: 3vw;
+    vertical-align: middle;
+    margin-bottom: 0.5vw;
+    margin-right: 0.5vw;
+  }
+
+  .icons_mini {
+    height: 2vw;
+    vertical-align: middle;
+    margin-bottom: 0.5vw;
+    margin-right: 0.5vw;
+  }
+
+  .icons_mini_super {
+    height: 1em;
+    vertical-align: middle;
+    margin-bottom: 0.25vw;
+    margin-right: 0.25vw;
+  }
+
+  .redact__controls {
+    background-color: var(--light-black);
+    color: #FFF;
+    border: 2px solid #FFF;
+    font-size: 1em;
+    text-align: center;
+    width: 9%;
+    height: 1.75em;
+    padding: 0;
+    margin-right: 0.5em;
+  }
+
+  .redact__controls:before {
+    content: '';
+    display: inline-block;
+    height: 1em;
+    vertical-align: middle;
+  }
+
+  .redact__controls:nth-child(3) {
+    margin-right: 0;
+  }
+
+  .redact__controls:nth-child(5) {
+    margin-right: 0;
+  }
+
+  .redact__controls:disabled {
+    background-color: #999;
+  }
+
+  .redact__controls:last-child {
+    margin-left: 0.5em;
+  }
+
+  .redact__number {
+    background-color: var(--gray);
+    color: #FFF;
+    border: 2px solid #FFF;
+    font-size: 1em;
+    text-align: center;
+    width: 28%;
+    margin: 0 1%;
+    padding: 0;
+    height: 1.5em;
+  }
+
+  .redact__number:focus {
+    outline: 0;
+  }
+
+  .redact__quit {
+    color: #fff;
+    background-color: #666;
+    font-size: 2.5vw;
+    position: absolute;
+    border: 1px solid #FFF;
+    height: 3.5vw;
+    width: 3.5vw;
+  }
+
+  .redact__submit {
+    background-color: var(--light-black);
+    color: #FFF;
+    border: 2px solid #FFF;
+    font-size: 1em;
+    text-align: center;
+    width: 40%;
+    margin-left: 5%;
+    height: 2em;
+  }
+
+  .game__progress-bar {
+    text-align: center;
+    width: 40vw;
+    border: 2px solid #FFF;
+    height: 1.5em;
+    background-color: var(--dark-gray);
+
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+  }
+
+  .game__progress-bar > div {
+    height: 100%;
+    grid-area: 1 / 1 / 1 / 1;
+  }
+
+  .game__progress-bar > span {
+    grid-area: 1 / 1 / 1 / 1;
+    line-height: 150%;
+  }
+
+  .game__button {
+    color: #FFF;
+    padding: 0.4em 0;
+    font-size: 0.75em;
+    background-color: var(--dark-gray);
+    border: 2px solid #FFF;
+    width: 15vw;
+  }
+
+  .game__button:disabled {
+    background-color: var(--light-black);
+  }
+
+  .modal-blur {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+    z-index: 100;
+    background-color: rgba(29, 29, 29, 0.8);
+  }
+
+  .modal-quit {
+    font-size: 2em;
+    padding: 0.12em 0.4em;
+    border: 1px solid #FFFFFF;
+    color: #FFF;
+    background-color: var(--light-black);
+  }
+
+  .overflowing::-webkit-scrollbar-thumb {
+    background-color: #bbb;
+  }
+
+  .overflowing::-webkit-scrollbar {
+    width: 0.5vw;
+    background-color: #454545;
+  }
+
+  .game__value-bar {
+    display: inline-block;
+    width: 50%;
+    height: 1.5em;
+    border: 2px solid #FFF;
+    background-color: var(--dark-gray);
+  }
+
+  .game__value-bar > div {
+    height: 1.5em;
+    width: 2%;
+  }
+
+/* MainMenu Styles */
+  @import url('./menu/MainMenu.css');
+
+/* LoadGame Styles */
+  @import url('./menu/LoadGame.css');
+
+/* NewGame Styles */
+  @import url('./menu/NewGame.css');
+
+/* CountryBlock Styles */
+  @import url('./elements/CountryBlock.css');
+
+/* Login Styles */
+  @import url('./menu/Login.css');
+
+/* Logout Styles */
+  @import url('./menu/Logout.css');
+
+/* StartGame Styles */
+  @import url('./game/StartGame.css');
+
+/* Map Styles */
+  @import url('./elements/Map.css');
+
+/* StartGame Styles */
+  @import url('./game/CountryGame.css');
+
+/* PoliticGame Styles */
+  @import url('./game/PoliticGame.css');
+
+/* Tutorial Styles */
+  @import url('./elements/Tutorial.css');
+
+/* ArmyGame styles */
+  @import url('./game/ArmyGame.css');
+
+/* EconomyGame styles */
+  @import url('./game/EconomyGame.css');
+
+/* Resources styles */
+  @import url('./elements/Resources.css');
+
+/* EconomyGame styles */
+  @import url('./game/DiplomacyGame.css');
+
+/* Relations styles */
+  @import url('./elements/Relations.css');
+
+/* LawGame styles */
+  @import url('./game/LawGame.css');
+
+/* SocialGame styles */
+  @import url('./game/SocialGame.css');
+
+/* TransportGame styles */
+  @import url('./game/TransportGame.css');
+
+/* ScienceGame styles */
+  @import url('./game/ScienceGame.css');
+
+/* EducationGame styles */
+  @import url('./game/EducationGame.css');
+
+/* PeaceContract styles */
+  @import url('./elements/PeaceContract.css');
+
+/* EmptyActions styles */
+  @import url('./elements/EmptyActions.css');
+
+/* PeaceContract styles */
+  @import url('./elements/Battle.css');

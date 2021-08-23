@@ -1,0 +1,177 @@
+.start-game__view {
+    background-color: #5ca6bcf6;
+    width: 100vw;
+    height: 100vh;
+    font-size: 2vw;
+
+    display: flex;
+    flex-direction: row;
+}
+
+.start-game_map-block {
+    width: 70vw;
+    overflow: hidden;
+}
+
+.start-game_map-block::-webkit-scrollbar-thumb {
+    background-color: #bbb;
+}
+
+.start-game_map-block::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+.start-game_map-block__full-btn {
+    position: fixed;
+    left: 2vw;
+    bottom: 2vw;
+    width: 6vw;
+    height: 6vw;
+
+    background-color: var(--gray);
+    border: 0;
+}
+
+.start-game_map-block__full-btn > img {
+    width: 100%;
+}
+
+.start-game_map-block__scale-bar {
+    width: 15vw;
+    height: 1em;
+    border: 1px solid #000;
+    background-color: #81818170;
+    position: fixed;
+    left: 52vw;
+    bottom: 2vw;
+    overflow: hidden;
+}
+
+.start-game_map-block__scale-bar_value {
+    height: 100%;
+    background-color: var(--progress);
+    transform: translateX(-2vw);
+}
+
+.start-game__navbar {
+    letter-spacing: 0.08em;
+    width: 30vw;
+    z-index: 10;
+}
+
+.start-game__navbar__country {
+    width: 33vw;
+    left: -2.5vw;
+    height: 4.75em;
+    position: relative;
+    padding: 0.5em 0;
+    background-color: var(--dark-gray);
+    border-bottom-left-radius: 1.5em;
+}
+
+.start-game__navbar__country__header {
+    display: flex;
+    justify-content: space-around;
+    margin: 0.15em 0 0.2em;
+    color: #FFFFFF;
+    font-size: 1em;
+    font-weight: 600;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.start-game__navbar__country > div {
+    display: flex;
+    justify-content: space-around;
+}
+
+.start-game__navbar__country__save {
+    height: 2.8em;
+    width: 2.8em;
+    font-size: 1em;
+    padding-top: 0.4em;
+    background-color: #0000;
+    z-index: 200;
+}
+
+.start-game__navbar__country__save__img {
+    width: 80%;
+    height: 80%;
+}
+
+.start-game__navbar__country__link__flag {
+    height: 2.8em;
+    font-size: 1em;
+    width: calc(2.8em * 1.7777);
+    vertical-align: middle;
+}
+
+.start-game__navbar__list {
+    height: calc(100vh - 9em);
+    margin-top: 0;
+    margin-bottom: 0;
+    overflow-y: scroll;
+    padding: 0;
+    direction: rtl;
+}
+
+.start-game__navbar__list > li {
+    background-color: var(--dark-black);
+    border-top: 1px solid #FFF;
+    list-style-type: none;
+    direction: ltr;
+ }
+
+.start-game__navbar__link {
+    text-decoration: none;
+    display: inline-block;
+    width: 85%;
+    text-align: center;
+    padding: 1em;
+    color: #FFFFFF;
+    font-size: 1em;
+    text-transform: uppercase;
+}
+
+.start-game__navbar__next-btn {
+    height: 3.25em;
+    background-color: var(--dark-gray);
+    margin: 0;
+    color: #FFFFFF;
+    font-size: 1em;
+    width: 100%;
+    border-top: 1px solid #FFF;
+    cursor: pointer;
+}
+
+.start-game__redact-list {
+    background-color: var(--dark-gray);
+    width: 50%;
+    margin-left: 25%;
+    font-size: 1vw;
+    margin-top: 10em;
+    padding-top: 2em;
+}
+
+.start-game__redact-list__heading {
+    color: #fff;
+    font-size: 2.2em;
+    margin: 0;
+}
+
+.start-game__redact-quit {
+    color: #fff;
+    background-color: var(--light-black);
+    font-size: 2.2em;
+    padding: 0.3em 2em;
+    margin: 1em 0;
+    text-decoration: none;
+    border: 1px solid #fff;
+}
+
+.start-game__redact-list__flex {
+    display: flex;
+    justify-content: space-around;
+}

@@ -1,0 +1,18 @@
+.empty-actions__block {
+    position: absolute;
+    background-color: #930808;
+    width: 38vw;
+    left: 30vw;
+    top: 25vh;
+    padding: 1vw;
+    z-index: 53535;
+}
+
+.empty-actions__block__header {
+    color: #fff;
+    padding: 3vh 2vw;
+    font-size: 2vw;
+    margin: 0;
+
+    border: 1px solid #FFF;
+}

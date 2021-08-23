@@ -1,0 +1,42 @@
+export const CHANGE_USER = 'CHANGE_USER'
+
+export const AUTH = 'AUTH'
+
+export const CREATE_GAME = 'CREATE_GAME'
+
+export const SET_COLORMAP = 'SET_COLORMAP'
+export const SET_CAPITALS = 'SET_CAPITALS'
+
+export const CHANGE_BUFFS = 'CHANGE_BUFFS'
+
+export const CHANGE_GAME = 'CHANGE_GAME'
+
+export const CHANGE_CAPITAL = 'CHANGE_CAPITAL'
+export const CHANGE_GOVERNMENT = 'CHANGE_GOVERNMENT'
+export const CHANGE_AREA_FORMAT = 'CHANGE_AREA_FORMAT'
+
+export const CHANGE_ARMY_SALARY = 'CHANGE_ARMY_SALARY'
+export const CHANGE_ARMY_EQUIP = 'CHANGE_ARMY_EQUIP'
+export const CHANGE_ARMY_MAINTAIN = 'CHANGE_ARMY_MAINTAIN'
+
+export const CHANGE_SQUAD = 'CHANGE_SQUAD'
+export const NEW_SQUAD = 'NEW_SQUAD'
+export const DELETE_SQUAD = 'DELETE_SQUAD'
+
+export const SET_PHY_TAXES = 'SET_PHY_TAXES'
+export const SET_JUR_TAXES = 'SET_JUR_TAXES'
+
+export const CHANGE_BUDGET = 'CHANGE_BUDGET'
+
+export const CHANGE_RESOURCE = 'CHANGE_RESOURCE'
+export const CHANGE_KAZNA = 'CHANGE_KAZNA'
+
+export const CHANGE_LAWS = 'CHANGE_LAWS'
+
+export const SET_PEACE = 'SET_PEACE'
+export const CLEAR_PEACE = 'CLEAR_PEACE'
+
+export const SET_SOCIAL = 'SET_SOCIAL'
+
+export const TRANSITION_SQUAD = 'TRANSITION_SQUAD'
+export const TRANSITION_CLEAR = 'TRANSITON_CLEAR'

@@ -1,0 +1,199 @@
+.diplomacy-game__main-block {
+    display: grid;
+    grid-template-columns: 40% 60%;
+}
+
+.diplomacy-game__relations-list {
+    list-style-type: none;
+    text-align: left;
+
+    overflow-y: auto;
+    max-height: calc(100vh - 5em);
+    padding-right: 1em;
+}
+
+.diplomacy-game__relations-list__item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5em;
+    margin-bottom: 0.5em;
+    border-radius: 0.5em;
+    background: linear-gradient(#7f7f7f, #474747);
+}
+
+.diplomacy-game__relations-list__item > span {
+    font-weight: 600;
+}
+
+.diplomacy-game__relations-list__item > h3 {
+    margin: 0;
+    padding: 0;
+    font-size: 2vw;
+    font-weight: 400;
+
+    overflow-x: hidden;
+    white-space: nowrap;
+}
+
+.diplomacy-game__relations-list__item > .flag {
+    height: 1em;
+    width: calc(1em * var(--flag));
+    margin-top: 0.2em;
+}
+
+.diplomacy-game__contracts-block {
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+.diplomacy-game__contracts__alliance {
+    color: #FFF;
+    margin-top: 2em;
+}
+
+.diplomacy-game__contracts__alliance > span {
+    font-size: 1.25em;
+}
+
+.diplomacy-game__contracts__alliance__list {
+    list-style-type: none;
+    padding: 0;
+    width: 60%;
+    margin-left: 20%;
+    padding-right: 5%;
+    
+
+    overflow-y: auto;
+    max-height: 33vh;
+}
+
+.diplomacy-game__contracts__alliance__list__item {
+    display: grid;
+    grid-template-rows: 50% 50%;
+    grid-template-columns: 1fr;
+
+    padding: 0.5em;
+    border: 1px solid #FFF;
+}
+
+.diplomacy-game__contracts__alliance__list__item > span {
+    display: flex;
+    justify-content: space-between;
+}
+
+.diplomacy-game__contracts__alliance__list__item  .flag {
+    height: 1em;
+    width: calc(1em * var(--flag));
+    margin: 0.1em 0;
+    vertical-align: text-bottom;
+}
+
+.diplomacy-game__contracts__reparat__list__item {
+    padding: 0.5em;
+    border: 1px solid #FFF;
+    display: grid;
+    grid-template-columns: 60% 40%;
+}
+
+.diplomacy-game__contracts__reparat__list__item > span, .diplomacy-game__contracts__reparat__list__item_empty > span {
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-align: left;
+}
+
+.diplomacy-game__contracts__reparat__list__item > span:last-child {
+    text-align: right;
+}
+
+.diplomacy-game__reparations__flag {
+
+    margin-right: 0.5em;
+}
+
+.diplomacy-game__contracts__reparat__list__item .flag, .diplomacy-game__contracts__reparat__list__item_empty .flag {
+    float: left;
+    height: 1em;
+    margin-top: 0.2em;
+    width: calc(1em*var(--flag));
+    vertical-align: text-bottom;
+}
+
+.diplomacy-game__contracts__reparat__list__item_empty {
+    padding: 0.5em;
+    border: 1px solid #FFF;
+}
+
+.diplomacy-game__redact-relations_list > ul {
+    margin-left: 15vw;
+    width: 68vw;
+    color: #FFF;
+    margin-top: 10vh;
+    max-height: 80vh;
+    overflow-y: auto;
+    background-color: var(--gray);
+    list-style-type: none;
+    padding: 0 0.5em;
+}
+
+.diplomacy-game__peace__info {
+    display: flex;
+    flex-direction: row;
+}
+
+.diplomacy-game__peace__heading {
+    background-color: var(--dark-gray);
+    padding: 2vh 0;
+}
+
+.diplomacy-game__peace__block {
+    margin: 2vh 0;
+}
+
+.diplomacy-game__peace__block img {
+    height: 1.25em;
+}
+
+.diplomacy-game__peace__info:nth-child(odd) {
+    background-color: var(--light-black);
+}
+
+.diplomacy-game__peace__info:nth-child(even) {
+    background-color: var(--gray);
+}
+
+.diplomacy-game__peace__side {
+    width: 35%;
+    padding: 0.5em 0;
+    line-height: 150%;
+}
+
+.diplomacy-game__peace__side_headers {
+    background-color: rgba(42, 42, 42, 0.58);
+    width: 30%;
+    padding: 0.5em 0;
+    display: flex;
+    justify-content: space-around;
+    line-height: 150%;
+}
+
+.diplomacy-game__peace__form {
+    background-color: var(--light-black);
+    display: flex;
+    justify-content: space-around;
+    padding: 0.8em 0;
+}
+
+.diplomacy-game__peace__btn {
+    background-color: var(--dark-gray) !important;
+    margin-left: 0 !important;
+}
+
+.diplomacy-game__popup-map {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    z-index: 500;
+    left: 0;
+    top: 0;
+    background-color: #3ec4e7;
+}

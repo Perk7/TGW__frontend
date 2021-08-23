@@ -1,0 +1,26 @@
+.tutorial__text {
+    color: #FFF;
+    text-align: left;
+    width: 48vw;
+    max-height: 70vh;
+    margin-top: 10vh;
+    margin-left: 25vw;
+    background-color: var(--dark-gray);
+    padding: 0 1em 1.5em 1em;
+    overflow-y: auto;
+}
+
+.tutorial__text::-webkit-scrollbar-thumb {
+    background-color: #bbb;
+}
+
+.tutorial__text::-webkit-scrollbar {
+    width: 0.5vw;
+    background-color: #454545;
+}
+
+.tutorial-quit {
+    position: absolute;
+    left: 78vw;
+    top: 10vh;
+}

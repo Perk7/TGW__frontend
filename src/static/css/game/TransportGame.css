@@ -1,0 +1,131 @@
+.transport-game__block {
+    color: #ffffff;
+    font-weight: 600;
+    text-align: left;
+    width: 80%;
+    margin-left: 10%;
+    margin-top: 1em;
+    padding-bottom: 1em;
+
+    border-bottom: 2px solid #FFF;
+}
+
+.transport-game__block:last-child {
+    border-bottom: 0;
+}
+
+.transport-game__heading {
+    font-size: 1.25em;
+    display: flex;
+    justify-content: space-around;
+    line-height: 120%;
+}
+
+.transport-game__road-block {
+    display: flex;
+    justify-content: space-between;
+}
+
+.transport-game__road-block > span {
+    width: 40%;
+    text-align: left;
+}
+
+.transport-game__road-list {
+    list-style-type: none;
+    width: 60%;
+    margin: 0;
+    margin-top: 0.5em;
+}
+
+.transport-game__road-list__item {
+    display: grid;
+    font-size: 1em;
+    width: 75%;
+    grid-template-columns: 50% 25% 25%;
+    margin-bottom: 0.5em;
+    padding-bottom: 0.5em;
+    border-bottom: 2px solid #FFF;
+    line-height: 150%;
+}
+
+.transport-game__road-list__item:last-child {
+    border-bottom: 0;
+}
+
+.transport-game__road-list__item > button {
+    width: 35%;
+    margin-left: 65%;
+    height: 1.5em;
+}
+
+.transport-game__road-list__item > button:last-child {
+    margin-left: 65%;
+}
+
+.transport-game__aqua-value {
+    text-align: left;
+    width: 60%;
+    padding-left: 7%;
+}
+
+.transport-game__aqua-value > button {
+    width: 7%;
+    margin-left: 10%;
+    height: 1.5em;
+}
+
+.transport-game__aqua-value > button:last-child {
+    margin-left: 10%;
+}
+
+.game__value-bar + button {
+    width: 1.5em;
+    height: 1.5em;
+}
+
+.transport-game__redact-list__heading {
+    font-size: 1.25em;
+    margin-top: 0.6em;
+    margin-left: 10%;
+    text-align: left;
+    margin-bottom: 1em;
+}
+
+.transport-game__redact-list__item {
+    width: 72%;
+    padding: 0 8% 0 0;
+    border: 2px solid #FFF;
+    margin-bottom: 0.75em;
+    background-color: var(--gray);
+    display: flex;
+    justify-content: space-between;
+    margin-left: 10%;
+}
+
+.transport-game__redact-list__item > div {
+    line-height: 100%;
+    font-weight: 600;
+}
+
+.transport-game__redact-list__item > div:before {
+    content: '';
+    display: inline-block;
+    height: 2.5em;
+    vertical-align: middle;
+}
+
+.transport-game__redact-list__item > span {
+    width: 30%;
+    padding: 0.5em 0;
+    border-right: 2px solid #FFF;
+    display: inline-block;
+    background-color: var(--light-black);
+}
+
+.transport-game__redact-list__item > span:before {
+    content: '';
+    display: inline-block;
+    height: 1.5em;
+    vertical-align: middle;
+}

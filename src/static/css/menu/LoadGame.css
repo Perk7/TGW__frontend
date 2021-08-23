@@ -1,0 +1,97 @@
+@keyframes DeleteButtonAnimate {
+    0% {
+        background-color: #FFF; }
+    100% {
+        background-color: #222; } }
+
+.load-scroll-view {
+    margin-top: 2em;
+    height: calc(100vh - 9em);
+    overflow: auto;
+    width: 28em;
+}
+
+.load-scroll-view > ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 0;
+}
+
+.load-scroll-view > ul {
+    clear: both;
+
+}
+
+.load-scroll-view::-webkit-scrollbar-thumb {
+    background-color: #bbb;
+}
+
+.load-scroll-view::-webkit-scrollbar {
+    width: 0.5vw;
+    background-color: #333;
+}
+
+.load-scroll-view__btn {
+    margin-top: 1.2em;
+    padding: 1.4em 2.5em;
+    border: 2px solid #FFF;
+    text-align: left;
+    border-radius: 0.7em;
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+    font-size: 0.8em;
+    cursor: pointer;
+    width: 70%;
+    color: #000;
+    background-color: #fff;
+    float: left;
+}
+
+.load-scroll-view__btn:hover {
+    background-color: #222;
+    color: #FFF;
+    animation: ButtonAnimate 0.8s ease;
+}
+
+.load-scroll-view__btn:active, .load-scroll-view__btn:focus {
+    outline: none;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-tap-highlight-color: transparent;
+}
+
+.load-scroll-view__btn_time {
+    float: right;
+}
+
+.load-scroll-view__delete {
+    display: inline-block;
+    width: 4.5em;
+    padding: 1.4em 0;
+    float: left;
+    margin-top: 1.2em;
+    border: 2px solid #FFF;
+    margin-left: 3px;
+    text-align: center;
+    font-size: 0.8em;
+    color: #FFF0;
+    border-radius: 0.7em;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    cursor: pointer;
+    background: #FFFFFF url('../../img/delete-btn.svg') no-repeat 1.3em;
+    background-size: 2em;
+}
+
+.load-scroll-view__delete:hover {
+    background-color: #222;
+    animation: DeleteButtonAnimate 0.8s ease;
+    background-image: url("../../img/delete-btn_hover.svg");
+}
+
+.load__modal-view {
+    width: 25em;
+    background-color: #222222;
+    position: absolute;
+    left: 12.5em;
+    top: 7em;
+}

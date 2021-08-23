@@ -1,0 +1,52 @@
+.new-navbar {
+    float: left;
+    width: 45%;
+}
+
+.new-scroll-view {
+    margin-top: 2em;
+    height: calc(100vh - 9em);
+    overflow: auto;
+    width: 20em;
+}
+
+.new-scroll-view::-webkit-scrollbar-thumb {
+    background-color: #bbb;
+}
+
+.new-scroll-view::-webkit-scrollbar {
+    width: 0.5vw;
+    background-color: #333;
+}
+
+.main-scroll-view__btn_new {
+    border-radius: 0.7em;
+    width: 18em;
+    margin-bottom: 0.7em;
+}
+
+.main-scroll-view__btn_new:hover {
+    background-color: #222;
+    color: #FFF;
+    animation: ButtonAnimate 0.8s ease;
+}
+
+.main-scroll-view__btn_new:active, .main-scroll-view__btn_new:focus {
+    outline: none;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-tap-highlight-color: transparent;
+}
+
+.main-scroll-view__btn_new_active {
+    background-color: #222;
+    color: #FFF;
+}
+
+.main-scroll-view__btn_new_acitve:hover {
+    animation: null;
+}
+
+.new-countryblock {
+    float: left;
+    width: 50%;
+}

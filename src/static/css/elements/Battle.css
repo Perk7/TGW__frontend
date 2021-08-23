@@ -1,0 +1,99 @@
+.battle-view {
+    position: absolute;
+    left: 2vw;
+    top: 10vh;
+    max-height: 83vh;
+    overflow-y: auto;
+    width: 58vw;
+    background-color: var(--dark-gray);
+    color: #FFF;
+}
+
+.battle-quit {
+    position: absolute;
+    left: 61vw;
+    top: 10vh;
+}
+
+.battle__header {
+    width: 90%;
+    margin-left: 5%;
+    padding: 0.7em 0;
+    background-color: var(--light-black);
+}
+
+.battle__heading {
+    font-size: 1.1em;
+    margin: 0;
+}
+
+.battle__result-block {
+    margin-top: 1em;
+    background-color: #cda419;
+}
+
+.battle__result {
+    width: 90%;
+    margin-left: 5%;
+    padding: 1em 0;
+}
+
+.battle__result_win {
+    background-color: var(--more);
+}
+
+.battle__result_def {
+    background-color: var(--less);
+}
+
+.battle__result__heading {
+    margin: 0;
+    font-size: 1.25em;
+    text-transform: uppercase;
+}
+
+.battle__detail {
+    margin-top: 1em;
+    display: grid;
+    grid-template-columns: 45% 10% 45%;
+
+    background-color: var(--gray);
+}
+
+.battle__detail__block {
+    border-top: 2px solid #fff;
+    height: 2.5em;
+}
+
+.battle__detail__block:nth-child(1),
+.battle__detail__block:nth-child(2),
+.battle__detail__block:nth-child(3) {
+    border-top: 0;
+}
+
+.battle__detail__header {
+    background-color: var(--light-black);
+}
+
+.battle__detail__side {
+    background-color: rgba(0,0,0,0.1);
+}
+
+.battle__detail__vs {
+    background-color: var(--light-black);
+}
+
+.battle__detail__block-item {
+    height: 2em;
+    line-height: 200%;
+    margin-top: 0.25em;
+    padding: 0 0.2em;
+
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.battle__detail__unit {
+    height: 2em;
+}

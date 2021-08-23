@@ -1,0 +1,189 @@
+.map__region_info {
+    width: 70vw;
+    height: 4.8em;
+    position: fixed;
+    background-color: rgba(62, 62, 62, 0.8);
+    color: #FFFFFF;
+    z-index: 5;
+    display: grid;
+    grid-template-areas: "map_info_flag map_info_name"
+                         "map_info_flag map_info_content";
+    grid-template-columns: 1fr 3fr;
+    grid-template-rows: 1fr 3fr;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.map__region_info__name {
+    text-align: left;
+    padding: 0 10% 0 5%;
+
+    grid-area: map_info_name;
+    font-size: 0.75em;
+    font-weight: 600;
+
+    background-color: rgba(62, 62, 62, 0.4);
+}
+
+.map__region_info__name > span {
+    text-align: right;
+    float: right;
+}
+
+.map__region_info__flag {
+    grid-area: map_info_flag;
+    background-color: rgba(62, 62, 62, 0.6);
+}
+
+.map__region_info__flag > .flag {
+    height: 2.8em;
+    width: calc(2.8em * var(--flag));
+
+    margin: 1em auto;
+    display: block;
+}
+
+.map__region_info__content {
+    grid-area: map_info_content;
+    text-align: left;
+    font-size: 0.6em;
+    padding: 1em 5%;
+}
+
+.map__squad_info__content {
+    grid-area: map_info_content;
+    width: 95%;
+    display: flex;
+    flex-direction: row;
+}
+
+.map__squad_info__content__item {
+    width: 18%;
+}
+
+.map__squad_info__content__item:last-child {
+    width: 28%;
+}
+
+.map__squad_info__content__item > img {
+    height: 2.2em;
+}
+
+.map__squad_info__content__item > span {
+    display: block;
+    font-size: 0.75em;
+    font-weight: 600;
+}
+
+.map__squad_info__content__item > button {
+    background-color: var(--gray);
+    color: #FFF;
+    font-size: 0.6em;
+    padding: 0.35em 0;
+    width: 80%;
+}
+
+.map__squad_info__content__item > button:disabled {
+    border: 2px solid var(--selected);
+    background-color: var(--dark-gray);
+}
+
+.start-game_map-block__radio-squad-map {
+    font-size: 1em;
+    padding: 0.5em 1.5em;
+    right: 35vw;
+    color: #fff;
+    top: 2vw;
+    background-color: var(--gray);
+    position: fixed;
+}
+
+.start-game_map-block__changer-view {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(90, 90, 90, 0.58);
+
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.start-game_map-block__squad-target {
+    position: relative;
+    left: 10vw;
+    top: 2em;
+    width: 42vw;
+    max-height: calc(100vh - 2.7em);
+    overflow-y: auto;
+    background-color: var(--dark-gray);
+    margin: 0;
+    padding: 0 1em;
+    list-style-type: none;
+}
+
+.start-game_map-block__squad-target::-webkit-scrollbar-thumb {
+    background-color: #bbbbbb;
+}
+
+.start-game_map-block__squad-target::-webkit-scrollbar {
+    width: 0.5vw;
+    background-color: #4c4c4c;
+}
+
+.start-game_map-block__squad-target span {
+    color: #fff;
+    line-height: 150%;
+    font-size: 1em;
+}
+
+.start-game_map-block__squad-target .redact__price {
+    text-align: right;
+    width: 100%;
+}
+
+.start-game_map-block__squad-target .redact__controls {
+    width: 2em;
+    height: 1.6em;
+}
+
+.start-game_map-block__squad-target .redact__number {
+    width: 5em;
+}
+
+.start-game_map-block__squad-target .army-game__icons {
+    margin-left: 0.5em;
+}
+
+.start-game_map-block__squad-target .new-squad__submit {
+    width: 50%;
+    margin-left: 0;
+}
+
+.start-game_map-block__squad-target .army-game__redact__price {
+    margin-left: 15% !important;
+    width: 45% !important;
+}
+
+.start-game_map-block__squad-quit {
+    left: 57vw;
+    top: 2em;
+}
+
+.start-game_map-block__squad-target .redact__submit {
+    width: 60%;
+}
+
+.start-game__map-block__squad-target__header {
+    font-size: 1em;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5em 0;
+    text-align: left;
+}
+
+.start-game__map-block__squad-target__header > span:last-child {
+    text-align: right;
+}

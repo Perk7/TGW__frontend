@@ -1,0 +1,118 @@
+header > .country-game__header__time {
+    text-align: center;
+}
+
+.country-game__info-block {
+    float: left;
+    width: 50vw;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.country-game__map-block {
+    float: right;
+    width: 50vw;
+}
+
+.country-game__map-block__map {
+    background-color: #008dd7;
+    margin: 0 4em 0 2em;
+}
+
+.country-game__map-block__raitings {
+    color: #ffffff;
+    margin-top: 1em;
+    text-align: left;
+}
+
+.country-game__map-block__raitings__list {
+    width: 40vw;
+    font-size: 0.8em;
+    overflow: auto;
+    max-height: calc(100vh - 13em);
+    background-color: rgba(0, 0, 0, 0.2);
+    margin: 0 auto;
+    padding-top: 0.6em;
+    padding-bottom: 0.6em;
+    padding-left: 2em;
+}
+
+.country-game__map-block__raitings__flag {
+    height: 1.1em;
+    width: calc(1.1em * var(--flag));
+    vertical-align: middle;
+    margin: 0 0.5em 0.3em;
+}
+
+.country-game__map-block__raitings > ol > li > span {
+    text-align: right;
+    float: right;
+    margin-right: 0.5em;
+}
+
+.country-game__map-block__raitings > ol > li:nth-child(1) {
+    color: #d0a331;
+}
+
+.country-game__map-block__raitings > ol > li:nth-child(2) {
+    color: #b6b6b6;
+}
+
+.country-game__map-block__raitings > ol > li:nth-child(3) {
+    color: #934717;
+}
+
+.country-game__map-block__raitings__btn {
+    float: left;
+    color: #FFFFFF;
+    background-color: var(--gray);
+    padding: 0.2em 0.35em 0;
+    padding-bottom: 0.5em;
+    margin-left: 1.8vw;
+    line-height: 120%;
+    font-size: 1.75em;
+}
+
+.country-game__map-block__raitings__heading {
+    font-size: 1em;
+    text-align: center;
+    margin-bottom: 2em;
+    float: left;
+    width: 33vw;
+}
+
+.float-right {
+    float: right;
+    margin-left: 0;
+    margin-right: 1.5vw;
+}
+
+.country-game__info-block__list {
+    list-style-type: none;
+    text-align: left;
+    color: #FFFFFF;
+    font-size: 0.9em;
+    width: 30vw;
+    margin-left: 10vw;
+    padding-left: 0;
+    overflow: auto;
+    height: calc(100vh - 6em);
+    padding-right: 1em;
+}
+
+.country-game__info-block__list__icon {
+    height: 1.25em;
+    vertical-align: middle;
+    width: calc(1.25em / var(--icon));
+    margin-bottom: 0.25em;
+    margin-right: 0.25em;
+}
+
+.country-game__info-block__list > li > span {
+    float: right;
+}
+
+.country-game__info-block__icon {
+    height: 0.9em;
+    vertical-align: middle;
+    margin-bottom: 0.25em;
+}

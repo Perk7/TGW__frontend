@@ -1,0 +1,197 @@
+.economy-game__values {
+    color: #ffffff;
+}
+
+.economy-game__values__list {
+    list-style-type: none;
+    width: 80%;
+    margin-top: 0;
+    margin-left: 10%;
+    display: grid;
+    padding: 0;
+    grid-template-columns: 1fr 1fr;
+}
+
+.economy-game__values__list__item {
+    text-align: left;
+    display: inline-block;
+    width: 75%;
+    margin-top: 2%;
+}
+
+.economy-game__values__list__item > span {
+    font-weight: 600;
+    float: right;
+}
+
+.economy-game__values__list__item > span img {
+    margin-right: 0;
+}
+
+.economy-game__taxes {
+    display: grid;
+    grid-template-columns: 35% 65%;
+    color: #FFF;
+    border-top: 2px solid #FFF;
+    padding-top: 2%;
+}
+
+.economy-game__taxes__heading {
+    text-align: left;
+    margin-left: 25%;
+}
+
+.economy-game__taxes__table_row {
+    text-align: left;
+    margin-bottom: 2%;
+    display: grid;
+    grid-template-columns: 20% 40% 40%;
+}
+
+.economy-game__taxes__table_row__heading {
+    display: inline-block;
+}
+
+.economy-game__taxes__table_row__value {
+    font-weight: 600;
+    text-align: right;
+    margin-right: 30%;
+    display: inline-block;
+}
+
+.economy-game__resources__table_row {
+    text-align: left;
+    margin-bottom: 2%;
+    display: grid;
+    grid-template-columns: 60% 40%;
+}
+
+.economy-game__resources-value {
+    text-align: center;
+    width: 35vw;
+    border: 2px solid #FFF;
+    height: 1.5em;
+    background-color: var(--dark-gray);
+
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+}
+
+.economy-game__resources-value > div {
+    height: 100%;
+    grid-area: 1 / 1 / 1 / 1;
+}
+
+.economy-game__resources-value > span {
+    grid-area: 1 / 1 / 1 / 1;
+    line-height: 150%;
+}
+
+/* Budget */
+
+.economy-game__budget-quit {
+    position: absolute;
+    left: 88vw;
+    top: 10vh;
+}
+
+.economy-game__budget-list ul {
+    margin-left: 15vw;
+    width: 68vw;
+    color: #FFF;
+    margin-top: 10vh;
+    max-height: 80vh;
+    overflow-y: auto;
+    background-color: var(--dark-gray);
+    list-style-type: none;
+    padding: 0 0.5em;
+}
+
+.economy-game__budget-list__item {
+    margin-top: 0.8em;
+    padding-top: 0.8em;
+    border-top: 2px solid #FFF;
+}
+
+.economy-game__budget-list__item:first-child {
+    border-top: 0;
+}
+
+.economy-game__budget-list__item:last-child {
+    margin-bottom: 1.6em;
+}
+
+.budget-list__item__heading {
+    text-align: left;
+    margin-bottom: 0.5em;
+    display: flex;
+    justify-content: space-between;
+}
+
+.budget-list__item__heading > span {
+    text-align: right;
+    font-weight: 600;
+}
+
+.budget-list__item__content__value-block {
+    margin-left: 2.5em;
+    display: grid;
+    grid-template-columns: 30% 70%;
+    padding: 0.2em 0;
+    border-bottom: 1px solid #FFF;
+    line-height: 140%;
+}
+
+.budget-list__item__content__value-block:last-child {
+    border-bottom: 0;
+}
+
+.budget-list__value-block__title {
+    text-align: left;
+}
+
+.budget-list__value-block__redactor {
+    text-align: left;
+}
+
+.budget-list__value-block__value {
+    float: right;
+    text-align: right;
+}
+
+.economy-game__budget__progress-bar {
+    text-align: center;
+    width: 15vw;
+    border: 1px solid #FFF;
+    background-color: var(--light-black);
+    height: 1.25em;
+    
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    vertical-align: text-bottom;
+
+    line-height: 100%;
+
+    display: inline-grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+}
+
+.economy-game__budget__progress-bar > div {
+    height: 100%;
+    grid-area: 1 / 1 / 1 / 1;
+}
+
+.economy-game__budget__controls {
+    line-height: 100% !important;
+    vertical-align: text-bottom !important;
+    width: 1.5em !important;
+    height: 1.5em !important;
+}
+
+.economy-game__resources-quit {
+    position: absolute;
+    left: 91vw;
+    top: 10vh;
+}

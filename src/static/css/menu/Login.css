@@ -1,0 +1,104 @@
+.login__relative-div {
+    position: relative;
+}
+
+.login__form-block__logger {
+    height: 7vw;
+    width: 50vw;
+    color: crimson;
+    margin-top: 5vw;
+    font-size: 2.5vw;
+    text-align: left;
+}
+
+.login__form-block {
+    margin-top: 2vw;
+    overflow: auto;
+    margin-bottom: 2vw;
+    height: 60vh;
+    width: 50vw;
+}
+
+.login__form-block_with-logger {
+    height: 40vh;
+}
+
+.login__form-block::-webkit-scrollbar-thumb {
+    background-color: #bbb;
+}
+
+.login__form-block::-webkit-scrollbar {
+    width: 0.5vw;
+    background-color: #333;
+}
+
+.login__form-block__input {
+    display: block;
+    font-size: 2.5vw;
+    padding: 1vw 2vw;
+    width: 40vw;
+    border-radius: 1vw;
+    margin-bottom: 3vw;
+    border: 3px solid #FFF;
+}
+
+.login__form-block__input:focus {
+    outline: 0;
+    border: 3px solid #e4c12d;
+}
+
+.login__form-block__submit {
+    display: block;
+
+    margin-top: 2vw;
+    background-color: #FFF;
+    width: 30vw;
+    padding: 2vw 4vw;
+    border: 2px solid #FFF;
+    text-align: center;
+    border-radius: 2vw;
+    font-size: 2vw;
+    font-weight: 500;
+
+}
+
+.login__form-block__submit:active, .login__form-block__submit:focus {
+    outline: none;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-tap-highlight-color: transparent;
+}
+
+.login__form-block__submit:hover {
+    background-color: #222;
+    color: #FFF;
+    animation: ButtonAnimate 0.8s ease;
+}
+
+.login__forget-btn {
+    display: block;
+
+    background-color: #FFF;
+    width: 30vw;
+    padding: 2vw 4vw;
+    border: 2px solid #FFF;
+    text-align: center;
+    border-radius: 2vw;
+    font-size: 2vw;
+    font-weight: 500;
+
+    position: absolute;
+    bottom: 1vh;
+    right: 8vw;
+}
+
+.login__forget-btn:active, .login__forget-btn:focus {
+    outline: none;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-tap-highlight-color: transparent;
+}
+
+.login__forget-btn:hover {
+    background-color: #222;
+    color: #FFF;
+    animation: ButtonAnimate 0.8s ease;
+}

@@ -1,0 +1,46 @@
+.logout__dark-view {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    padding: 6em 12.5em;
+    background: rgba(0,0,0,0.5);
+}
+
+.logout__popup-view {
+    width: 25em;
+    background-color: #222222;
+}
+
+.logout__popup-view__heading {
+    color: #FFFFFF;
+    font-size: 1.1em;
+    padding: 2em 0;
+}
+
+.popup-view__btn-block__btn {
+    width: 11.2em;
+    background-color: #222222;
+    border: 0;
+    border-top: 2px solid #FFFFFF;
+    color: #FFFFFF;
+    font-size: 1.1em;
+    text-align: center;
+    padding: 1.2em 0;
+    display: inline-block;
+    text-decoration: none;
+}
+
+.popup-view__btn-block__btn:hover {
+    background-color: #FFFFFF;
+    color: #000000;
+    animation: ReverseButtonAnimate 0.8s ease;
+}
+
+.popup-view__btn-block__btn_left {
+    border-right: 0.1em solid #FFFFFF;
+}
+
+.popup-view__btn-block__btn_right {
+}

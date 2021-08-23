@@ -1,0 +1,23 @@
+.science-game__block {
+    display: flex;
+    justify-content: space-between;
+    width: 60vw;
+    margin-top: 2em;
+    margin-left: 8vw;
+}
+
+.science-game__block > span {
+    font-size: 1.25em;
+    color: #fff;
+}
+
+.science-game__block__value {
+    width: 65%;
+    display: grid;
+    grid-template-columns: 85% 15%;
+}
+
+.science-game__block__value > button {
+    width: 1.6em;
+    height: 1.6em;
+}

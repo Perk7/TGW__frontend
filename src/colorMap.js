@@ -1,0 +1,25 @@
+let colors = {
+    empire: '#db4848',
+    dominion: "#f2c352",
+    sultanat: '#69f858',
+    anequina: '#48cca8',
+    peletine: '#fff700',
+    argonia: '#b03da7',
+    sadras: '#6eb43a',
+    indoril: '#3a3495',
+    dres: '#ff7b2e',
+    telvanni: '#a15b1e',
+    redoran: '#b8b8b8',
+    stormcloacks: '#509ace',
+    skyrim: '#fca07d',
+    orsinium: '#34ae75',
+    forebears: '#912ced',
+    crowns: '#ae9906',
+    elteric: '#ff28c7',
+    shornhelm: '#62dbe1',
+    wayrest: '#5156fe',
+    evermore: '#359b50',
+    daggerfall: '#d77e7e',
+}
+
+export default colors

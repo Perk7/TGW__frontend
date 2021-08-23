@@ -1,0 +1,58 @@
+.law-game__grid {
+    display: grid;
+    grid-template-columns: 55% 45%;
+}
+
+.law-game__block {
+    color: #FFF;
+    margin: 1.5em 1em;
+}
+
+.law-game__heading {
+    text-align: left;
+    font-size: 1.25em;
+    margin: 1em 0 1em 2%;
+}
+
+.law-game__list {
+    list-style-type: none;
+    width: 100%;
+    padding: 4vh 2vw;
+
+    max-height: calc(100vh - 12.5em);
+    overflow-y: auto;
+}
+
+.law-game__list__item {
+    padding: 0.5em;
+    background-color: var(--dark-gray);
+    border-radius: 0.5em;
+    margin-bottom: 0.75em;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+.law-game__list__item > span {
+    line-height: 160%;
+}
+
+.law-game__list__item > button {
+    color: #fff;
+    background-color: var(--light-black);
+    padding: 0.25em 1em;
+    font-size: 0.75em;
+}
+
+.law-game__ideology__label {
+    margin-left: 10%;
+    margin-bottom: 1.2em;
+}
+
+.law-game__ideology__span {
+    color: #FFF;
+    display: inline-block;
+    position: relative;
+    top: -1vw;
+    padding: 0.5em;
+}

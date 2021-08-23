@@ -1,0 +1,60 @@
+.education-game__heading {
+    margin-top: 2.75em;
+    width: 90vw;
+}
+
+.education-game__heading .icons {
+    margin-bottom: 0.4em;
+}
+
+.education-game__heading__block {
+    font-size: 1.25em;
+    color: #ffffff;
+    text-align: left;
+    width: 80%;
+    margin: 0;
+    margin-left: 10%;
+    padding-bottom: 1.25em;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+.education-game__heading__block:last-child {
+    padding-bottom: 0;
+}
+
+.education-game__redact__block {
+    font-size: 1.25em;
+    color: #ffffff;
+    text-align: left;
+    width: 80%;
+    margin: 0;
+    margin-left: 10%;
+    padding-bottom: 2em;
+
+    display: grid;
+    grid-template-columns: 22% 78%;
+}
+
+.education-game__redact__value {
+    text-align: left;
+    display: grid;
+    grid-template-columns: 25% 15% 60%;
+}
+
+.education-game__redact__value > span:first-child {
+    text-align: right;
+    line-height: 150%;
+    margin-right: 1em;
+}
+
+.education-game__redact__value > span:last-child {
+    margin-left: 10%;
+    font-size: 0.8em;
+}
+
+.education-game__redact__value > button {
+    width: 45%;
+    height: 1.5em;
+}
