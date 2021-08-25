@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import LoadingScreen from "react-loading-screen";
 import {connect} from "react-redux";
 import {mapStateToProps} from "../../storage/reduxGet";
-import {create_game} from "../../storage/actions";
+import {create_game, change_buffs, change_game} from "../../storage/actions";
 import Tutorial from "../../elements/Tutorial";
 import {getSchools, getUniversities} from "../../otherFunctions";
 import EmptyActions from "../../elements/EmptyActions";
@@ -17,8 +17,8 @@ class EducationGame extends Component {
             load: true,
             tutorial: false,
             description: 'Образование первостепенно влияет на производство ресурсов сферы услуг, а также на рост промышленности,' +
-                         ' поскольку эти отрасли зависят от качества кадров.;;Высокий уровень образования, безусловно, повысит социальный ' +
-                         'развития, но стоит быть с этим осторожным, поскольку образованный народ гораздо труднее обмануть и контролировать, ' +
+                         ' поскольку эти отрасли зависят от качества кадров.;;Высокий уровень образования, безусловно, повысит социальный уровень' +
+                         'населения, но стоит быть с этим осторожным, поскольку образованный народ гораздо труднее обмануть и контролировать, ' +
                          'что может привести к государственному перевороту при низкой политической стабильности.',
             redactor: false,
 
@@ -51,12 +51,11 @@ class EducationGame extends Component {
             return
         }
         const prices = {
-            schools: 20000,
-            universities: 250000,
+            schools: 1000000,
+            universtites: 25000000,
         }
         const price = prices[ev.target.dataset.target]
         let buff = this.props.store.createGame.buffs
-
         if (parseInt(price) <= buff.kazna) {
             if (this.props.store.changeGame.indexOf(ev.target.dataset.target) === -1 && buff.actions - 1 >= 0) {
                 this.props.change_game(ev.target.dataset.target)
@@ -64,22 +63,26 @@ class EducationGame extends Component {
                     actions: buff.actions - 1,
                 })
                 this.props.change_buffs({
-                    [this.state.current]: buff[this.state.current] + 1,
+                    [ev.target.dataset.target]: buff[ev.target.dataset.target] + 1,
 
                     kazna: buff.kazna - parseInt(price)
                 })
                 this.setState({
                     changer: !this.state.changer
                 })
+                ev.target.style = 'border: 2px solid var(--selected-light)'
+                setTimeout(() => { ev.target.style = '' }, 2000)
             } else if (this.props.store.changeGame.indexOf(ev.target.dataset.target) !== -1) {
                 this.props.change_buffs({
-                    [this.state.current]: buff[this.state.current] + 1,
+                    [ev.target.dataset.target]: buff[ev.target.dataset.target] + 1,
 
                     kazna: buff.kazna - parseInt(price)
                 })
                 this.setState({
                     changer: !this.state.changer
                 })
+                ev.target.style = 'border: 2px solid var(--selected-light)'
+                setTimeout(() => { ev.target.style = '' }, 2000)
             } else {
                 ev.preventDefault()
                 this.setState({
@@ -162,8 +165,12 @@ class EducationGame extends Component {
                                     <span>{getSchools(this.props.store.createGame.country)} шт.</span>
                                     <button className='redact__controls' data-target='schools'>+</button>
                                     <span>
+                                        <span className='education-game__redact__increase'>{this.props.store.createGame.buffs.schools
+                                            ? `+${this.props.store.createGame.buffs.schools}` 
+                                            : ''}
+                                        </span>
                                         <span style={{fontSize: '2vw', color: '#fff', marginRight: '2vw'}}><img className='icons' src={'images/icons/action.svg'} alt=""/>1</span>
-                                        (1 Школа = 20 000 <img className='icons_mini' src={`images/icons/coin.svg`} alt=""/>)
+                                        (1 Школа = 1 000 000 <img className='icons_mini' src={`images/icons/coin.svg`} alt=""/>)
                                     </span>
                                 </div>
                             </div>
@@ -176,8 +183,12 @@ class EducationGame extends Component {
                                     <span>{getUniversities(this.props.store.createGame.country)} шт.</span>
                                     <button className='redact__controls' data-target='universtites'>+</button>
                                     <span>
+                                        <span className='education-game__redact__increase'>{this.props.store.createGame.buffs.universtites
+                                            ? `+${this.props.store.createGame.buffs.universtites}` 
+                                            : ''}
+                                        </span>
                                         <span style={{fontSize: '2vw', color: '#fff', marginRight: '2vw'}}><img className='icons' src={'images/icons/action.svg'} alt=""/>1</span>
-                                        (1 Вуз = 250 000 <img className='icons_mini' src={`images/icons/coin.svg`} alt=""/>)
+                                        (1 Вуз = 25 000 000 <img className='icons_mini' src={`images/icons/coin.svg`} alt=""/>)
                                     </span>
                                 </div>
                             </div>
@@ -206,4 +217,4 @@ class EducationGame extends Component {
     }
 }
 
-export default connect(mapStateToProps, { create_game })(EducationGame);
+export default connect(mapStateToProps, { create_game, change_buffs, change_game })(EducationGame);

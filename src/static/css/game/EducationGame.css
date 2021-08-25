@@ -40,7 +40,7 @@
 .education-game__redact__value {
     text-align: left;
     display: grid;
-    grid-template-columns: 25% 15% 60%;
+    grid-template-columns: 25% 10% 65%;
 }
 
 .education-game__redact__value > span:first-child {
@@ -50,11 +50,17 @@
 }
 
 .education-game__redact__value > span:last-child {
-    margin-left: 10%;
     font-size: 0.8em;
 }
 
 .education-game__redact__value > button {
-    width: 45%;
+    width: 65%;
     height: 1.5em;
+}
+
+.education-game__redact__increase {
+    width: 10%;
+    display: inline-block;
+    color: var(--selected-light);
+    font-weight: 600;
 }

@@ -3,11 +3,9 @@ import LoadingScreen from "react-loading-screen";
 import {connect} from "react-redux";
 import {mapStateToProps} from "../../storage/reduxGet";
 import {change_game, change_buffs} from "../../storage/actions";
-import {Link} from "react-router-dom";
 import Tutorial from "../../elements/Tutorial";
 import EmptyActions from "../../elements/EmptyActions";
 import Header from "../../elements/Header";
-import {getPeopleDelivery} from "../../otherFunctions";
 import ValueBar from "../../elements/ValueBar";
 
 class ScienceGame extends Component {
@@ -70,29 +68,34 @@ class ScienceGame extends Component {
                             kazna: buff.kazna - parseInt(e*prices[this.state.current]*400000),
 
                             education_quality: buff.education_quality + e*0.0025,
-                            education_access: buff.education_access + e*0.0025,
-                            industry_typography: buff.industry_typography + e*0.0025,
-                            industry_light: buff.industry_light + e*0.0025,
-                            industry_alchemy: buff.industry_alchemy + e*0.0025,
                         })
                         this.setState({
                             changer: !this.state.changer
                         })
+                        if (ev.target.nodeName === 'LI') {
+                            ev.target.style = 'border: 2px solid var(--selected)'
+                            setTimeout(() => { ev.target.style = '' }, 2000)
+                        } else {
+                            ev.target.parentElement.style = 'border: 2px solid var(--selected)'
+                            setTimeout(() => { ev.target.parentElement.style = '' }, 2000)
+                        }
                     } else if (this.props.store.changeGame.indexOf('science') !== -1) {
                         this.props.change_buffs({
                             [this.state.current]: buff[this.state.current] + (this.state.current === 'aqueducs' ? e : e * 0.01),
                             kazna: buff.kazna - parseInt(e*prices[this.state.current]*400000),
 
                             education_quality: buff.education_quality + e*0.0025,
-                            education_access: buff.education_access + e*0.0025,
-                            industry_typography: buff.industry_typography + e*0.0025,
-                            industry_light: buff.industry_light + e*0.0025,
-                            industry_alchemy: buff.industry_alchemy + e*0.0025,
                         })
-
                         this.setState({
                             changer: !this.state.changer
                         })
+                        if (ev.target.nodeName === 'LI') {
+                            ev.target.style = 'border: 2px solid var(--selected)'
+                            setTimeout(() => { ev.target.style = '' }, 2000)
+                        } else {
+                            ev.target.parentElement.style = 'border: 2px solid var(--selected)'
+                            setTimeout(() => { ev.target.parentElement.style = '' }, 2000)
+                        }
                     } else {
                         ev.preventDefault()
                         this.setState({

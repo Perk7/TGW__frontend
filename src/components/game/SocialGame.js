@@ -21,8 +21,7 @@ class SocialGame extends Component {
                          'Большой материнский капитал даст стимул к росту населения. Но завышенное пособие по безработице ' +
                          'может, наоборот, лишить мотивации искать работу и повысить безработицу.;;' +
                          'Размер пенсии и пенсионный возраст могут сыграть весомую роль в судьбе вашей страны. ' +
-                         'Повышение пенсии, безусловно, приведет к увеличению поддержки, но снижение пенсионного возраста ' +
-                         'понесет за собой экономические проблемы.',
+                         'Cнижение пенсионного возраста понесет за собой экономические проблемы.',
             changer: false,
             emptyActions: false
         }
@@ -74,43 +73,43 @@ class SocialGame extends Component {
         return (<>
                 <li className='social-game__list__item' key='1'>
                     <span className='social-game__list__item__label'>Материнский капитал</span>
-                    <div>
+                    <div className='social-game__list__item__redactor'>
                         <button data-type='dec' data-target='maternal_capital' className='social-game__list__controls redact__controls'>-</button>
-                        <input type="number" className='social-game__list__number redact__number' disabled={true} value={properties.maternal_capital} />
+                        <input id='maternal_capital__value' type="number" className='social-game__list__number redact__number' disabled={true} value={properties.maternal_capital} />
                         <img className='icons_mini' src={'images/icons/coin.svg'} alt=""/>
                         <button data-type='inc' data-target='maternal_capital' className='social-game__list__controls redact__controls'>+</button>
                     </div>
                 </li>
                 <li className='social-game__list__item' key='2'>
                     <span className='social-game__list__item__label'>Средняя пенсия</span>
-                    <div>
+                    <div className='social-game__list__item__redactor'>
                         <button data-type='dec' data-target='avg_pension' className='social-game__list__controls redact__controls'>-</button>
-                        <input type="number" className='social-game__list__number redact__number' disabled={true} value={properties.avg_pension} />
+                        <input id='avg_pension__value' type="number" className='social-game__list__number redact__number' disabled={true} value={properties.avg_pension} />
                         <img className='icons_mini' src={'images/icons/coin.svg'} alt=""/>
                         <button data-type='inc' data-target='avg_pension' className='social-game__list__controls redact__controls'>+</button>
                     </div>
                 </li>
                 <li className='social-game__list__item' key='3'>
                     <span className='social-game__list__item__label'>Пособие по безработице</span>
-                    <div>
+                    <div className='social-game__list__item__redactor'>
                         <button data-type='dec' data-target='allowance_unemploy' className='social-game__list__controls redact__controls'>-</button>
-                        <input type="number" className='social-game__list__number redact__number' disabled={true} value={properties.allowance_unemploy} />
+                        <input id='allowance_unemploy__value' type="number" className='social-game__list__number redact__number' disabled={true} value={properties.allowance_unemploy} />
                         <img className='icons_mini' src={'images/icons/coin.svg'} alt=""/>
                         <button data-type='inc' data-target='allowance_unemploy' className='social-game__list__controls redact__controls'>+</button>
                     </div>
                 </li>
                 <li className='social-game__list__item' key='4'>
                     <span className='social-game__list__item__label'>Пособие по инвалидности</span>
-                    <div>
+                    <div className='social-game__list__item__redactor'>
                         <button data-type='dec' data-target='allowance_disability' className='social-game__list__controls redact__controls'>-</button>
-                        <input type="number" className='social-game__list__number redact__number' disabled={true} value={properties.allowance_disability} />
+                        <input id='allowance_disability__value' type="number" className='social-game__list__number redact__number' disabled={true} value={properties.allowance_disability} />
                         <img className='icons_mini' src={'images/icons/coin.svg'} alt=""/>
                         <button data-type='inc' data-target='allowance_disability' className='social-game__list__controls redact__controls'>+</button>
                     </div>
                 </li>
                 <li className='social-game__list__item' key='5'>
                     <span className='social-game__list__item__label_lg'>Возраст выхода на пенсию (М)</span>
-                    <div className='social-game__list__item__values-block'>{['50', '55', '60', '65'].map((ev) => {
+                    <div id='pension_m' className='social-game__list__item__values-block'>{['50', '55', '60', '65'].map((ev) => {
                         return (
                             <span key={ev}>
                                 <input type='radio' id={`Возраст выхода на пенсию-м-${ev}`}
@@ -130,12 +129,6 @@ class SocialGame extends Component {
                                                })
                                                this.props.change_buffs({
                                                    support: buff.support + 0.025*raz,
-
-                                                   population: buff.population + 0.002*raz,
-
-                                                   poverty: buff.poverty - 0.006*raz,
-                                                   unemployment: buff.unemployment + 0.003*raz,
-                                                   avg_salary: buff.avg_salary + 0.005*raz,
                                                })
                                                this.props.set_social({
                                                    target: 'pension_m',
@@ -147,12 +140,6 @@ class SocialGame extends Component {
                                            } else if (this.props.store.changeGame.indexOf('social') !== -1) {
                                                this.props.change_buffs({
                                                    support: buff.support + 0.025*raz,
-
-                                                   population: buff.population + 0.002*raz,
-
-                                                   poverty: buff.poverty - 0.006*raz,
-                                                   unemployment: buff.unemployment + 0.003*raz,
-                                                   avg_salary: buff.avg_salary + 0.005*raz,
                                                })
                                                this.props.set_social({
                                                    target: 'pension_m',
@@ -186,7 +173,7 @@ class SocialGame extends Component {
                 </li>
                 <li className='social-game__list__item' key='6'>
                     <span className='social-game__list__item__label_lg'>Возраст выхода на пенсию (Ж)</span>
-                    <div className='social-game__list__item__values-block'>{['45', '50', '55', '60'].map((ev) => {
+                    <div id='pension_w' className='social-game__list__item__values-block'>{['45', '50', '55', '60'].map((ev) => {
                         return (
                             <span key={ev}>
                                 <input type='radio' id={`Возраст выхода на пенсию-ж-${ev}`}
@@ -206,12 +193,6 @@ class SocialGame extends Component {
                                                })
                                                this.props.change_buffs({
                                                    support: buff.support + 0.025*raz,
-
-                                                   population: buff.population + 0.002*raz,
-
-                                                   poverty: buff.poverty - 0.006*raz,
-                                                   unemployment: buff.unemployment + 0.003*raz,
-                                                   avg_salary: buff.avg_salary + 0.005*raz,
                                                })
                                                this.props.set_social({
                                                    target: 'pension_w',
@@ -223,12 +204,6 @@ class SocialGame extends Component {
                                            } else if (this.props.store.changeGame.indexOf('social') !== -1) {
                                                this.props.change_buffs({
                                                    support: buff.support + 0.025*raz,
-
-                                                   population: buff.population + 0.002*raz,
-
-                                                   poverty: buff.poverty - 0.006*raz,
-                                                   unemployment: buff.unemployment + 0.003*raz,
-                                                   avg_salary: buff.avg_salary + 0.005*raz,
                                                })
                                                this.props.set_social({
                                                    target: 'pension_w',
@@ -294,12 +269,6 @@ class SocialGame extends Component {
                                 })
                                 this.props.change_buffs({
                                     support: buff.support + 0.001*type,
-
-                                    population: buff.population + 0.00025*type,
-
-                                    poverty: buff.poverty - 0.001*type,
-                                    unemployment: buff.unemployment - 0.0005*type,
-                                    avg_salary: buff.avg_salary + 0.0005*type,
                                 })
                                 this.props.set_social({
                                     target: e.target.dataset.target,
@@ -311,12 +280,6 @@ class SocialGame extends Component {
                             } else if (this.props.store.changeGame.indexOf('social') !== -1) {
                                 this.props.change_buffs({
                                     support: buff.support + 0.001*type,
-
-                                    population: buff.population + 0.00025*type,
-
-                                    poverty: buff.poverty - 0.001*type,
-                                    unemployment: buff.unemployment - 0.0005*type,
-                                    avg_salary: buff.avg_salary + 0.0005*type,
                                 })
                                 this.props.set_social({
                                     target: e.target.dataset.target,

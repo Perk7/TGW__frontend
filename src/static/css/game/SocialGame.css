@@ -32,10 +32,14 @@
     vertical-align: middle;
 }
 
+.social-game__list__item__redactor {
+    padding-top: 0.25em;
+}
+
 .social-game__list__item img {
     position: absolute;
     left: 86%;
-    top: 27%;
+    top: 34%;
 }
 
 .social-game__list__number {

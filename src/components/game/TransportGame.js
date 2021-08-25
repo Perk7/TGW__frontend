@@ -3,13 +3,14 @@ import LoadingScreen from "react-loading-screen";
 import {connect} from "react-redux";
 import {mapStateToProps} from "../../storage/reduxGet";
 import { change_game, change_buffs } from "../../storage/actions";
-import {Link} from "react-router-dom";
 import Tutorial from "../../elements/Tutorial";
 import {
     getAqueducs,
-    getCargoDelivery, getColor,
+    getCargoDelivery,
+    getInfrastructure,
     getPaveRoads,
     getPeopleDelivery,
+    getPopulation,
     getPort,
     getStoneRoads
 } from "../../otherFunctions";
@@ -67,9 +68,13 @@ class TransportGame extends Component {
                   getPaveRoads(this.props.store.createGame.country) +
                   this.props.store.createGame.country.export_trash +
                   getPort(this.props.store.createGame.country) +
-                  getPort(this.props.store.createGame.country) +
-                  getPort(this.props.store.createGame.country)
-        sum = sum / 6 * 100
+                  getCargoDelivery(this.props.store.createGame.country) +
+                  getPeopleDelivery(this.props.store.createGame.country) +
+                  getAqueducs(this.props.store.createGame.country)*10000 / getPopulation(this.props.store.createGame.country, false) +
+
+                  getInfrastructure(this.props.store.createGame.country) +
+                  getInfrastructure(this.props.store.createGame.country)
+        sum = sum / 9 * 100
         return sum.toFixed(0)
     }
 
@@ -95,50 +100,33 @@ class TransportGame extends Component {
                         })
                         this.props.change_buffs({
                             [this.state.current]: buff[this.state.current] + (this.state.current === 'aqueducs' ? e : e * 0.01),
-
-                            army_quality: buff.army_quality + (this.state.current === 'aqueducs' ? e * 0.001 : e * 0.005),
-
-                            industry_blackmetall: buff.industry_blackmetall + (this.state.current === 'aqueducs' ? e * 0.0005 : e * 0.0025),
-                            industry_colormetall: buff.industry_colormetall + (this.state.current === 'aqueducs' ? e * 0.0005 : e * 0.0025),
-                            industry_coal: buff.industry_coal + (this.state.current === 'aqueducs' ? e * 0.0005 : e * 0.0025),
-
-                            industry_forestry: buff.industry_forestry + (this.state.current === 'aqueducs' ? e * 0.0005 : e * 0.0025),
-
-                            industry_animals: buff.industry_animals + (this.state.current === 'aqueducs' ? e * 0.0005 : e * 0.0025),
-                            industry_vegetable: buff.industry_vegetable + (this.state.current === 'aqueducs' ? e * 0.0005 : e * 0.0025),
-                            industry_wheat: buff.industry_wheat + (this.state.current === 'aqueducs' ? e * 0.0005 : e * 0.0025),
-
-                            industry_transport: buff.industry_transport + (this.state.current === 'aqueducs' ? e * 0.0005 : e * 0.0025),
-
                             kazna: buff.kazna - parseInt(e*prices[this.state.current]*400000)
                         })
                         this.setState({
                             changer: !this.state.changer
                         })
+                        if (ev.target.nodeName === 'LI') {
+                            ev.target.style = 'border: 2px solid var(--selected)'
+                            setTimeout(() => { ev.target.style = '' }, 2000)
+                        } else {
+                            ev.target.parentElement.style = 'border: 2px solid var(--selected)'
+                            setTimeout(() => { ev.target.parentElement.style = '' }, 2000)
+                        }
                     } else if (this.props.store.changeGame.indexOf('transport') !== -1) {
                         this.props.change_buffs({
                             [this.state.current]: buff[this.state.current] + (this.state.current === 'aqueducs' ? e : e * 0.01),
-
-                            army_quality: buff.army_quality + (this.state.current === 'aqueducs' ? e * 0.001 : e * 0.005),
-
-                            industry_blackmetall: buff.industry_blackmetall + (this.state.current === 'aqueducs' ? e * 0.0005 : e * 0.0025),
-                            industry_colormetall: buff.industry_colormetall + (this.state.current === 'aqueducs' ? e * 0.0005 : e * 0.0025),
-                            industry_coal: buff.industry_coal + (this.state.current === 'aqueducs' ? e * 0.0005 : e * 0.0025),
-
-                            industry_forestry: buff.industry_forestry + (this.state.current === 'aqueducs' ? e * 0.0005 : e * 0.0025),
-
-                            industry_animals: buff.industry_animals + (this.state.current === 'aqueducs' ? e * 0.0005 : e * 0.0025),
-                            industry_vegetable: buff.industry_vegetable + (this.state.current === 'aqueducs' ? e * 0.0005 : e * 0.0025),
-                            industry_wheat: buff.industry_wheat + (this.state.current === 'aqueducs' ? e * 0.0005 : e * 0.0025),
-
-                            industry_transport: buff.industry_transport + (this.state.current === 'aqueducs' ? e * 0.0005 : e * 0.0025),
-
                             kazna: buff.kazna - parseInt(e*prices[this.state.current]*400000)
                         })
-
                         this.setState({
                             changer: !this.state.changer
                         })
+                        if (ev.target.nodeName === 'LI') {
+                            ev.target.style = 'border: 2px solid var(--selected)'
+                            setTimeout(() => { ev.target.style = '' }, 2000)
+                        } else {
+                            ev.target.parentElement.style = 'border: 2px solid var(--selected)'
+                            setTimeout(() => { ev.target.parentElement.style = '' }, 2000)
+                        }
                     } else {
                         ev.preventDefault()
                         this.setState({

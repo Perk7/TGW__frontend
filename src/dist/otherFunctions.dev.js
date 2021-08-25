@@ -71,6 +71,7 @@ exports.getReparation = getReparation;
 exports.getRelation = getRelation;
 exports.checkContract = checkContract;
 exports.getMaxId = getMaxId;
+exports.getInfrastructure = getInfrastructure;
 
 var _identCountries = _interopRequireDefault(require("./identCountries"));
 
@@ -2216,4 +2217,33 @@ function getMaxId(arr) {
     return idArr = idArr < e.id ? e.id : idArr;
   });
   return idArr;
+}
+
+function getInfrastructure(country) {
+  var val = 0;
+  var _iteratorNormalCompletion53 = true;
+  var _didIteratorError53 = false;
+  var _iteratorError53 = undefined;
+
+  try {
+    for (var _iterator53 = country.regions[Symbol.iterator](), _step53; !(_iteratorNormalCompletion53 = (_step53 = _iterator53.next()).done); _iteratorNormalCompletion53 = true) {
+      var i = _step53.value;
+      val = val + i.infrastructure;
+    }
+  } catch (err) {
+    _didIteratorError53 = true;
+    _iteratorError53 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion53 && _iterator53["return"] != null) {
+        _iterator53["return"]();
+      }
+    } finally {
+      if (_didIteratorError53) {
+        throw _iteratorError53;
+      }
+    }
+  }
+
+  return val / country.regions.length;
 }

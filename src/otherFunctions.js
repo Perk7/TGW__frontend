@@ -1106,3 +1106,11 @@ export function getMaxId(arr) {
   arr.map((e) => (idArr = idArr < e.id ? e.id : idArr));
   return idArr;
 }
+
+export function getInfrastructure(country) {
+  let val = 0
+  for (let i of country.regions) {
+    val = val + i.infrastructure
+  }
+  return val / country.regions.length
+}

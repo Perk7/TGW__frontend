@@ -106,6 +106,7 @@
 .transport-game__redact-list__item > div {
     line-height: 100%;
     font-weight: 600;
+    padding-top: 2%;
 }
 
 .transport-game__redact-list__item > div:before {
@@ -117,7 +118,7 @@
 
 .transport-game__redact-list__item > span {
     width: 30%;
-    padding: 0.5em 0;
+    padding: 4% 0 0.5em;
     border-right: 2px solid #FFF;
     display: inline-block;
     background-color: var(--light-black);
