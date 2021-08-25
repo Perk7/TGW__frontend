@@ -1114,3 +1114,7 @@ export function getInfrastructure(country) {
   }
   return val / country.regions.length
 }
+
+export function getGdpPerPopulation(country) {
+  return parseInt(getEconomy(country, false) / getPopulation(country, false))
+}

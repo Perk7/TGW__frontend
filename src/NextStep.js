@@ -8,6 +8,7 @@ import {
     getCargoDelivery,
     getCountry,
     getEconomy,
+    getGdpPerPopulation,
     getInfrastructure,
     getMaxId,
     getOwnContracts,
@@ -151,7 +152,7 @@ export default async function nextStep(store, func) {
             cargo_ship: 0.005,
             people_ship: 0.005,
             port: 0.005,
-            industry: 0.008,
+            industry: 0.004,
             infrastructure: 0.005,
             pave_road: 0.005,
             stone_road: 0.0025,
@@ -186,7 +187,7 @@ export default async function nextStep(store, func) {
                     cargo_ship: 0.005,
                     people_ship: 0.005,
                     port: 0.005,
-                    industry: 0.008,
+                    industry: 0.004,
                     infrastructure: 0.005,
                     pave_road: 0.005,
                     stone_road: 0.0025,
@@ -203,9 +204,7 @@ export default async function nextStep(store, func) {
 
         add(hash) {
             for (let dir of Object.keys(hash)) {
-                console.log(dir)
                 for (let type of Object.keys(hash[dir])) {
-                    console.log(type, hash[dir][type])
                     let val = hash[dir][type];
                     this.outBuffer[dir][type] =
                         +this.outBuffer[dir][type].toFixed(5) +
@@ -2608,6 +2607,119 @@ export default async function nextStep(store, func) {
             unemployment
         }
   */
+    
+    // Корректировка потребностей
+
+    function getEconomyRegSum(reg, ind) {
+        let summ = 0
+        for (let t of Object.keys(reg)) {
+            if (t.startsWith('industry') && t !== ind) {
+                summ = summ + parseInt(reg[t])
+            }
+        }
+        return summ
+    }
+
+    for (let i of newCountry.regions) {
+        i.needs_blackmetall = parseInt((10*i.population)+(0.2*i.industry_blacksmith)+(0.1*i.industry_jewelry)+(0.1*i.industry_other))
+        i.needs_colormetall = parseInt((5*i.population)+(0.1*i.industry_blacksmith)+(0.2*i.industry_jewelry)+(0.15*i.industry_other))
+        i.needs_coal = parseInt((5*i.population)+(0.05*i.industry_blacksmith)+(0.05*(i.industry_light+i.industry_jewelry)))
+        i.needs_hunting = parseInt(200*i.population)
+        i.needs_fishing = parseInt(170*i.population)
+        i.needs_forestry = parseInt((100*i.population)+(0.3*i.industry_typography)+(0.3*i.industry_jewelry)+(0.15*i.industry_other)+(0.05*i.industry_light))
+        i.needs_blacksmith = parseInt((100*i.population)+(0.2*(i.industry_blackmetall+i.industry_colormetall+i.industry_coal)+0.25*i.industry_jewelry+0.1*i.industry_other))
+        i.needs_animals = parseInt((300*i.population+200*i.area)*0.3)
+        i.needs_vegetables = parseInt((300*i.population+200*i.area)*0.6)
+        i.needs_wheat = parseInt((300*i.population+200*i.area)*0.45)
+        i.needs_typography = parseInt((60*i.population+0.4*i.industry_culture))
+        i.needs_light = parseInt(115*i.population)
+        i.needs_eating = parseInt(150*i.population)
+        i.needs_jewelry = parseInt(100*i.population)
+        i.needs_transport = parseInt(80*i.population+0.02*getEconomyRegSum(i, 'industry_transport'))
+        i.needs_alchemy = parseInt(70*i.population+200*i.area)
+        i.needs_hiring = parseInt(100*i.population+getEconomyRegSum(i, 'industry_hiring')*0.035)
+        i.needs_culture = parseInt((100*i.population)+getEconomyRegSum(i, 'industry_culture')*0.01)
+        i.needs_other = parseInt(130*i.population+getEconomyRegSum(i, 'industry_other')*0.015)
+    }
+
+    // Проверка окончания игры
+
+    let loss = {
+        status: false,
+        cause: ''
+    }
+
+    const lossCauseStabil = 'Из-за низкой политической стабильности, в стране произошел госпереворот и вы были свергнуты.'
+    if (newCountry.stability < 0.2) {
+        if (getRandomRange(10) === 0) {
+            loss.status = true
+            loss.cause = lossCauseStabil
+        } 
+    }
+    if (newCountry.stability < 0.15) {
+        if (getRandomRange(5) === 0) {
+            loss.status = true
+            loss.cause = lossCauseStabil
+        }
+    }
+    if (newCountry.stability < 0.1) {
+        if (getRandomRange(2) === 0) {
+            loss.status = true
+            loss.cause = lossCauseStabil
+        }
+    }
+    if (newCountry.stability < 0.05) {
+        loss.status = true
+        loss.cause = lossCauseStabil
+    }
+
+    const lossCauseSupport = 'Из-за низкой поддержки, в стране произошла революция и вы были свергнуты.'
+    if (newCountry.support < 0.1) {
+        if (getRandomRange(3) === 0) {
+            loss.status = true
+            loss.cause = lossCauseSupport
+        } 
+    }
+    if (newCountry.support < 0.05) {
+        if (getRandomRange(2) === 0) {
+            loss.status = true
+            loss.cause = lossCauseSupport
+        }
+    }
+    if (newCountry.government[0] === 'R' && newStore.buffs.step % 48 === 0) {
+        if (newCountry.support < 0.5) {
+            loss.status = true
+            loss.cause = `На очередных выборах вы набрали ${(newCountry.support*100 - 2.5).toFixed(2)}% голосов и проиграли.`
+        } else {
+            newsArr.push(new newsObj(
+                `На очередных выборах вы набрали ${(newCountry.support*100 + 2.5).toFixed(2)}% голосов и победили.`,
+                newCountry.identify,
+                true
+            ))
+        }
+    }
+
+    if (newCountry.regions.length === 0) {
+        loss.status = true
+        loss.cause = `Ваше государство было полностью захвачено.`
+    }
+
+    let win = {
+        status: false,
+        cause: ''
+    }
+
+    if (newCountry.regions.length === 77) {
+        win.status = true
+        win.cause = `Вы завоевали все регионы и стали правителем всего Тамриэля. Да здравствует '${newCountry.name}'`
+    }
+
+    if (getGdpPerPopulation(newCountry) > 6000) {
+        win.status = true
+        win.cause = `ВВП на душу населения, с момента вашего прихода к власти, увеличился вдвое. Вы стали автором экономического чуда.`
+    }
+
+    // Корректировка значений и применение изменений
 
     for (let i of relations) {
         for (let t of newStore.relations) {
@@ -2686,4 +2798,6 @@ export default async function nextStep(store, func) {
     store.changeGame = [];
     store.peaceList = [];
     func.create_game(newStore);
+
+    return 0
 }

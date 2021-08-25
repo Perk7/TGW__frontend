@@ -72,6 +72,7 @@ exports.getRelation = getRelation;
 exports.checkContract = checkContract;
 exports.getMaxId = getMaxId;
 exports.getInfrastructure = getInfrastructure;
+exports.getGdpPerPopulation = getGdpPerPopulation;
 
 var _identCountries = _interopRequireDefault(require("./identCountries"));
 
@@ -2246,4 +2247,8 @@ function getInfrastructure(country) {
   }
 
   return val / country.regions.length;
+}
+
+function getGdpPerPopulation(country) {
+  return parseInt(getEconomy(country, false) / getPopulation(country, false));
 }
