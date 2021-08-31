@@ -15,7 +15,7 @@ import {
     CHANGE_SQUAD, NEW_SQUAD, DELETE_SQUAD, SET_JUR_TAXES, SET_PHY_TAXES, CHANGE_BUDGET,
     CHANGE_RESOURCE,
     CHANGE_KAZNA,
-    CHANGE_LAWS, SET_PEACE, SET_SOCIAL, TRANSITION_SQUAD, TRANSITION_CLEAR, CLEAR_PEACE
+    CHANGE_LAWS, SET_PEACE, SET_SOCIAL, TRANSITION_SQUAD, TRANSITION_CLEAR, CLEAR_PEACE, SWAP_REGION, CHANGE_OCCUPED, CHANGE_AI_SQUAD, NEW_AI_SQUAD, DELETE_AI_SQUAD
 } from "./types";
 
 export function change_user() {
@@ -202,6 +202,41 @@ export function transition_squad(data) {
 export function transition_clear(data) {
     return {
         type: TRANSITION_CLEAR,
+        payload: data
+    }
+}
+
+export function swap_region(data) {
+    return {
+        type: SWAP_REGION,
+        payload: data
+    }
+}
+
+export function change_occuped(data) {
+    return {
+        type: CHANGE_OCCUPED,
+        payload: data
+    }
+}
+
+export function change_ai_squad(data) {
+    return {
+        type: CHANGE_AI_SQUAD,
+        payload: data
+    }
+}
+
+export function new_ai_squad(data) {
+    return {
+        type: NEW_AI_SQUAD,
+        payload: data
+    }
+}
+
+export function delete_ai_squad(data) {
+    return {
+        type: DELETE_AI_SQUAD,
         payload: data
     }
 }

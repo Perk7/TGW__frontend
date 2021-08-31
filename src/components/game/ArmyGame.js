@@ -13,6 +13,7 @@ import Tutorial from "../../elements/Tutorial";
 import EmptyActions from "../../elements/EmptyActions";
 import Header from "../../elements/Header";
 import {seaList} from "../../seaSquad";
+import { getExodusBattle } from '../../neuroFunctions';
 
 class ArmyGame extends Component {
     constructor() {
@@ -29,8 +30,8 @@ class ArmyGame extends Component {
                          'и создавать новые. Все новые отряды по умолчанию будут находиться в столице.;;' +
                          'Все отряды имеют 2 статуса: "Готов" и "Расквартирован". Готовые отряды дороже в содержании, но в любой момент ' +
                          'способны менять свое местоположение и вступать в битвы. Расквартированные отряды более уязвимы, им требуется ' +
-                         '1 ход на переход в режим готовности, но они потребляют вдвое меньше денег. Изменять статус можно на' +
-                         ' игровой карте.;;' +
+                         '1 ход на переход в режим готовности, но они потребляют вдвое меньше денег. Изменять статус можно на ' +
+                         'игровой карте.;;' +
                          'Вы не можете иметь армию, численностью более 25% от общего населения страны.',
             tutorial: false,
             redactSalary: false,
@@ -530,7 +531,7 @@ class ArmyGame extends Component {
                   if (buff.kazna >= this.state.squadPrice) {
                     if (this.props.store.createGame.buffs.actions - 1 >= 0) {
                         let quantity = squad.archer_quan + squad.cavallery_quan + squad.catapult_quan*20 + squad.pechot_quan
-                        if (getArmy(this.props.store.createGame.squad, true) + quantity < 0.25*getPopulation(this.props.store.createGame.country, false)) {
+                        if (getArmy(this.props.store.createGame.squad, false) + quantity < 0.25*getPopulation(this.props.store.createGame.country, false)) {
                             this.props.change_buffs({
                                 actions: buff.actions - 1,
                             })

@@ -23,6 +23,10 @@ export const CHANGE_SQUAD = 'CHANGE_SQUAD'
 export const NEW_SQUAD = 'NEW_SQUAD'
 export const DELETE_SQUAD = 'DELETE_SQUAD'
 
+export const CHANGE_AI_SQUAD = 'CHANGE_AI_SQUAD'
+export const NEW_AI_SQUAD = 'NEW_AI_SQUAD'
+export const DELETE_AI_SQUAD = 'DELETE_AI_SQUAD'
+
 export const SET_PHY_TAXES = 'SET_PHY_TAXES'
 export const SET_JUR_TAXES = 'SET_JUR_TAXES'
 
@@ -40,3 +44,6 @@ export const SET_SOCIAL = 'SET_SOCIAL'
 
 export const TRANSITION_SQUAD = 'TRANSITION_SQUAD'
 export const TRANSITION_CLEAR = 'TRANSITON_CLEAR'
+
+export const SWAP_REGION = 'SWAP_REGION'
+export const CHANGE_OCCUPED = 'CHANGE_OCCUPED'

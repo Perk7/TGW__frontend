@@ -15,9 +15,11 @@ import {
     CHANGE_SQUAD, NEW_SQUAD, DELETE_SQUAD, SET_PHY_TAXES, SET_JUR_TAXES, CHANGE_BUDGET,
     CHANGE_RESOURCE,
     CHANGE_KAZNA,
-    CHANGE_LAWS, SET_PEACE, SET_SOCIAL, TRANSITION_SQUAD, TRANSITION_CLEAR, CLEAR_PEACE
+    CHANGE_LAWS, SET_PEACE, SET_SOCIAL, TRANSITION_SQUAD, TRANSITION_CLEAR, CLEAR_PEACE, SWAP_REGION, CHANGE_OCCUPED, DELETE_AI_SQUAD, NEW_AI_SQUAD, CHANGE_AI_SQUAD
 } from "./types";
 import {combineReducers} from "redux";
+import { __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED } from "react-dom/cjs/react-dom.development";
+import Squad from "../elements/maps/Squad";
 
 function userReducer(state = false, action) {
     switch (action.type) {
@@ -110,7 +112,7 @@ function createGame(state = {}, action) {
             newState = state
             squad = action.payload
             for (let i of newState.squad) {
-                if (i.place == squad.place) {
+                if (i.place === squad.place) {
                     i.pechot_quan = i.pechot_quan + squad.pechot_quan
                     i.archer_quan = i.archer_quan + squad.archer_quan
                     i.cavallery_quan = i.cavallery_quan + squad.cavallery_quan
@@ -137,8 +139,50 @@ function createGame(state = {}, action) {
             }
             newState.squad = newSquads
             return newState
+        
+        
+        case CHANGE_AI_SQUAD:
+            newState = state
+            squad = action.payload
+            for (let i of newState.squad_ai) {
+                if (i.place === squad.place && i.country === squad.country) {
+                    squad.id = i.id
+                    newState.squad_ai[newState.squad_ai.indexOf(i)] = squad
+                }
+            }
+            return newState
             
-
+        case NEW_AI_SQUAD:
+            newState = state
+            squad = action.payload
+            for (let i of newState.squad_ai) {
+                if (i.place === squad.place && i.country === squad.country) {
+                    i.pechot_quan = i.pechot_quan + squad.pechot_quan
+                    i.archer_quan = i.archer_quan + squad.archer_quan
+                    i.cavallery_quan = i.cavallery_quan + squad.cavallery_quan
+                    i.catapult_quan = i.catapult_quan + squad.catapult_quan
+                    return newState
+                }
+            }
+            for (let i of newState.squad_ai) {
+                if (i.id >= squad.id) {
+                    squad.id = i.id+1
+                }
+            }
+            newState.squad_ai.push(squad)
+            return newState
+            
+        case DELETE_AI_SQUAD:
+            newState = state
+            let newAISquads = []
+            for (let i of newState.squad_ai) {
+                if (i.place !== action.payload.place) {
+                    newAISquads.push(i)
+                }
+            }
+            newState.squad_ai = newAISquads
+            return newState  
+            
         case SET_PHY_TAXES:
             newState = state
             newState['country']['tax_physic'] = action.payload
@@ -182,6 +226,66 @@ function createGame(state = {}, action) {
             newState['country'][action.payload.target] = action.payload.value
             return newState
             
+        case SWAP_REGION:
+            newState = state
+            let obj = action.payload
+
+            let newDecRegions = []
+            let newIncRegions = []
+            for (let i of obj.dec.regions) {
+                if (i.name !== obj.region) {
+                    newDecRegions.push(i)
+                } else {
+                    newIncRegions.push(i)
+                }
+            } 
+            for (let i of obj.inc.regions) {
+                newIncRegions.push(i)
+            }
+
+            if (obj.inc.name === newState.country.name) {
+                newState.country.region = newIncRegions
+            } else {
+                for (let i of newState.country_ai) {
+                    if (i.name === obj.inc.name) {
+                        i.regions = newIncRegions
+                    }
+                }
+            }
+
+            if (obj.dec.name === newState.country.name) {
+                newState.country.region = newDecRegions
+            } else {
+                for (let i of newState.country_ai) {
+                    if (i.name === obj.dec.name) {
+                        i.regions = newDecRegions
+                    }
+                }
+            }
+ 
+            return newState
+
+        case CHANGE_OCCUPED:
+            newState = state
+            let newObj = action.payload 
+
+            for (let i of newState.contracts) {
+                if (i.con_type === 'DW' && i.pair.includes(newObj.enemy) && (i.pair.length === 1 || i.pair.includes(newObj.own))) {
+                    let occuped = i.occuped.split(',')
+                    if (occuped[0] === '' && occuped.length === 1) {
+                        occuped = []
+                    }
+                    
+                    if (!occuped.includes(newObj.region)) {
+                        occuped.push(newObj.region)
+                    } else {
+                        occuped = occuped.filter(e => e !== newObj.region)
+                    }
+                    i.occuped = occuped.join(',')
+                }
+            }
+
+            return newState
 
         default:
             return state

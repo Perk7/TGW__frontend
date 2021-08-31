@@ -16,19 +16,27 @@ import colorsRegions from '../colorMap';
 import coordsRegions from '../coordsMap';
 import coordsCityMap from '../coordsCityMap';
 import colorSquad from '../colorSquad';
-import {set_colormap, set_capitals, change_game, change_buffs, transition_squad, change_squad, delete_squad, new_squad} from "../storage/actions";
+import {set_colormap, set_capitals, change_game, change_buffs, transition_squad, change_squad, delete_squad, new_squad, change_occuped, 
+change_ai_squad, new_ai_squad, delete_ai_squad} from "../storage/actions";
 import {
+    canBeRetreat,
     canBeTarget,
+    canBeTargetAI,
     checkSeaside,
     checkWarRegion,
+    getCountry,
     getOccupedRegions,
     getRegion,
     getSeaRegs,
+    getSquads,
     getTransOfPlace,
+    getWars,
+    makeBattleEffects,
     whoseReg
 } from "../otherFunctions";
 import Flags from "../Flags";
 import EmptyActions from "./EmptyActions";
+import { getExodusBattle } from '../neuroFunctions';
 
 function Map(props) {
 
@@ -43,36 +51,7 @@ function Map(props) {
     const [changer, setChanger] = useState(true)
     const [radioSquad, setRadioSquad] = useState(true )
     const [squadWasTransited, setSquadWasTransited] = useState(false)
-    const [battle, setBattle] = useState({
-        region: props.store.createGame.country.regions[0],
-        enemy: props.store.createGame.country_ai[0].identify,
-
-        ownSquad: props.store.createGame.squad[0],
-        enemySquad: props.store.createGame.squad_ai[0],
-
-        ownSpend: {
-            pechot: 0,
-            archer: 0,
-            cavallery: 0,
-            catapult: 0,
-        },
-        enemySpend: {
-            pechot: 0,
-            archer: 0,
-            cavallery: 0,
-            catapult: 0,
-        },
-
-        close: () => {
-            let newBattle = Object.assign({}, battle)
-            newBattle.hide = !newBattle.hide
-            setBattle(newBattle)
-        },
-
-        result: 'win',
-
-        hide: true,
-    })
+    const [battle, setBattle] = useState({})
     const [currentSquad, setCurrentSquad] = useState(false)
     const [targetsSquad, setTargetsSquad] = useState([])
     const [currentTarget, setCurTarget] = useState(false)
@@ -193,45 +172,6 @@ function Map(props) {
             setLoad(false)
         } else {
             setLoad(true)
-        }
-
-        if (squadWasTransited) {
-            setSquadWasTransited(false)
-            let list = props.store.createGame.squad.map(e => e.place)
-            for (let i of props.store.createGame.squad_ai) {
-                if (list.indexOf(i.place) !== -1) {
-                    let enemy = i.country
-                    let random = {
-                        own: Math.floor(Math.random() * 6 + 1),
-                        enemy: Math.floor(Math.random() * 6 + 1)
-                    }
-
-                    setBattle({
-                        region: props.store.createGame.country.regions[0],
-                        enemy: enemy,
-
-                        ownSquad: props.store.createGame.squad[0],
-                        enemySquad: i,
-
-                        ownSpend: {
-                            pechot: 0,
-                            archer: 0,
-                            cavallery: 0,
-                            catapult: 0,
-                        },
-                        enemySpend: {
-                            pechot: 0,
-                            archer: 0,
-                            cavallery: 0,
-                            catapult: 0,
-                        },
-
-                        result: 'win',
-
-                        hide: true,
-                    })
-                }
-            }
         }
     });
 
@@ -556,7 +496,6 @@ function Map(props) {
             if (seaList.indexOf(el.dataset.place) === -1) {
                 let reg = getRegion(props.store.createGame, el.dataset.place)
                 targets = movingSquad[el.dataset.place].filter(reg => canBeTarget(props.store.createGame, reg) || whoseReg(props.store.createGame, reg) === props.store.createGame.country.identify)
-                let ground = targets
                 if (reg.seaside) {
                     let seas = getSeaRegs(props.store.createGame)
                     for (let i of seas) {
@@ -667,7 +606,13 @@ function Map(props) {
            <li className='politic-game__redact__item'>
                <button onClick={ev => {
                        let buff = props.store.createGame.buffs
-                       const header = `${placeOfSquad.id}_${currentTarget}`
+                       let maxId = 0
+                       for (let i of props.store.createGame.squad) {
+                            if (i.id >= maxId) {
+                                maxId = i.id+1
+                            }
+                       }
+                       const header = `${maxId}_${currentTarget}`
 
                        const status = (
                            checkSeaside(props.store.createGame, currentTarget)
@@ -702,7 +647,9 @@ function Map(props) {
 
                        newSquad.place = status === 'Sea' ? seaSquad[newSquad.place] : currentTarget
 
-                       if (Object.keys(props.store.squadTrans).indexOf(header) === -1 && buff.actions - 1 >= 0) {
+                       let canCreate = true
+
+                        if (Object.keys(props.store.squadTrans).indexOf(header) === -1 && buff.actions - 1 >= 0) {
                            props.change_buffs({
                                actions: buff.actions - 1,
                            })
@@ -713,7 +660,91 @@ function Map(props) {
                                props.change_squad(squad)
                            }
 
-                           props.new_squad(newSquad)
+                           if (checkWarRegion(props.store.createGame, newSquad.place)) {
+                            let squadsAI = getSquads(props.store.createGame, whoseReg(props.store.createGame, newSquad.place))
+                            let squadsRegs = squadsAI.map(e => e.place)
+                            
+                            if (squadsRegs.includes(newSquad.place)) {
+                                canCreate = false
+                                let enemySquad = squadsAI.find(e => e.place === newSquad.place)
+                                const squads = {
+                                                own: {
+                                                    pechot: newSquad['pechot_quan'],
+                                                    archer: newSquad['archer_quan'],
+                                                    cavallery: newSquad['cavallery_quan'],
+                                                    catapult: newSquad['catapult_quan'],
+                
+                                                    quality: props.store.createGame.buffs.army_quality,
+                                                },
+                                                enemy: {
+                                                    pechot: enemySquad.pechot_quan,
+                                                    archer: enemySquad.archer_quan,
+                                                    cavallery: enemySquad.cavallery_quan,
+                                                    catapult: enemySquad.catapult_quan,
+                
+                                                    quality: getCountry(props.store.createGame, enemySquad.country).army_quality,
+                                                }
+                                            }
+    
+                                            let exodus = getExodusBattle(squads.own, squads.enemy)
+    
+                                            let output = {
+                                                region: getRegion(props.store.createGame, newSquad.place),
+                                                enemy: getCountry(props.store.createGame, enemySquad.country).identify,
+                
+                                                ownSquad: newSquad,
+                                                enemySquad: enemySquad,
+                
+                                                ownSpend: exodus.own,
+                                                enemySpend: exodus.enemy,
+                
+                                                close: () => {
+                                                    setBattle({})
+                                                },
+                
+                                                result: exodus.exodus === 'own' ? 'win' : 'loose',
+                                            }
+                                            
+                                            setBattle(output)
+                                            makeBattleEffects(props.store, {
+                                                change_occuped: props.change_occuped,
+                                                new_squad: props.new_squad,
+                                                new_ai_squad: props.new_ai_squad,
+                                                change_squad: props.change_squad,
+                                                change_ai_squad: props.change_ai_squad,
+                                                delete_squad: props.delete_squad,
+                                                delete_ai_squad: props.delete_ai_squad,
+                                            }, {
+                                                region: getRegion(props.store.createGame, newSquad.place),
+                                                enemyCountry: getCountry(props.store.createGame, enemySquad.country),
+                
+                                                own: {
+                                                    pechot: output.ownSquad.pechot_quan - output.ownSpend.pechot,
+                                                    archer: output.ownSquad.archer_quan - output.ownSpend.archer,
+                                                    cavallery: output.ownSquad.cavallery_quan - output.ownSpend.cavallery,
+                                                    catapult: output.ownSquad.catapult_quan - output.ownSpend.catapult, 
+                                                },
+                                                enemy: {
+                                                    pechot: output.enemySquad.pechot_quan - output.enemySpend.pechot,
+                                                    archer: output.enemySquad.archer_quan - output.enemySpend.archer,
+                                                    cavallery: output.enemySquad.cavallery_quan - output.enemySpend.cavallery,
+                                                    catapult: output.enemySquad.catapult_quan - output.enemySpend.catapult, 
+                                                },
+
+                                                result: exodus.exodus
+                                            })
+                                } else {
+                                props.change_occuped({
+                                    own: props.store.createGame.country.identify,
+                                    enemy: whoseReg(props.store.createGame, newSquad.place),
+                                    region: newSquad.place
+                                })
+                                }
+                            }
+
+                           if (canCreate) {
+                               props.new_squad(newSquad)
+                           }
 
                            let id = 0
                            for (let i of props.store.createGame.squad) {
@@ -730,16 +761,99 @@ function Map(props) {
                                props.change_squad(squad)
                            }
 
-                           let incr = null
-                           for (let i of props.store.createGame.squad) {
-                               if (i.place === newSquad.place) {
-                                   newSquad.pechot_quan = newSquad.pechot_quan + i.pechot_quan
-                                   newSquad.archer_quan = newSquad.archer_quan + i.archer_quan
-                                   newSquad.cavallery_quan = newSquad.cavallery_quan + i.cavallery_quan
-                                   newSquad.catapult_quan = newSquad.catapult_quan + i.catapult_quan
-                               }
+                           if (checkWarRegion(props.store.createGame, newSquad.place)) {
+                            let squadsAI = getSquads(props.store.createGame, whoseReg(props.store.createGame, newSquad.place))
+                            let squadsRegs = squadsAI.map(e => e.place)
+ 
+                            if (squadsRegs.includes(newSquad.place)) {
+                                canCreate = false
+                                let enemySquad = squadsAI.find(e => e.place === newSquad.place)
+                                const squads = {
+                                                own: {
+                                                    pechot: newSquad['pechot_quan'],
+                                                    archer: newSquad['archer_quan'],
+                                                    cavallery: newSquad['cavallery_quan'],
+                                                    catapult: newSquad['catapult_quan'],
+                
+                                                    quality: props.store.createGame.buffs.army_quality,
+                                                },
+                                                enemy: {
+                                                    pechot: enemySquad.pechot_quan,
+                                                    archer: enemySquad.archer_quan,
+                                                    cavallery: enemySquad.cavallery_quan,
+                                                    catapult: enemySquad.catapult_quan,
+                
+                                                    quality: getCountry(props.store.createGame, enemySquad.country).army_quality,
+                                                }
+                                            }
+    
+                                            let exodus = getExodusBattle(squads.own, squads.enemy)
+    
+                                            let output = {
+                                                region: getRegion(props.store.createGame, newSquad.place),
+                                                enemy: getCountry(props.store.createGame, enemySquad.country).identify,
+                
+                                                ownSquad: newSquad,
+                                                enemySquad: enemySquad,
+                
+                                                ownSpend: exodus.own,
+                                                enemySpend: exodus.enemy,
+                
+                                                close: () => {
+                                                    setBattle({})
+                                                },
+                
+                                                result: exodus.exodus === 'own' ? 'win' : 'loose',
+                                            }
+                                            
+                                            setBattle(output)
+                                            makeBattleEffects(props.store, {
+                                                change_occuped: props.change_occuped,
+                                                new_squad: props.new_squad,
+                                                new_ai_squad: props.new_ai_squad,
+                                                change_squad: props.change_squad,
+                                                change_ai_squad: props.change_ai_squad,
+                                                delete_squad: props.delete_squad,
+                                                delete_ai_squad: props.delete_ai_squad,
+                                            }, {
+                                                region: getRegion(props.store.createGame, newSquad.place),
+                                                enemyCountry: getCountry(props.store.createGame, enemySquad.country),
+                
+                                                own: {
+                                                    pechot: output.ownSquad.pechot_quan - output.ownSpend.pechot,
+                                                    archer: output.ownSquad.archer_quan - output.ownSpend.archer,
+                                                    cavallery: output.ownSquad.cavallery_quan - output.ownSpend.cavallery,
+                                                    catapult: output.ownSquad.catapult_quan - output.ownSpend.catapult, 
+                                                },
+                                                enemy: {
+                                                    pechot: output.enemySquad.pechot_quan - output.enemySpend.pechot,
+                                                    archer: output.enemySquad.archer_quan - output.enemySpend.archer,
+                                                    cavallery: output.enemySquad.cavallery_quan - output.enemySpend.cavallery,
+                                                    catapult: output.enemySquad.catapult_quan - output.enemySpend.catapult, 
+                                                },
+
+                                                result: exodus.exodus
+                                            })
+                                } else {
+                                props.change_occuped({
+                                    own: props.store.createGame.country.identify,
+                                    enemy: whoseReg(props.store.createGame, newSquad.place),
+                                    region: newSquad.place
+                                })
+                                }
+                            }
+
+                           if (canCreate) {
+                            for (let i of props.store.createGame.squad) {
+                                if (i.place === newSquad.place) {
+                                    newSquad.pechot_quan = newSquad.pechot_quan + i.pechot_quan
+                                    newSquad.archer_quan = newSquad.archer_quan + i.archer_quan
+                                    newSquad.cavallery_quan = newSquad.cavallery_quan + i.cavallery_quan
+                                    newSquad.catapult_quan = newSquad.catapult_quan + i.catapult_quan
+                                }
+                            }
+                            props.change_squad(newSquad)
                            }
-                           props.change_squad(newSquad)
 
                            transit.data.pechot_quan = transit.data.pechot_quan + props.store.squadTrans[header].pechot_quan
                            transit.data.archer_quan = transit.data.archer_quan + props.store.squadTrans[header].archer_quan
@@ -772,11 +886,12 @@ function Map(props) {
                        setChanger(!changer)
                        props.rend()
                        setSquadListRender(!squadListRender)
+                       setSetted(false)
                        ev.stopPropagation()
                }} className='redact__submit'>
                    {checkWarRegion(props.store.createGame, currentTarget) ? 'Атаковать' : 'Перейти'}</button>
                { checkSeaside(props.store.createGame, currentTarget) && movingSquad[placeOfSquad.place].indexOf(currentTarget) === -1
-               ? <span className='redact__price'>3 хода <img className='icons' src={'images/icons/port.svg'} alt=""/></span>
+               ? <span className='redact__price'>2-3 хода <img className='icons' src={'images/icons/port.svg'} alt=""/></span>
                : <span className='redact__price'>1 ход <img className='icons' src={'images/icons/region.svg'} alt=""/></span>}
            </li>
        </ul>
@@ -795,9 +910,9 @@ function Map(props) {
     <div hidden={!emptyActions}>
     <EmptyActions text={emptyText} />
     </div>
-    <Battle {...battle} />
+    { battle.region && <Battle {...battle} /> } 
     </div>
 );
 }
 
-export default connect(mapStateToProps, { set_colormap, set_capitals, change_game, change_buffs, change_squad, delete_squad, new_squad, transition_squad })(Map);
+export default connect(mapStateToProps, { set_colormap, set_capitals, change_game, change_buffs, change_squad, delete_squad, new_squad, transition_squad, change_occuped, change_ai_squad, new_ai_squad, delete_ai_squad })(Map);

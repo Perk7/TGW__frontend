@@ -10,6 +10,16 @@ export default class MapRegion extends Component {
             occuped: this.props.occuped || {agress: '#0700ff', looser: '#f24534'}
         }
     }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.occuped !== this.props.occuped) {
+            this.setState({
+                occup: this.props.occuped ? `url(#${this.props.identy.split(' ').join('_').split("'").join('')}__occuped)` : null,
+                occuped: this.props.occuped || {agress: '#0700ff', looser: '#f24534'}
+            })
+        }
+    }
+
     render() {
         let filler = (this.props.color.indexOf('squad') === -1
             ? this.props.occuped

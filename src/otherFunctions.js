@@ -1,5 +1,6 @@
 import identCountries from "./identCountries";
 import colorMap from "./colorMap";
+import movingSquad from './movingSquad';
 
 export function setCookie(name, value, options = {}) {
   options = {
@@ -637,6 +638,71 @@ export function canBeTarget(store, reg) {
   return false;
 }
 
+export function canBeRetreat(store, reg) {
+  let country = whoseReg(store, reg);
+  let occuped = []
+  let regs = store.country.regions.map(e => e.name)
+  for (let i of store.contracts) {
+    if (i.con_type === 'DW') {
+      if (i.pair.length === 1) {
+        if (!regs.includes(reg) && !i.occuped.split(',').includes(reg)) {
+          occuped.push(i.occuped.split(','))
+        }
+      } else {
+        occuped.push(i.occuped.split(','))
+      }
+    }
+  }
+
+  if (occuped.includes(reg)) {
+    return false
+  }
+
+  if (regs.includes(reg)) {
+    return true
+  }
+
+  for (let i of store.contracts) {
+    if (
+      i.con_type === "AL" ||
+      i.con_type === "VC" ||
+      i.con_type === "PA"
+    ) {
+      if (i.pair.length === 1 && i.pair.indexOf(country) !== -1) {
+        if (i.con_type === "PA") {
+          if (i.priority === store.country.indentify) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+export function canBeTargetAI(store, reg, ai) {
+  let regs = getCountry(store, ai).regions.map(e => e.name)
+  for (let i of store.contracts) {
+    if (i.con_type === 'DW') {
+      if (i.pair.includes(ai)) {
+        if (!regs.includes(reg) && i.occuped.split(',').includes(reg)) {
+          return true
+        }
+        if (regs.includes(reg) && i.occuped.split(',').includes(reg)) {
+          return false
+        }
+      }
+    }
+  }
+
+  if (regs.includes(reg)) {
+    return true
+  }
+}
+
 export function checkSeaside(store, reg) {
   return getRegion(store, reg).seaside;
 }
@@ -1117,4 +1183,71 @@ export function getInfrastructure(country) {
 
 export function getGdpPerPopulation(country) {
   return parseInt(getEconomy(country, false) / getPopulation(country, false))
+}
+
+export function makeBattleEffects(store, props, obj) {
+  let changerOwn = {
+      pechot_quan: obj.own.pechot,
+      archer_quan: obj.own.archer,
+      cavallery_quan: obj.own.cavallery,
+      catapult_quan: obj.own.catapult,
+
+      country: store.createGame.country.identify,
+      country_id: store.createGame.country.id,
+      id: 1,
+      place: obj.region.name,
+      place_type: 'G',
+      status: 'R',
+  }
+
+  let changerEnemy = {
+      pechot_quan: obj.enemy.pechot,
+      archer_quan: obj.enemy.archer,
+      cavallery_quan: obj.enemy.cavallery,
+      catapult_quan: obj.enemy.catapult,
+
+      country: obj.enemyCountry.identify,
+      country_id: obj.enemyCountry.id,
+      id: 1,
+      place: obj.region.name,
+      place_type: 'G',
+      status: 'R',
+  }
+  if (obj.result === 'own') {
+      props.change_occuped({
+          own: store.createGame.country.name,
+          enemy: obj.enemyCountry.identify,
+          region: obj.region.name
+      })
+      props.change_squad(changerOwn)
+      props.new_squad(changerOwn)
+      if ((obj.enemy.pechot + obj.enemy.archer + obj.enemy.cavallery + obj.enemy.catapult) > 0) {
+          for (let i of movingSquad[obj.region.name]) {
+              if (canBeTargetAI(store.createGame, i, obj.enemyCountry.identify)) {
+                  props.delete_ai_squad(changerEnemy)
+                  changerEnemy.place = i
+                  props.new_ai_squad(changerEnemy)
+                  return null
+              }
+          }
+          props.delete_ai_squad(changerEnemy)
+      } else {
+          props.delete_ai_squad(changerEnemy)
+      }
+  } else {
+      props.change_ai_squad(changerEnemy)
+      if ((obj.own.pechot + obj.own.archer + obj.own.cavallery + obj.own.catapult) > 0) {
+          for (let i of movingSquad[obj.region.name]) {
+              if (canBeRetreat(store.createGame, i)) {
+                  props.delete_squad(changerOwn)
+                  changerOwn.place = i
+                  props.new_squad(changerOwn)
+                  return null
+              }
+          }
+          props.delete_squad(changerOwn)
+      } else {
+          props.delete_squad(changerOwn)
+      }
+  }
 }

@@ -1,5 +1,6 @@
 import {
     checkContract,
+    checkWarRegion,
     getAIArmy,
     getAqueducs,
     getArmy,
@@ -18,18 +19,22 @@ import {
     getPort,
     getPoverty,
     getRandomRange,
+    getRegion,
     getRelation,
     getReparation,
     getSchools,
+    getSquads,
     getStoneRoads,
     getUnemployment,
     getUniversities,
     getVassals,
     isVassal,
+    makeBattleEffects,
     whoseReg,
 } from "./otherFunctions";
 import identCountries from "./identCountries";
-import { getAnswerPeace } from "./neuroFunctions";
+import { getAnswerPeace, getExodusBattle } from "./neuroFunctions";
+import seaSquad from './seaSquad';
 
 export default async function nextStep(store, func) {
     let newStore = Object.assign({}, store.createGame);
@@ -140,7 +145,7 @@ export default async function nextStep(store, func) {
             education_avail: 0.006,
             education_quality: 0.005,
             export_trash: 0.005,
-            inflation: 0.0025,
+            inflation: 0.00008,
             magic: 0.005,
             science: 0.005,
             stability: 0.005,
@@ -159,8 +164,8 @@ export default async function nextStep(store, func) {
             avg_salary: 0.006,
             schools: 0,
             universities: 0,
-            poverty: -0.0008,
-            unemployment: -0.0008,
+            poverty: -0.000005,
+            unemployment: -0.00003,
 
             population: 0.0005,
         },
@@ -1970,13 +1975,13 @@ export default async function nextStep(store, func) {
                         newStore.contracts.push({
                             id: getMaxId(newStore.contracts),
                             con_type: "DW",
-                            priority: identCountries[conCountry],
+                            priority: identCountries[conContract.split('-')[2]],
                             occuped: "",
                             spends: "0_0",
                             deadline: newBuff.step + 9999,
-                            uniq_id: getCountry(newStore, conCountry).id,
+                            uniq_id: newCountry.id,
                             pair: [conCountry, conContract.split("-")[2]],
-                            uniq: conCountry,
+                            uniq: newCountry.identify,
                         });
                     } else {
                         newStore.contracts.push({
@@ -2067,6 +2072,28 @@ export default async function nextStep(store, func) {
                                 }
                             }
                             break;
+                        }
+                    }
+
+                    let enem = getCountry(newStore, conCountry)
+
+                    if (!newCountry.regions.map(e => e.name).includes(newCountry.capital.name)) {
+                        newCountry.capital = newCountry.regions[0]
+                    }
+                    if (!enem.regions.map(e => e.name).includes(enem.capital.name)) {
+                        newStore.country_ai[newStore.country_ai.indexOf(enem)].capital = enem.regions[0]
+                    }
+
+                    for (let i of newStore.squad) {
+                        if (!newCountry.regions.map(e => e.name).includes(i.place)) {
+                            i.place = newCountry.capital
+                        }
+                    }
+                    for (let i of newStore.squad_ai) {
+                        if (i.country === conCountry) {
+                            if (!enem.regions.map(e => e.name).includes(i.place)) {
+                                i.place = newCountry.capital
+                            }
                         }
                     }
                 }
@@ -2261,7 +2288,6 @@ export default async function nextStep(store, func) {
     for (let law of Object.keys(newCountry)) {
         if (law.startsWith("law_")) {
             if (newCountry[law]) {
-                console.log(law)
                 outBuffer.add(lawBuffer[law]);
             } else {
                 let inverseBuff = Object.assign({}, lawBuffer[law])
@@ -2642,6 +2668,166 @@ export default async function nextStep(store, func) {
         i.needs_other = parseInt(130*i.population+getEconomyRegSum(i, 'industry_other')*0.015)
     }
 
+    // Изменение отрядов 
+
+    let changedSquads = []
+    for (let i of store.changeGame) {
+        if (i.startsWith('squad_status')) {
+            changedSquads.push(+i.split('_')[2])
+        }
+    }
+    for (let i of newStore.squad) {
+        if (changedSquads.includes(i.id)) {
+            i.status = i.status === 'Q' ? 'R' : 'Q'
+        }
+    }
+
+    let changedSquadTrans = {}
+    for (let i of Object.keys(store.squadTrans)) {
+        let curSquad = store.squadTrans[i]
+        let newPlace = curSquad.place
+        if (curSquad.place !== curSquad.target) {
+            if (seaSquad[curSquad.target] === curSquad.place) {
+                newPlace = curSquad.target
+            } else {
+                newPlace = seaSquad[curSquad.target]
+                curSquad.type = 'Ground'
+            }
+            curSquad.place = newPlace
+
+            let changer = false
+            let hasOwnSquad = false
+            for (let k of newStore.squad) {
+                if (k.id === +i.split('_')[0]) {
+                    hasOwnSquad = true
+                }
+            }
+
+            for (let z of newStore.squad) {
+                if (z.place === curSquad.place) {
+                    changer = true
+                    z.pechot_quan = z.pechot_quan + curSquad.pechot_quan
+                    z.archer_quan = z.archer_quan + curSquad.archer_quan
+                    z.cavallery_quan = z.cavallery_quan + curSquad.cavallery_quan
+                    z.catapult_quan = z.catapult_quan + curSquad.catapult_quan
+                }
+            }
+
+            if (changer) {
+                if (hasOwnSquad) {
+                    let newSquadList = []
+                    for (let f of newStore.squad) {
+                        if (f.id !== +i.split('_')[0]) {
+                            newSquadList.push(f)
+                        }
+                    }
+                    newStore.squad = newSquadList
+                }
+            } else {
+                if (hasOwnSquad) {
+                    for (let f of newStore.squad) {
+                        if (f.id === +i.split('_')[0]) {
+                            f.pechot_quan = curSquad.pechot_quan
+                            f.archer_quan = curSquad.archer_quan
+                            f.cavallery_quan = curSquad.cavallery_quan
+                            f.catapult_quan = curSquad.catapult_quan
+
+                            f.place = curSquad.place
+                        }
+                    }
+                } else {
+                    newStore.squad.push({
+                        id: +i.split('_')[0],
+                        pechot_quan: curSquad.pechot_quan,
+                        archer_quan: curSquad.archer_quan,
+                        cavallery_quan: curSquad.cavallery_quan,
+                        catapult_quan: curSquad.catapult_quan,
+                        place_type: "G",
+                        status: "R",
+                        place: curSquad.place,
+                        country_id: 109,
+                        country: "empire"
+                    })
+                }
+            }
+        }
+        if (curSquad.place !== curSquad.target) {
+            changedSquadTrans[i] = Object.assign({}, curSquad)
+        }
+    } 
+    store.squadTrans = changedSquadTrans 
+
+    // Проверка битв
+
+    let battles = []
+
+    for (let i of newStore.squad) {
+        if (checkWarRegion(newStore, i.place)) {
+            let whose = whoseReg(newStore, i.place)
+            let enemySquads = getSquads(newStore, whose)
+            for (let s of enemySquads) {
+                if (i.place === s.place) {
+                    let own = {
+                        pechot: i['pechot_quan'],
+                        archer: i['archer_quan'],
+                        cavallery: i['cavallery_quan'],
+                        catapult: i['catapult_quan'],
+
+                        quality: newBuff.army_quality,
+                    }
+                    let enemy = {
+                        pechot: s['pechot_quan'],
+                        archer: s['archer_quan'],
+                        cavallery: s['cavallery_quan'],
+                        catapult: s['catapult_quan'],
+
+                        quality: getCountry(store.createGame, s.country).army_quality,
+                    }
+
+                    let exodus = getExodusBattle(own, enemy)
+                    battles.push({
+                        region: getRegion(newStore, i.place),
+                        enemy: s.country,
+
+                        ownSquad: i,
+                        enemySquad: s,
+
+                        ownSpend: exodus.own,
+                        enemySpend: exodus.enemy,
+
+                        result: exodus.exodus === 'own' ? 'win' : 'loose',
+                    })
+                    console.log(own, {
+                        pechot: i.pechot_quan - exodus.own.pechot,
+                        archer: i.archer_quan - exodus.own.archer,
+                        cavallery: i.cavallery_quan - exodus.own.cavallery,
+                        catapult: i.catapult_quan - exodus.own.catapult, 
+                    })
+
+                    makeBattleEffects(store, func, {
+                        region: getRegion(newStore, i.place),
+                        enemyCountry: getCountry(store.createGame, s.country),
+                
+                        own: {
+                            pechot: i.pechot_quan - exodus.own.pechot,
+                            archer: i.archer_quan - exodus.own.archer,
+                            cavallery: i.cavallery_quan - exodus.own.cavallery,
+                            catapult: i.catapult_quan - exodus.own.catapult, 
+                        },
+                        enemy: {
+                            pechot: s.pechot_quan - exodus.enemy.pechot,
+                            archer: s.archer_quan - exodus.enemy.archer,
+                            cavallery: s.cavallery_quan - exodus.enemy.cavallery,
+                            catapult: s.catapult_quan - exodus.enemy.catapult, 
+                        },
+
+                        result: exodus.exodus
+                    })
+                }
+            }
+        }
+    }
+
     // Проверка окончания игры
 
     let loss = {
@@ -2753,14 +2939,14 @@ export default async function nextStep(store, func) {
     newCountry.education_avail = +newCountry.education_avail.toFixed(4)
     newCountry.education_quality = +newCountry.education_quality.toFixed(4)
     newCountry.export_trash = +newCountry.export_trash.toFixed(4)
-    newCountry.inflation = +newCountry.inflation.toFixed(4)
+    newCountry.inflation = newCountry.inflation > -0.02 ? +newCountry.inflation.toFixed(4) : -0.02
     newCountry.magic = +newCountry.magic.toFixed(4)
     newCountry.science = +newCountry.science.toFixed(4)
     newCountry.technology = +newCountry.technology.toFixed(4)
     newCountry.support = +newCountry.support.toFixed(4)
     newCountry.stability = +newCountry.stability.toFixed(4)
 
-    let mapper_correct = ['cargo_ship', 'people_ship', 'port', 'pave_road', 'stone_road', 'poverty', 'unemployment']
+    let mapper_correct = ['cargo_ship', 'people_ship', 'port', 'pave_road', 'stone_road']
     mapper_correct.map(e => {
         for (let i of newCountry.regions) {
             i[e] = +i[e].toFixed(4)
@@ -2786,6 +2972,17 @@ export default async function nextStep(store, func) {
         return null
     })
 
+    mapper_correct = ['poverty', 'unemployment']
+    mapper_correct.map(e => {
+        for (let i of newCountry.regions) {
+            if (i[e] < 0.01) {
+                i[e] = 0.01
+            } else {
+                i[e] = +i[e].toFixed(4)
+            }
+        }
+    })
+
     for (let i of newCountry.regions) {
         if (i.id === newCountry.capital.id) {
             newCountry.capital = i
@@ -2797,7 +2994,12 @@ export default async function nextStep(store, func) {
 
     store.changeGame = [];
     store.peaceList = [];
+    newStore.squad = store.createGame.squad
+    newStore.squad_ai = store.createGame.squad_ai
     func.create_game(newStore);
 
-    return 0
+    return {
+        news: newsArr,
+        battles: battles
+    }
 }

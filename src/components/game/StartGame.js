@@ -12,6 +12,7 @@ import {
   transition_clear,
   clear_peace,
   change_buffs,
+  change_squad, delete_squad, new_squad, change_occuped, change_ai_squad, new_ai_squad, delete_ai_squad
 } from "../../storage/actions";
 import UserService from "../../CustomersService";
 import nextStep from "../../NextStep";
@@ -215,6 +216,14 @@ class StartGame extends Component {
                     create_game: this.props.create_game,
                     change_game: this.props.change_game,
                     clear_peace: this.props.clear_peace,
+
+                    change_occuped: this.props.change_occuped,
+                    new_squad: this.props.new_squad,
+                    new_ai_squad: this.props.new_ai_squad,
+                    change_squad: this.props.change_squad,
+                    change_ai_squad: this.props.change_ai_squad,
+                    delete_squad: this.props.delete_squad,
+                    delete_ai_squad: this.props.delete_ai_squad,
                   }).then((val) => {
                     this.setState({ load: false, nextStepText: `` });
                   });
@@ -304,4 +313,5 @@ export default connect(mapStateToProps, {
   change_game,
   transition_clear,
   clear_peace,
+  change_squad, delete_squad, new_squad, change_occuped, change_ai_squad, new_ai_squad, delete_ai_squad
 })(StartGame);

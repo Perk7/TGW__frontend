@@ -11,6 +11,8 @@ var _identCountries = _interopRequireDefault(require("./identCountries"));
 
 var _neuroFunctions = require("./neuroFunctions");
 
+var _seaSquad = _interopRequireDefault(require("./seaSquad"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -20,7 +22,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 function nextStep(store, func) {
-  var newStore, newCountry, newBuff, easyBuff, easyRegionBuff, countRegionBuff, hardRegionBuff, countryBuffs, regionBuffs, buffer, outBufferClass, outBuffer, _iteratorNormalCompletion4, _didIteratorError4, _iteratorError4, _iterator4, _step4, reg, _iteratorNormalCompletion5, _didIteratorError5, _iteratorError5, _iterator5, _step5, _reg3, hashGovernmentBuffs, hashAreaFormatBuffs, currentGovernment, currentGovernmentOpts, _iteratorNormalCompletion8, _didIteratorError8, _iteratorError8, _loop, _iterator8, _step8, currentAreaFormat, _iteratorNormalCompletion9, _didIteratorError9, _iteratorError9, _loop2, _iterator9, _step9, hashArmyBuffs, currentArmySalaryOpts, armySalaryKoef, diffArmy, koef, _i7, _Object$keys6, _i76, typer, _i77, _Object$keys53, f, _i8, _Object$keys7, _i78, _typer, _i79, _Object$keys54, _f, _i9, _Object$keys8, _i80, _typer2, _i81, _Object$keys55, _f2, currentArmyMaintainOpts, armyMaintainKoef, _iteratorNormalCompletion10, _didIteratorError10, _iteratorError10, _iterator10, _step10, param, ind, _i82, _Object$keys56, _type17, _i83, _Object$keys57, buff, currentArmyEquipOpts, armyEquipKoef, _iteratorNormalCompletion11, _didIteratorError11, _iteratorError11, _iterator11, _step11, _param, _ind, _i84, _Object$keys58, _type18, _i85, _Object$keys59, _buff, unemploy, unemployHasher, _i10, _Object$keys9, i, _i11, _Object$keys10, type, _i12, _Object$keys11, _i13, _i14, _Object$keys12, _type, _i15, _Object$keys13, _i16, _i17, _Object$keys14, _type2, _i18, _Object$keys15, _i19, _i20, _Object$keys16, _type3, _i21, _Object$keys17, _i22, _i23, _Object$keys18, _type4, poverty, povertyHasher, _i24, _Object$keys19, _i25, _i26, _Object$keys20, _type5, _i27, _Object$keys21, _i28, _i29, _Object$keys22, _type6, _i30, _Object$keys23, _i31, _i32, _Object$keys24, _type7, _i33, _Object$keys25, _i34, _i35, _Object$keys26, _type8, _i36, _Object$keys27, _i37, _i38, _Object$keys28, _type9, _i39, _Object$keys29, _i40, _i41, _Object$keys30, _type10, inflation, inflationHasher, _i42, _Object$keys31, _i43, _i44, _Object$keys32, _type11, _i45, _Object$keys33, _i46, _i47, _Object$keys34, _type12, _i48, _Object$keys35, _i49, _i50, _Object$keys36, _type13, _i51, _Object$keys37, _i52, _i53, _Object$keys38, _type14, _i54, _Object$keys39, _i55, _i56, _Object$keys40, _type15, _i57, _Object$keys41, _i58, _i59, _Object$keys42, _type16, physTax, jurTax, taxHasher, _i60, _Object$keys43, _type19, _i86, _Object$keys60, ch, _i61, _Object$keys44, _type20, _i87, _Object$keys61, _ch, _i62, _Object$keys45, _i88, budget, budgetHasher, _i63, _Object$keys46, item, _i89, _Object$keys62, _type21, _i90, _Object$keys63, _i91, _i64, _Object$keys47, _i92, _iteratorNormalCompletion12, _didIteratorError12, _iteratorError12, _iterator12, _step12, _i93, _i94, _Object$keys64, prop, balance, percent, _koef2, relations, _iteratorNormalCompletion13, _didIteratorError13, _iteratorError13, _iterator13, _step13, _i95, setRelation, _i66, _relations, _i96, country, _i97, _Object$keys65, law, contracts, livedContracts, _iteratorNormalCompletion15, _didIteratorError15, _iteratorError15, _iterator15, _step15, _i98, newsArr, newsObj, priorityContracts, deadlineContracts, abbrContracts, relationContracts, _iteratorNormalCompletion16, _didIteratorError16, _iteratorError16, _iterator16, _step16, _i99, conCountry, conContract, typeChange, relation, approv, newspaper, redactStatus, conBuff, randomKoef, economyProp, output, war, _iteratorNormalCompletion23, _didIteratorError23, _iteratorError23, _iterator23, _step23, _i100, peace, _iteratorNormalCompletion24, _didIteratorError24, _iteratorError24, _iterator24, _step24, _i101, ownRegs, newOwnRegs, enemyRegs, newEnemyRegs, _iteratorNormalCompletion25, _didIteratorError25, _iteratorError25, _iterator25, _step25, _i102, whose, _iteratorNormalCompletion26, _didIteratorError26, _iteratorError26, _iterator26, _step26, _i103, _iteratorNormalCompletion27, _didIteratorError27, _iteratorError27, _iterator27, _step27, _i104, changerCont, _iteratorNormalCompletion28, _didIteratorError28, _iteratorError28, _iterator28, _step28, _i105, cont, _iteratorNormalCompletion29, _didIteratorError29, _iteratorError29, _iterator29, _step29, _i106, _peace, _iteratorNormalCompletion30, _didIteratorError30, _iteratorError30, _iterator30, _step30, _i107, _war, newContracts, _iteratorNormalCompletion31, _didIteratorError31, _iteratorError31, _iterator31, _step31, _i108, regs, _iteratorNormalCompletion32, _didIteratorError32, _iteratorError32, _iterator32, _step32, _i109, _iteratorNormalCompletion34, _didIteratorError34, _iteratorError34, _iterator34, _step34, c, _iteratorNormalCompletion33, _didIteratorError33, _iteratorError33, _iterator33, _step33, _c, _iteratorNormalCompletion35, _didIteratorError35, _iteratorError35, _iterator35, _step35, _i110, lawBuffer, _i67, _Object$keys48, _law, inverseBuff, _i111, _Object$keys66, _type22, _i112, _Object$keys67, bf, social_koef, avg_salary, transport_koef, science_koef, education_koef, getEconomyRegSum, _iteratorNormalCompletion17, _didIteratorError17, _iteratorError17, _iterator17, _step17, _i113, loss, lossCauseStabil, lossCauseSupport, win, _i69, _relations2, _i114, _iteratorNormalCompletion36, _didIteratorError36, _iteratorError36, _iterator36, _step36, t, newCountryAI, _iteratorNormalCompletion18, _didIteratorError18, _iteratorError18, _loop3, _iterator18, _step18, mapper_correct, _iteratorNormalCompletion22, _didIteratorError22, _iteratorError22, _iterator22, _step22, _i115;
+  var newStore, newCountry, newBuff, easyBuff, easyRegionBuff, countRegionBuff, hardRegionBuff, countryBuffs, regionBuffs, buffer, outBufferClass, outBuffer, _iteratorNormalCompletion4, _didIteratorError4, _iteratorError4, _iterator4, _step4, reg, _iteratorNormalCompletion5, _didIteratorError5, _iteratorError5, _iterator5, _step5, _reg3, hashGovernmentBuffs, hashAreaFormatBuffs, currentGovernment, currentGovernmentOpts, _iteratorNormalCompletion8, _didIteratorError8, _iteratorError8, _loop, _iterator8, _step8, currentAreaFormat, _iteratorNormalCompletion9, _didIteratorError9, _iteratorError9, _loop2, _iterator9, _step9, hashArmyBuffs, currentArmySalaryOpts, armySalaryKoef, diffArmy, koef, _i7, _Object$keys6, _i78, typer, _i79, _Object$keys54, f, _i8, _Object$keys7, _i80, _typer, _i81, _Object$keys55, _f, _i9, _Object$keys8, _i82, _typer2, _i83, _Object$keys56, _f2, currentArmyMaintainOpts, armyMaintainKoef, _iteratorNormalCompletion10, _didIteratorError10, _iteratorError10, _iterator10, _step10, param, ind, _i84, _Object$keys57, _type17, _i85, _Object$keys58, buff, currentArmyEquipOpts, armyEquipKoef, _iteratorNormalCompletion11, _didIteratorError11, _iteratorError11, _iterator11, _step11, _param, _ind, _i86, _Object$keys59, _type18, _i87, _Object$keys60, _buff, unemploy, unemployHasher, _i10, _Object$keys9, i, _i11, _Object$keys10, type, _i12, _Object$keys11, _i13, _i14, _Object$keys12, _type, _i15, _Object$keys13, _i16, _i17, _Object$keys14, _type2, _i18, _Object$keys15, _i19, _i20, _Object$keys16, _type3, _i21, _Object$keys17, _i22, _i23, _Object$keys18, _type4, poverty, povertyHasher, _i24, _Object$keys19, _i25, _i26, _Object$keys20, _type5, _i27, _Object$keys21, _i28, _i29, _Object$keys22, _type6, _i30, _Object$keys23, _i31, _i32, _Object$keys24, _type7, _i33, _Object$keys25, _i34, _i35, _Object$keys26, _type8, _i36, _Object$keys27, _i37, _i38, _Object$keys28, _type9, _i39, _Object$keys29, _i40, _i41, _Object$keys30, _type10, inflation, inflationHasher, _i42, _Object$keys31, _i43, _i44, _Object$keys32, _type11, _i45, _Object$keys33, _i46, _i47, _Object$keys34, _type12, _i48, _Object$keys35, _i49, _i50, _Object$keys36, _type13, _i51, _Object$keys37, _i52, _i53, _Object$keys38, _type14, _i54, _Object$keys39, _i55, _i56, _Object$keys40, _type15, _i57, _Object$keys41, _i58, _i59, _Object$keys42, _type16, physTax, jurTax, taxHasher, _i60, _Object$keys43, _type19, _i88, _Object$keys61, ch, _i61, _Object$keys44, _type20, _i89, _Object$keys62, _ch, _i62, _Object$keys45, _i90, budget, budgetHasher, _i63, _Object$keys46, item, _i91, _Object$keys63, _type21, _i92, _Object$keys64, _i93, _i64, _Object$keys47, _i94, _iteratorNormalCompletion12, _didIteratorError12, _iteratorError12, _iterator12, _step12, _i95, _i96, _Object$keys65, prop, balance, percent, _koef2, relations, _iteratorNormalCompletion13, _didIteratorError13, _iteratorError13, _iterator13, _step13, _i97, setRelation, _i66, _relations, _i98, country, _i99, _Object$keys66, law, contracts, livedContracts, _iteratorNormalCompletion15, _didIteratorError15, _iteratorError15, _iterator15, _step15, _i100, newsArr, newsObj, priorityContracts, deadlineContracts, abbrContracts, relationContracts, _iteratorNormalCompletion16, _didIteratorError16, _iteratorError16, _iterator16, _step16, _i101, conCountry, conContract, typeChange, relation, approv, newspaper, redactStatus, conBuff, randomKoef, economyProp, output, war, _iteratorNormalCompletion27, _didIteratorError27, _iteratorError27, _iterator27, _step27, _i102, peace, _iteratorNormalCompletion28, _didIteratorError28, _iteratorError28, _iterator28, _step28, _i103, ownRegs, newOwnRegs, enemyRegs, newEnemyRegs, _iteratorNormalCompletion29, _didIteratorError29, _iteratorError29, _iterator29, _step29, _i104, whose, _iteratorNormalCompletion30, _didIteratorError30, _iteratorError30, _iterator30, _step30, _i105, _iteratorNormalCompletion31, _didIteratorError31, _iteratorError31, _iterator31, _step31, _i106, changerCont, _iteratorNormalCompletion32, _didIteratorError32, _iteratorError32, _iterator32, _step32, _i107, cont, _iteratorNormalCompletion33, _didIteratorError33, _iteratorError33, _iterator33, _step33, _i108, _peace, _iteratorNormalCompletion34, _didIteratorError34, _iteratorError34, _iterator34, _step34, _i109, _war, newContracts, _iteratorNormalCompletion35, _didIteratorError35, _iteratorError35, _iterator35, _step35, _i110, regs, _iteratorNormalCompletion36, _didIteratorError36, _iteratorError36, _iterator36, _step36, _i111, _iteratorNormalCompletion40, _didIteratorError40, _iteratorError40, _iterator40, _step40, c, _iteratorNormalCompletion37, _didIteratorError37, _iteratorError37, _iterator37, _step37, _c, _iteratorNormalCompletion41, _didIteratorError41, _iteratorError41, _iterator41, _step41, _i112, enem, _iteratorNormalCompletion38, _didIteratorError38, _iteratorError38, _iterator38, _step38, _i113, _iteratorNormalCompletion39, _didIteratorError39, _iteratorError39, _iterator39, _step39, _i114, lawBuffer, _i67, _Object$keys48, _law, inverseBuff, _i115, _Object$keys67, _type22, _i116, _Object$keys68, bf, social_koef, avg_salary, transport_koef, science_koef, education_koef, getEconomyRegSum, _iteratorNormalCompletion17, _didIteratorError17, _iteratorError17, _iterator17, _step17, _i117, changedSquads, _iteratorNormalCompletion18, _didIteratorError18, _iteratorError18, _iterator18, _step18, _i118, _iteratorNormalCompletion19, _didIteratorError19, _iteratorError19, _iterator19, _step19, _i119, changedSquadTrans, _i69, _Object$keys50, _i120, curSquad, newPlace, changer, hasOwnSquad, _iteratorNormalCompletion42, _didIteratorError42, _iteratorError42, _iterator42, _step42, k, _iteratorNormalCompletion43, _didIteratorError43, _iteratorError43, _iterator43, _step43, z, newSquadList, _iteratorNormalCompletion44, _didIteratorError44, _iteratorError44, _iterator44, _step44, _f3, _iteratorNormalCompletion45, _didIteratorError45, _iteratorError45, _iterator45, _step45, _f4, battles, _iteratorNormalCompletion20, _didIteratorError20, _iteratorError20, _iterator20, _step20, _i121, _whose, enemySquads, _iteratorNormalCompletion46, _didIteratorError46, _iteratorError46, _iterator46, _step46, s, own, enemy, exodus, loss, lossCauseStabil, lossCauseSupport, win, _i70, _relations2, _i122, _iteratorNormalCompletion47, _didIteratorError47, _iteratorError47, _iterator47, _step47, t, newCountryAI, _iteratorNormalCompletion21, _didIteratorError21, _iteratorError21, _loop3, _iterator21, _step21, mapper_correct, _iteratorNormalCompletion26, _didIteratorError26, _iteratorError26, _iterator26, _step26, _i123;
 
   return regeneratorRuntime.async(function nextStep$(_context) {
     while (1) {
@@ -198,7 +200,7 @@ function nextStep(store, func) {
               education_avail: 0.006,
               education_quality: 0.005,
               export_trash: 0.005,
-              inflation: 0.0025,
+              inflation: 0.00008,
               magic: 0.005,
               science: 0.005,
               stability: 0.005,
@@ -217,8 +219,8 @@ function nextStep(store, func) {
               avg_salary: 0.006,
               schools: 0,
               universities: 0,
-              poverty: -0.0008,
-              unemployment: -0.0008,
+              poverty: -0.000005,
+              unemployment: -0.00003,
               population: 0.0005
             }
           };
@@ -729,8 +731,8 @@ function nextStep(store, func) {
 
             if (+i === 1) {
               ["country", "regions"].map(function (e) {
-                for (var _i74 = 0, _Object$keys51 = Object.keys(hash[e]); _i74 < _Object$keys51.length; _i74++) {
-                  var sec = _Object$keys51[_i74];
+                for (var _i76 = 0, _Object$keys52 = Object.keys(hash[e]); _i76 < _Object$keys52.length; _i76++) {
+                  var sec = _Object$keys52[_i76];
                   hash[e][sec] = -hash[e][sec];
                 }
 
@@ -791,8 +793,8 @@ function nextStep(store, func) {
 
             if (+i === 1) {
               ["country", "regions"].map(function (e) {
-                for (var _i75 = 0, _Object$keys52 = Object.keys(hash[e]); _i75 < _Object$keys52.length; _i75++) {
-                  var sec = _Object$keys52[_i75];
+                for (var _i77 = 0, _Object$keys53 = Object.keys(hash[e]); _i77 < _Object$keys53.length; _i77++) {
+                  var sec = _Object$keys53[_i77];
                   hash[e][sec] = -hash[e][sec];
                 }
 
@@ -940,11 +942,11 @@ function nextStep(store, func) {
           koef = "0";
 
           for (_i7 = 0, _Object$keys6 = Object.keys(hashArmyBuffs.army_salary[0]); _i7 < _Object$keys6.length; _i7++) {
-            _i76 = _Object$keys6[_i7];
-            typer = hashArmyBuffs.army_salary[0][_i76];
+            _i78 = _Object$keys6[_i7];
+            typer = hashArmyBuffs.army_salary[0][_i78];
 
-            for (_i77 = 0, _Object$keys53 = Object.keys(typer); _i77 < _Object$keys53.length; _i77++) {
-              f = _Object$keys53[_i77];
+            for (_i79 = 0, _Object$keys54 = Object.keys(typer); _i79 < _Object$keys54.length; _i79++) {
+              f = _Object$keys54[_i79];
               typer[f] = typer[f] * armySalaryKoef[0][currentArmySalaryOpts[0]];
             }
           }
@@ -964,11 +966,11 @@ function nextStep(store, func) {
           }
 
           for (_i8 = 0, _Object$keys7 = Object.keys(hashArmyBuffs.army_salary[1]); _i8 < _Object$keys7.length; _i8++) {
-            _i78 = _Object$keys7[_i8];
-            _typer = hashArmyBuffs.army_salary[1][_i78];
+            _i80 = _Object$keys7[_i8];
+            _typer = hashArmyBuffs.army_salary[1][_i80];
 
-            for (_i79 = 0, _Object$keys54 = Object.keys(_typer); _i79 < _Object$keys54.length; _i79++) {
-              _f = _Object$keys54[_i79];
+            for (_i81 = 0, _Object$keys55 = Object.keys(_typer); _i81 < _Object$keys55.length; _i81++) {
+              _f = _Object$keys55[_i81];
               _typer[_f] = _typer[_f] * armySalaryKoef[1][currentArmySalaryOpts[koef]];
             }
           }
@@ -988,11 +990,11 @@ function nextStep(store, func) {
           }
 
           for (_i9 = 0, _Object$keys8 = Object.keys(hashArmyBuffs.army_salary[2]); _i9 < _Object$keys8.length; _i9++) {
-            _i80 = _Object$keys8[_i9];
-            _typer2 = hashArmyBuffs.army_salary[0][_i80];
+            _i82 = _Object$keys8[_i9];
+            _typer2 = hashArmyBuffs.army_salary[0][_i82];
 
-            for (_i81 = 0, _Object$keys55 = Object.keys(_typer2); _i81 < _Object$keys55.length; _i81++) {
-              _f2 = _Object$keys55[_i81];
+            for (_i83 = 0, _Object$keys56 = Object.keys(_typer2); _i83 < _Object$keys56.length; _i83++) {
+              _f2 = _Object$keys56[_i83];
               _typer2[_f2] = _typer2[_f2] * armySalaryKoef[2][currentArmySalaryOpts[koef]];
             }
           }
@@ -1026,11 +1028,11 @@ function nextStep(store, func) {
             param = _step10.value;
             ind = hashArmyBuffs.army_maintain.indexOf(param);
 
-            for (_i82 = 0, _Object$keys56 = Object.keys(param); _i82 < _Object$keys56.length; _i82++) {
-              _type17 = _Object$keys56[_i82];
+            for (_i84 = 0, _Object$keys57 = Object.keys(param); _i84 < _Object$keys57.length; _i84++) {
+              _type17 = _Object$keys57[_i84];
 
-              for (_i83 = 0, _Object$keys57 = Object.keys(param[_type17]); _i83 < _Object$keys57.length; _i83++) {
-                buff = _Object$keys57[_i83];
+              for (_i85 = 0, _Object$keys58 = Object.keys(param[_type17]); _i85 < _Object$keys58.length; _i85++) {
+                buff = _Object$keys58[_i85];
                 param[_type17][buff] = param[_type17][buff] * armyMaintainKoef[ind][currentArmyMaintainOpts[ind]];
               }
             }
@@ -1102,11 +1104,11 @@ function nextStep(store, func) {
             _param = _step11.value;
             _ind = hashArmyBuffs.army_equip.indexOf(_param);
 
-            for (_i84 = 0, _Object$keys58 = Object.keys(_param); _i84 < _Object$keys58.length; _i84++) {
-              _type18 = _Object$keys58[_i84];
+            for (_i86 = 0, _Object$keys59 = Object.keys(_param); _i86 < _Object$keys59.length; _i86++) {
+              _type18 = _Object$keys59[_i86];
 
-              for (_i85 = 0, _Object$keys59 = Object.keys(_param[_type18]); _i85 < _Object$keys59.length; _i85++) {
-                _buff = _Object$keys59[_i85];
+              for (_i87 = 0, _Object$keys60 = Object.keys(_param[_type18]); _i87 < _Object$keys60.length; _i87++) {
+                _buff = _Object$keys60[_i87];
                 _param[_type18][_buff] = _param[_type18][_buff] * armyEquipKoef[_ind][currentArmyEquipOpts[_ind]];
               }
             }
@@ -1420,8 +1422,8 @@ function nextStep(store, func) {
           for (_i60 = 0, _Object$keys43 = Object.keys(taxHasher.phys); _i60 < _Object$keys43.length; _i60++) {
             _type19 = _Object$keys43[_i60];
 
-            for (_i86 = 0, _Object$keys60 = Object.keys(taxHasher.phys[_type19]); _i86 < _Object$keys60.length; _i86++) {
-              ch = _Object$keys60[_i86];
+            for (_i88 = 0, _Object$keys61 = Object.keys(taxHasher.phys[_type19]); _i88 < _Object$keys61.length; _i88++) {
+              ch = _Object$keys61[_i88];
 
               if (ch === "population") {
                 taxHasher.phys[_type19][ch] = taxHasher.phys[_type19][ch] * (1 - (+physTax[0] + +physTax[1]));
@@ -1434,15 +1436,15 @@ function nextStep(store, func) {
           for (_i61 = 0, _Object$keys44 = Object.keys(taxHasher.jur); _i61 < _Object$keys44.length; _i61++) {
             _type20 = _Object$keys44[_i61];
 
-            for (_i87 = 0, _Object$keys61 = Object.keys(taxHasher.jur[_type20]); _i87 < _Object$keys61.length; _i87++) {
-              _ch = _Object$keys61[_i87];
+            for (_i89 = 0, _Object$keys62 = Object.keys(taxHasher.jur[_type20]); _i89 < _Object$keys62.length; _i89++) {
+              _ch = _Object$keys62[_i89];
               taxHasher.jur[_type20][_ch] = taxHasher.jur[_type20][_ch] * (+jurTax[0] + +jurTax[1] + +jurTax[2] + +jurTax[3]);
             }
           }
 
           for (_i62 = 0, _Object$keys45 = Object.keys(taxHasher); _i62 < _Object$keys45.length; _i62++) {
-            _i88 = _Object$keys45[_i62];
-            outBuffer.add(taxHasher[_i88]);
+            _i90 = _Object$keys45[_i62];
+            outBuffer.add(taxHasher[_i90]);
           } // Баффы "Бюджет"
 
 
@@ -1519,24 +1521,24 @@ function nextStep(store, func) {
           for (_i63 = 0, _Object$keys46 = Object.keys(budgetHasher); _i63 < _Object$keys46.length; _i63++) {
             item = _Object$keys46[_i63];
 
-            for (_i89 = 0, _Object$keys62 = Object.keys(budgetHasher[item]); _i89 < _Object$keys62.length; _i89++) {
-              _type21 = _Object$keys62[_i89];
+            for (_i91 = 0, _Object$keys63 = Object.keys(budgetHasher[item]); _i91 < _Object$keys63.length; _i91++) {
+              _type21 = _Object$keys63[_i91];
 
-              for (_i90 = 0, _Object$keys63 = Object.keys(budgetHasher[item][_type21]); _i90 < _Object$keys63.length; _i90++) {
-                _i91 = _Object$keys63[_i90];
+              for (_i92 = 0, _Object$keys64 = Object.keys(budgetHasher[item][_type21]); _i92 < _Object$keys64.length; _i92++) {
+                _i93 = _Object$keys64[_i92];
 
-                if (countRegionBuff.includes(_i91)) {
-                  budgetHasher[item][_type21][_i91] = Math.round(budgetHasher[item][_type21][_i91] * (budget[item] - 0.4));
+                if (countRegionBuff.includes(_i93)) {
+                  budgetHasher[item][_type21][_i93] = Math.round(budgetHasher[item][_type21][_i93] * (budget[item] - 0.4));
                 } else {
-                  budgetHasher[item][_type21][_i91] = budgetHasher[item][_type21][_i91] * (budget[item] - 0.5);
+                  budgetHasher[item][_type21][_i93] = budgetHasher[item][_type21][_i93] * (budget[item] - 0.5);
                 }
               }
             }
           }
 
           for (_i64 = 0, _Object$keys47 = Object.keys(budgetHasher); _i64 < _Object$keys47.length; _i64++) {
-            _i92 = _Object$keys47[_i64];
-            outBuffer.add(budgetHasher[_i92]);
+            _i94 = _Object$keys47[_i64];
+            outBuffer.add(budgetHasher[_i94]);
           }
 
           newBuff.kazna = newBuff.kazna + (0, _otherFunctions.getBalance)(newStore);
@@ -1546,15 +1548,15 @@ function nextStep(store, func) {
           _context.prev = 191;
 
           for (_iterator12 = newCountry.regions[Symbol.iterator](); !(_iteratorNormalCompletion12 = (_step12 = _iterator12.next()).done); _iteratorNormalCompletion12 = true) {
-            _i93 = _step12.value;
+            _i95 = _step12.value;
 
-            for (_i94 = 0, _Object$keys64 = Object.keys(_i93); _i94 < _Object$keys64.length; _i94++) {
-              prop = _Object$keys64[_i94];
+            for (_i96 = 0, _Object$keys65 = Object.keys(_i95); _i96 < _Object$keys65.length; _i96++) {
+              prop = _Object$keys65[_i96];
 
               if (prop.startsWith("industry")) {
-                balance = _i93[prop] - _i93["needs_".concat(prop.split("_")[1])];
-                percent = _i93[prop] / _i93["needs_".concat(prop.split("_")[1])];
-                _i93[prop] = _i93[prop] + _i93[prop] * (balance > 0 ? 0.002 : 0.005) * (_i93.name === newCountry.capital.name ? 1.1 : 1);
+                balance = _i95[prop] - _i95["needs_".concat(prop.split("_")[1])];
+                percent = _i95[prop] / _i95["needs_".concat(prop.split("_")[1])];
+                _i95[prop] = _i95[prop] + _i95[prop] * (balance > 0 ? 0.002 : 0.005) * (_i95.name === newCountry.capital.name ? 1.1 : 1);
                 _koef2 = percent > 1.1 || percent < 0.9 ? -percent * (percent > 1.15 ? 1.25 : 2.5) : percent * 1.25;
                 outBuffer.add({
                   country: {
@@ -1621,13 +1623,13 @@ function nextStep(store, func) {
           _context.prev = 211;
 
           for (_iterator13 = newStore.relations[Symbol.iterator](); !(_iteratorNormalCompletion13 = (_step13 = _iterator13.next()).done); _iteratorNormalCompletion13 = true) {
-            _i95 = _step13.value;
+            _i97 = _step13.value;
 
-            if (_i95.pair.length === 1) {
+            if (_i97.pair.length === 1) {
               relations.push({
-                value: _i95.value,
-                ident: _i95.pair[0],
-                id: _i95.id
+                value: _i97.value,
+                ident: _i97.pair[0],
+                id: _i97.id
               });
             }
           }
@@ -1667,15 +1669,15 @@ function nextStep(store, func) {
 
         case 227:
           for (_i66 = 0, _relations = relations; _i66 < _relations.length; _i66++) {
-            _i96 = _relations[_i66];
-            country = (0, _otherFunctions.getCountry)(newStore, _i96.ident);
-            _i96.value = _i96.value + ((0, _otherFunctions.getRandomRange)(10) === 1 ? 1 : 0) * (country.government[0] === newCountry.government[0] ? 1 : -1);
+            _i98 = _relations[_i66];
+            country = (0, _otherFunctions.getCountry)(newStore, _i98.ident);
+            _i98.value = _i98.value + ((0, _otherFunctions.getRandomRange)(10) === 1 ? 1 : 0) * (country.government[0] === newCountry.government[0] ? 1 : -1);
 
-            for (_i97 = 0, _Object$keys65 = Object.keys(country); _i97 < _Object$keys65.length; _i97++) {
-              law = _Object$keys65[_i97];
+            for (_i99 = 0, _Object$keys66 = Object.keys(country); _i99 < _Object$keys66.length; _i99++) {
+              law = _Object$keys66[_i99];
 
               if (law.startsWith("law_")) {
-                _i96.value = _i96.value + ((0, _otherFunctions.getRandomRange)(75) === 1 ? 1 : 0) * (newCountry[law] === country[law] ? 1 : -1);
+                _i98.value = _i98.value + ((0, _otherFunctions.getRandomRange)(75) === 1 ? 1 : 0) * (newCountry[law] === country[law] ? 1 : -1);
               }
             }
           }
@@ -1696,8 +1698,8 @@ function nextStep(store, func) {
             break;
           }
 
-          _i98 = _step15.value;
-          _context.t8 = _i98.con_type;
+          _i100 = _step15.value;
+          _context.t8 = _i100.con_type;
           _context.next = _context.t8 === "AL" ? 240 : _context.t8 === "CM" ? 242 : _context.t8 === "CT" ? 244 : _context.t8 === "SH" ? 247 : _context.t8 === "EH" ? 250 : _context.t8 === "PA" ? 253 : _context.t8 === "ES" ? 255 : _context.t8 === "DW" ? 258 : _context.t8 === "CP" ? 260 : _context.t8 === "FW" ? 263 : _context.t8 === "VC" ? 266 : 269;
           break;
 
@@ -1738,7 +1740,7 @@ function nextStep(store, func) {
               poverty: 0.05
             }
           });
-          setRelation(_i98.pair[0], (0, _otherFunctions.getRandomRange)(6) === 1 ? 1 : 0);
+          setRelation(_i100.pair[0], (0, _otherFunctions.getRandomRange)(6) === 1 ? 1 : 0);
           return _context.abrupt("break", 270);
 
         case 247:
@@ -1757,7 +1759,7 @@ function nextStep(store, func) {
               poverty: 0.05
             }
           });
-          setRelation(_i98.pair[0], (0, _otherFunctions.getRandomRange)(10) === 1 ? 1 : 0);
+          setRelation(_i100.pair[0], (0, _otherFunctions.getRandomRange)(10) === 1 ? 1 : 0);
           return _context.abrupt("break", 270);
 
         case 250:
@@ -1772,11 +1774,11 @@ function nextStep(store, func) {
               unemployment: -0.1
             }
           });
-          setRelation(_i98.pair[0], (0, _otherFunctions.getRandomRange)(7) === 1 ? 1 : 0);
+          setRelation(_i100.pair[0], (0, _otherFunctions.getRandomRange)(7) === 1 ? 1 : 0);
           return _context.abrupt("break", 270);
 
         case 253:
-          outBuffer.add(_i98.priority !== newCountry.name ? {
+          outBuffer.add(_i100.priority !== newCountry.name ? {
             country: {
               army_quality: -0.1,
               export_trash: 0.05,
@@ -1802,7 +1804,7 @@ function nextStep(store, func) {
           return _context.abrupt("break", 270);
 
         case 255:
-          outBuffer.add(_i98.priority !== newCountry.name ? {
+          outBuffer.add(_i100.priority !== newCountry.name ? {
             country: {
               education_quality: -0.05,
               export_trash: -0.05,
@@ -1822,11 +1824,11 @@ function nextStep(store, func) {
               unemployment: 0.05
             }
           });
-          setRelation(_i98.pair[0], (0, _otherFunctions.getRandomRange)(6) === 1 ? -1 : 0);
+          setRelation(_i100.pair[0], (0, _otherFunctions.getRandomRange)(6) === 1 ? -1 : 0);
           return _context.abrupt("break", 270);
 
         case 258:
-          outBuffer.add(_i98.priority !== newCountry.name ? {
+          outBuffer.add(_i100.priority !== newCountry.name ? {
             country: {
               army_quality: 0.1,
               education_avail: -0.1,
@@ -1870,11 +1872,11 @@ function nextStep(store, func) {
               infrastructure: 0.05
             }
           });
-          setRelation(_i98.pair[0], (0, _otherFunctions.getRandomRange)(10) === 1 ? 1 : 0);
+          setRelation(_i100.pair[0], (0, _otherFunctions.getRandomRange)(10) === 1 ? 1 : 0);
           return _context.abrupt("break", 270);
 
         case 263:
-          outBuffer.add(_i98.priority !== newCountry.name ? {
+          outBuffer.add(_i100.priority !== newCountry.name ? {
             country: {
               army_quality: 0.05,
               alchemy: 0.05,
@@ -1898,11 +1900,11 @@ function nextStep(store, func) {
               poverty: 0.05
             }
           });
-          newBuff.kazna = newBuff.kazna + (0, _otherFunctions.getReparation)(newStore.country) * (_i98.priority !== newCountry.name ? -1 : 1);
+          newBuff.kazna = newBuff.kazna + (0, _otherFunctions.getReparation)(newStore.country) * (_i100.priority !== newCountry.name ? -1 : 1);
           return _context.abrupt("break", 270);
 
         case 266:
-          outBuffer.add(_i98.priority !== newCountry.name ? {
+          outBuffer.add(_i100.priority !== newCountry.name ? {
             country: {
               army_quality: -0.1,
               alchemy: -0.05,
@@ -1928,15 +1930,15 @@ function nextStep(store, func) {
               industry: 0.05
             }
           });
-          setRelation(_i98.pair[0], (0, _otherFunctions.getRandomRange)(15) === 1 ? -1 : 0);
+          setRelation(_i100.pair[0], (0, _otherFunctions.getRandomRange)(15) === 1 ? -1 : 0);
           return _context.abrupt("break", 270);
 
         case 269:
           return _context.abrupt("break", 270);
 
         case 270:
-          if (_i98.deadline !== newBuff.step) {
-            livedContracts.push(_i98);
+          if (_i100.deadline !== newBuff.step) {
+            livedContracts.push(_i100);
           }
 
         case 271:
@@ -2048,19 +2050,19 @@ function nextStep(store, func) {
 
         case 300:
           if (_iteratorNormalCompletion16 = (_step16 = _iterator16.next()).done) {
-            _context.next = 653;
+            _context.next = 694;
             break;
           }
 
-          _i99 = _step16.value;
+          _i101 = _step16.value;
 
-          if (!_i99.startsWith("contract_")) {
-            _context.next = 650;
+          if (!_i101.startsWith("contract_")) {
+            _context.next = 691;
             break;
           }
 
-          conCountry = _i99.split("_")[1];
-          conContract = _i99.split("_")[2];
+          conCountry = _i101.split("_")[1];
+          conContract = _i101.split("_")[2];
           typeChange = (0, _otherFunctions.checkContract)(newStore, conContract, conCountry, newCountry.name);
           relation = (0, _otherFunctions.getRelation)(newStore, conCountry);
           approv = false;
@@ -2126,16 +2128,16 @@ function nextStep(store, func) {
             }
           };
           war = void 0;
-          _iteratorNormalCompletion23 = true;
-          _didIteratorError23 = false;
-          _iteratorError23 = undefined;
+          _iteratorNormalCompletion27 = true;
+          _didIteratorError27 = false;
+          _iteratorError27 = undefined;
           _context.prev = 324;
 
-          for (_iterator23 = newStore.contracts[Symbol.iterator](); !(_iteratorNormalCompletion23 = (_step23 = _iterator23.next()).done); _iteratorNormalCompletion23 = true) {
-            _i100 = _step23.value;
+          for (_iterator27 = newStore.contracts[Symbol.iterator](); !(_iteratorNormalCompletion27 = (_step27 = _iterator27.next()).done); _iteratorNormalCompletion27 = true) {
+            _i102 = _step27.value;
 
-            if (_i100.con_type === "DW" && _i100.pair.length === 1 && _i100.pair[0] === conCountry) {
-              war = _i100.occuped.split(",");
+            if (_i102.con_type === "DW" && _i102.pair.length === 1 && _i102.pair[0] === conCountry) {
+              war = _i102.occuped.split(",");
             }
           }
 
@@ -2145,26 +2147,26 @@ function nextStep(store, func) {
         case 328:
           _context.prev = 328;
           _context.t11 = _context["catch"](324);
-          _didIteratorError23 = true;
-          _iteratorError23 = _context.t11;
+          _didIteratorError27 = true;
+          _iteratorError27 = _context.t11;
 
         case 332:
           _context.prev = 332;
           _context.prev = 333;
 
-          if (!_iteratorNormalCompletion23 && _iterator23["return"] != null) {
-            _iterator23["return"]();
+          if (!_iteratorNormalCompletion27 && _iterator27["return"] != null) {
+            _iterator27["return"]();
           }
 
         case 335:
           _context.prev = 335;
 
-          if (!_didIteratorError23) {
+          if (!_didIteratorError27) {
             _context.next = 338;
             break;
           }
 
-          throw _iteratorError23;
+          throw _iteratorError27;
 
         case 338:
           return _context.finish(335);
@@ -2174,16 +2176,16 @@ function nextStep(store, func) {
 
         case 340:
           peace = void 0;
-          _iteratorNormalCompletion24 = true;
-          _didIteratorError24 = false;
-          _iteratorError24 = undefined;
+          _iteratorNormalCompletion28 = true;
+          _didIteratorError28 = false;
+          _iteratorError28 = undefined;
           _context.prev = 344;
 
-          for (_iterator24 = store.peaceList[Symbol.iterator](); !(_iteratorNormalCompletion24 = (_step24 = _iterator24.next()).done); _iteratorNormalCompletion24 = true) {
-            _i101 = _step24.value;
+          for (_iterator28 = store.peaceList[Symbol.iterator](); !(_iteratorNormalCompletion28 = (_step28 = _iterator28.next()).done); _iteratorNormalCompletion28 = true) {
+            _i103 = _step28.value;
 
-            if (_i101.country === conCountry) {
-              peace = _i101;
+            if (_i103.country === conCountry) {
+              peace = _i103;
             }
           }
 
@@ -2193,26 +2195,26 @@ function nextStep(store, func) {
         case 348:
           _context.prev = 348;
           _context.t12 = _context["catch"](344);
-          _didIteratorError24 = true;
-          _iteratorError24 = _context.t12;
+          _didIteratorError28 = true;
+          _iteratorError28 = _context.t12;
 
         case 352:
           _context.prev = 352;
           _context.prev = 353;
 
-          if (!_iteratorNormalCompletion24 && _iterator24["return"] != null) {
-            _iterator24["return"]();
+          if (!_iteratorNormalCompletion28 && _iterator28["return"] != null) {
+            _iterator28["return"]();
           }
 
         case 355:
           _context.prev = 355;
 
-          if (!_didIteratorError24) {
+          if (!_didIteratorError28) {
             _context.next = 358;
             break;
           }
 
-          throw _iteratorError24;
+          throw _iteratorError28;
 
         case 358:
           return _context.finish(355);
@@ -2225,14 +2227,14 @@ function nextStep(store, func) {
           newOwnRegs = ownRegs;
           enemyRegs = (0, _otherFunctions.getCountry)(newStore, conCountry).regions.length;
           newEnemyRegs = enemyRegs;
-          _iteratorNormalCompletion25 = true;
-          _didIteratorError25 = false;
-          _iteratorError25 = undefined;
+          _iteratorNormalCompletion29 = true;
+          _didIteratorError29 = false;
+          _iteratorError29 = undefined;
           _context.prev = 367;
 
-          for (_iterator25 = war[Symbol.iterator](); !(_iteratorNormalCompletion25 = (_step25 = _iterator25.next()).done); _iteratorNormalCompletion25 = true) {
-            _i102 = _step25.value;
-            whose = (0, _otherFunctions.whoseReg)(newStore, _i102);
+          for (_iterator29 = war[Symbol.iterator](); !(_iteratorNormalCompletion29 = (_step29 = _iterator29.next()).done); _iteratorNormalCompletion29 = true) {
+            _i104 = _step29.value;
+            whose = (0, _otherFunctions.whoseReg)(newStore, _i104);
 
             if (whose === newCountry.identify) {
               newOwnRegs--;
@@ -2249,26 +2251,26 @@ function nextStep(store, func) {
         case 371:
           _context.prev = 371;
           _context.t13 = _context["catch"](367);
-          _didIteratorError25 = true;
-          _iteratorError25 = _context.t13;
+          _didIteratorError29 = true;
+          _iteratorError29 = _context.t13;
 
         case 375:
           _context.prev = 375;
           _context.prev = 376;
 
-          if (!_iteratorNormalCompletion25 && _iterator25["return"] != null) {
-            _iterator25["return"]();
+          if (!_iteratorNormalCompletion29 && _iterator29["return"] != null) {
+            _iterator29["return"]();
           }
 
         case 378:
           _context.prev = 378;
 
-          if (!_didIteratorError25) {
+          if (!_didIteratorError29) {
             _context.next = 381;
             break;
           }
 
-          throw _iteratorError25;
+          throw _iteratorError29;
 
         case 381:
           return _context.finish(378);
@@ -2280,15 +2282,15 @@ function nextStep(store, func) {
           output.war.own = newOwnRegs / ownRegs;
           output.war.enemy = newEnemyRegs / enemyRegs;
           newOwnRegs = newEnemyRegs = 0;
-          _iteratorNormalCompletion26 = true;
-          _didIteratorError26 = false;
-          _iteratorError26 = undefined;
+          _iteratorNormalCompletion30 = true;
+          _didIteratorError30 = false;
+          _iteratorError30 = undefined;
           _context.prev = 389;
 
-          for (_iterator26 = newCountry.regions[Symbol.iterator](); !(_iteratorNormalCompletion26 = (_step26 = _iterator26.next()).done); _iteratorNormalCompletion26 = true) {
-            _i103 = _step26.value;
+          for (_iterator30 = newCountry.regions[Symbol.iterator](); !(_iteratorNormalCompletion30 = (_step30 = _iterator30.next()).done); _iteratorNormalCompletion30 = true) {
+            _i105 = _step30.value;
 
-            if (peace.own.includes(_i103.name) || !(peace.own.includes(_i103.name) || peace.enemy.includes(_i103.name))) {
+            if (peace.own.includes(_i105.name) || !(peace.own.includes(_i105.name) || peace.enemy.includes(_i105.name))) {
               newOwnRegs++;
             } else {
               newEnemyRegs++;
@@ -2301,26 +2303,26 @@ function nextStep(store, func) {
         case 393:
           _context.prev = 393;
           _context.t14 = _context["catch"](389);
-          _didIteratorError26 = true;
-          _iteratorError26 = _context.t14;
+          _didIteratorError30 = true;
+          _iteratorError30 = _context.t14;
 
         case 397:
           _context.prev = 397;
           _context.prev = 398;
 
-          if (!_iteratorNormalCompletion26 && _iterator26["return"] != null) {
-            _iterator26["return"]();
+          if (!_iteratorNormalCompletion30 && _iterator30["return"] != null) {
+            _iterator30["return"]();
           }
 
         case 400:
           _context.prev = 400;
 
-          if (!_didIteratorError26) {
+          if (!_didIteratorError30) {
             _context.next = 403;
             break;
           }
 
-          throw _iteratorError26;
+          throw _iteratorError30;
 
         case 403:
           return _context.finish(400);
@@ -2329,15 +2331,15 @@ function nextStep(store, func) {
           return _context.finish(397);
 
         case 405:
-          _iteratorNormalCompletion27 = true;
-          _didIteratorError27 = false;
-          _iteratorError27 = undefined;
+          _iteratorNormalCompletion31 = true;
+          _didIteratorError31 = false;
+          _iteratorError31 = undefined;
           _context.prev = 408;
 
-          for (_iterator27 = (0, _otherFunctions.getCountry)(newStore, conCountry).regions[Symbol.iterator](); !(_iteratorNormalCompletion27 = (_step27 = _iterator27.next()).done); _iteratorNormalCompletion27 = true) {
-            _i104 = _step27.value;
+          for (_iterator31 = (0, _otherFunctions.getCountry)(newStore, conCountry).regions[Symbol.iterator](); !(_iteratorNormalCompletion31 = (_step31 = _iterator31.next()).done); _iteratorNormalCompletion31 = true) {
+            _i106 = _step31.value;
 
-            if (peace.enemy.includes(_i104.name) || !(peace.own.includes(_i104.name) || peace.enemy.includes(_i104.name))) {
+            if (peace.enemy.includes(_i106.name) || !(peace.own.includes(_i106.name) || peace.enemy.includes(_i106.name))) {
               newEnemyRegs++;
             } else {
               newOwnRegs++;
@@ -2350,26 +2352,26 @@ function nextStep(store, func) {
         case 412:
           _context.prev = 412;
           _context.t15 = _context["catch"](408);
-          _didIteratorError27 = true;
-          _iteratorError27 = _context.t15;
+          _didIteratorError31 = true;
+          _iteratorError31 = _context.t15;
 
         case 416:
           _context.prev = 416;
           _context.prev = 417;
 
-          if (!_iteratorNormalCompletion27 && _iterator27["return"] != null) {
-            _iterator27["return"]();
+          if (!_iteratorNormalCompletion31 && _iterator31["return"] != null) {
+            _iterator31["return"]();
           }
 
         case 419:
           _context.prev = 419;
 
-          if (!_didIteratorError27) {
+          if (!_didIteratorError31) {
             _context.next = 422;
             break;
           }
 
-          throw _iteratorError27;
+          throw _iteratorError31;
 
         case 422:
           return _context.finish(419);
@@ -2410,7 +2412,7 @@ function nextStep(store, func) {
             if (["AL", "CM", "CT", "SH", "EH"].includes(conContract)) {
               randomKoef = 9;
               newspaper.push(new newsObj("\u0414\u043E\u0433\u043E\u0432\u043E\u0440 \"".concat(abbrContracts[conContract], "\" \u0441 \u0433\u043E\u0441\u0443\u0434\u0430\u0440\u0441\u0442\u0432\u043E\u043C ").concat(_identCountries["default"][conCountry], " \u0440\u0430\u0437\u043E\u0440\u0432\u0430\u043D"), conCountry, true), new newsObj());
-            } else if (_i99.split("_")[2] === "ES") {
+            } else if (_i101.split("_")[2] === "ES") {
               randomKoef = 9;
               newspaper.push(new newsObj("\u042D\u043A\u043E\u043D\u043E\u043C\u0438\u0447\u0435\u0441\u043A\u0438\u0435 \u0441\u0430\u043D\u043A\u0446\u0438\u0438 \u0441 \u0433\u043E\u0441\u0443\u0434\u0430\u0440\u0441\u0442\u0432\u0430 ".concat(_identCountries["default"][conCountry], " \u0431\u044B\u043B\u0438 \u0441\u043D\u044F\u0442\u044B"), conCountry, true), new newsObj());
             }
@@ -2428,7 +2430,7 @@ function nextStep(store, func) {
           newsArr.push(approv ? newspaper[0].getObj() : newspaper[1].getObj());
 
           if (!approv) {
-            _context.next = 649;
+            _context.next = 690;
             break;
           }
 
@@ -2438,16 +2440,16 @@ function nextStep(store, func) {
           }
 
           changerCont = [];
-          _iteratorNormalCompletion28 = true;
-          _didIteratorError28 = false;
-          _iteratorError28 = undefined;
+          _iteratorNormalCompletion32 = true;
+          _didIteratorError32 = false;
+          _iteratorError32 = undefined;
           _context.prev = 443;
 
-          for (_iterator28 = newStore.contracts[Symbol.iterator](); !(_iteratorNormalCompletion28 = (_step28 = _iterator28.next()).done); _iteratorNormalCompletion28 = true) {
-            _i105 = _step28.value;
+          for (_iterator32 = newStore.contracts[Symbol.iterator](); !(_iteratorNormalCompletion32 = (_step32 = _iterator32.next()).done); _iteratorNormalCompletion32 = true) {
+            _i107 = _step32.value;
 
-            if (!(_i105.pair.length === 1 && _i105.pair[0] === conCountry)) {
-              changerCont.push(_i105);
+            if (!(_i107.pair.length === 1 && _i107.pair[0] === conCountry)) {
+              changerCont.push(_i107);
             }
           }
 
@@ -2457,26 +2459,26 @@ function nextStep(store, func) {
         case 447:
           _context.prev = 447;
           _context.t16 = _context["catch"](443);
-          _didIteratorError28 = true;
-          _iteratorError28 = _context.t16;
+          _didIteratorError32 = true;
+          _iteratorError32 = _context.t16;
 
         case 451:
           _context.prev = 451;
           _context.prev = 452;
 
-          if (!_iteratorNormalCompletion28 && _iterator28["return"] != null) {
-            _iterator28["return"]();
+          if (!_iteratorNormalCompletion32 && _iterator32["return"] != null) {
+            _iterator32["return"]();
           }
 
         case 454:
           _context.prev = 454;
 
-          if (!_didIteratorError28) {
+          if (!_didIteratorError32) {
             _context.next = 457;
             break;
           }
 
-          throw _iteratorError28;
+          throw _iteratorError32;
 
         case 457:
           return _context.finish(454);
@@ -2520,13 +2522,13 @@ function nextStep(store, func) {
             newStore.contracts.push({
               id: (0, _otherFunctions.getMaxId)(newStore.contracts),
               con_type: "DW",
-              priority: _identCountries["default"][conCountry],
+              priority: _identCountries["default"][conContract.split('-')[2]],
               occuped: "",
               spends: "0_0",
               deadline: newBuff.step + 9999,
-              uniq_id: (0, _otherFunctions.getCountry)(newStore, conCountry).id,
+              uniq_id: newCountry.id,
               pair: [conCountry, conContract.split("-")[2]],
-              uniq: conCountry
+              uniq: newCountry.identify
             });
           } else {
             newStore.contracts.push({
@@ -2547,30 +2549,30 @@ function nextStep(store, func) {
 
         case 467:
           cont = {};
-          _iteratorNormalCompletion29 = true;
-          _didIteratorError29 = false;
-          _iteratorError29 = undefined;
+          _iteratorNormalCompletion33 = true;
+          _didIteratorError33 = false;
+          _iteratorError33 = undefined;
           _context.prev = 471;
-          _iterator29 = newStore.contracts[Symbol.iterator]();
+          _iterator33 = newStore.contracts[Symbol.iterator]();
 
         case 473:
-          if (_iteratorNormalCompletion29 = (_step29 = _iterator29.next()).done) {
+          if (_iteratorNormalCompletion33 = (_step33 = _iterator33.next()).done) {
             _context.next = 481;
             break;
           }
 
-          _i106 = _step29.value;
+          _i108 = _step33.value;
 
-          if (!(_i106.con_type === conContract && _i106.pair.length === 1 && _i106.pair[0] === conCountry)) {
+          if (!(_i108.con_type === conContract && _i108.pair.length === 1 && _i108.pair[0] === conCountry)) {
             _context.next = 478;
             break;
           }
 
-          cont = _i106;
+          cont = _i108;
           return _context.abrupt("break", 481);
 
         case 478:
-          _iteratorNormalCompletion29 = true;
+          _iteratorNormalCompletion33 = true;
           _context.next = 473;
           break;
 
@@ -2581,26 +2583,26 @@ function nextStep(store, func) {
         case 483:
           _context.prev = 483;
           _context.t17 = _context["catch"](471);
-          _didIteratorError29 = true;
-          _iteratorError29 = _context.t17;
+          _didIteratorError33 = true;
+          _iteratorError33 = _context.t17;
 
         case 487:
           _context.prev = 487;
           _context.prev = 488;
 
-          if (!_iteratorNormalCompletion29 && _iterator29["return"] != null) {
-            _iterator29["return"]();
+          if (!_iteratorNormalCompletion33 && _iterator33["return"] != null) {
+            _iterator33["return"]();
           }
 
         case 490:
           _context.prev = 490;
 
-          if (!_didIteratorError29) {
+          if (!_didIteratorError33) {
             _context.next = 493;
             break;
           }
 
-          throw _iteratorError29;
+          throw _iteratorError33;
 
         case 493:
           return _context.finish(490);
@@ -2613,35 +2615,35 @@ function nextStep(store, func) {
 
         case 496:
           if (!(conContract === "FW")) {
-            _context.next = 649;
+            _context.next = 690;
             break;
           }
 
           _peace = {};
-          _iteratorNormalCompletion30 = true;
-          _didIteratorError30 = false;
-          _iteratorError30 = undefined;
+          _iteratorNormalCompletion34 = true;
+          _didIteratorError34 = false;
+          _iteratorError34 = undefined;
           _context.prev = 501;
-          _iterator30 = store.peaceList[Symbol.iterator]();
+          _iterator34 = store.peaceList[Symbol.iterator]();
 
         case 503:
-          if (_iteratorNormalCompletion30 = (_step30 = _iterator30.next()).done) {
+          if (_iteratorNormalCompletion34 = (_step34 = _iterator34.next()).done) {
             _context.next = 511;
             break;
           }
 
-          _i107 = _step30.value;
+          _i109 = _step34.value;
 
-          if (!(_i107.country === conCountry)) {
+          if (!(_i109.country === conCountry)) {
             _context.next = 508;
             break;
           }
 
-          _peace = _i107;
+          _peace = _i109;
           return _context.abrupt("break", 511);
 
         case 508:
-          _iteratorNormalCompletion30 = true;
+          _iteratorNormalCompletion34 = true;
           _context.next = 503;
           break;
 
@@ -2652,26 +2654,26 @@ function nextStep(store, func) {
         case 513:
           _context.prev = 513;
           _context.t18 = _context["catch"](501);
-          _didIteratorError30 = true;
-          _iteratorError30 = _context.t18;
+          _didIteratorError34 = true;
+          _iteratorError34 = _context.t18;
 
         case 517:
           _context.prev = 517;
           _context.prev = 518;
 
-          if (!_iteratorNormalCompletion30 && _iterator30["return"] != null) {
-            _iterator30["return"]();
+          if (!_iteratorNormalCompletion34 && _iterator34["return"] != null) {
+            _iterator34["return"]();
           }
 
         case 520:
           _context.prev = 520;
 
-          if (!_didIteratorError30) {
+          if (!_didIteratorError34) {
             _context.next = 523;
             break;
           }
 
-          throw _iteratorError30;
+          throw _iteratorError34;
 
         case 523:
           return _context.finish(520);
@@ -2682,18 +2684,18 @@ function nextStep(store, func) {
         case 525:
           _war = {};
           newContracts = [];
-          _iteratorNormalCompletion31 = true;
-          _didIteratorError31 = false;
-          _iteratorError31 = undefined;
+          _iteratorNormalCompletion35 = true;
+          _didIteratorError35 = false;
+          _iteratorError35 = undefined;
           _context.prev = 530;
 
-          for (_iterator31 = newStore.contracts[Symbol.iterator](); !(_iteratorNormalCompletion31 = (_step31 = _iterator31.next()).done); _iteratorNormalCompletion31 = true) {
-            _i108 = _step31.value;
+          for (_iterator35 = newStore.contracts[Symbol.iterator](); !(_iteratorNormalCompletion35 = (_step35 = _iterator35.next()).done); _iteratorNormalCompletion35 = true) {
+            _i110 = _step35.value;
 
-            if (_i108.con_type === "DW" && _i108.pair.length === 1 && _i108.pair[0] === conCountry) {
-              _war = _i108;
+            if (_i110.con_type === "DW" && _i110.pair.length === 1 && _i110.pair[0] === conCountry) {
+              _war = _i110;
             } else {
-              newContracts.push(_i108);
+              newContracts.push(_i110);
             }
           }
 
@@ -2703,26 +2705,26 @@ function nextStep(store, func) {
         case 534:
           _context.prev = 534;
           _context.t19 = _context["catch"](530);
-          _didIteratorError31 = true;
-          _iteratorError31 = _context.t19;
+          _didIteratorError35 = true;
+          _iteratorError35 = _context.t19;
 
         case 538:
           _context.prev = 538;
           _context.prev = 539;
 
-          if (!_iteratorNormalCompletion31 && _iterator31["return"] != null) {
-            _iterator31["return"]();
+          if (!_iteratorNormalCompletion35 && _iterator35["return"] != null) {
+            _iterator35["return"]();
           }
 
         case 541:
           _context.prev = 541;
 
-          if (!_didIteratorError31) {
+          if (!_didIteratorError35) {
             _context.next = 544;
             break;
           }
 
-          throw _iteratorError31;
+          throw _iteratorError35;
 
         case 544:
           return _context.finish(541);
@@ -2734,49 +2736,49 @@ function nextStep(store, func) {
           newStore.contracts = [];
           newStore.contracts = newContracts;
           regs = newCountry.regions.slice(0);
-          _iteratorNormalCompletion32 = true;
-          _didIteratorError32 = false;
-          _iteratorError32 = undefined;
+          _iteratorNormalCompletion36 = true;
+          _didIteratorError36 = false;
+          _iteratorError36 = undefined;
           _context.prev = 552;
-          _iterator32 = newCountry.regions[Symbol.iterator]();
+          _iterator36 = newCountry.regions[Symbol.iterator]();
 
         case 554:
-          if (_iteratorNormalCompletion32 = (_step32 = _iterator32.next()).done) {
+          if (_iteratorNormalCompletion36 = (_step36 = _iterator36.next()).done) {
             _context.next = 589;
             break;
           }
 
-          _i109 = _step32.value;
+          _i111 = _step36.value;
 
-          if (!(_war.occuped.includes(_i109.name) && _peace.enemy.includes(_i109.name))) {
+          if (!(_war.occuped.includes(_i111.name) && _peace.enemy.includes(_i111.name))) {
             _context.next = 586;
             break;
           }
 
-          _iteratorNormalCompletion34 = true;
-          _didIteratorError34 = false;
-          _iteratorError34 = undefined;
+          _iteratorNormalCompletion40 = true;
+          _didIteratorError40 = false;
+          _iteratorError40 = undefined;
           _context.prev = 560;
-          _iterator34 = newStore.country_ai[Symbol.iterator]();
+          _iterator40 = newStore.country_ai[Symbol.iterator]();
 
         case 562:
-          if (_iteratorNormalCompletion34 = (_step34 = _iterator34.next()).done) {
+          if (_iteratorNormalCompletion40 = (_step40 = _iterator40.next()).done) {
             _context.next = 570;
             break;
           }
 
-          c = _step34.value;
+          c = _step40.value;
 
           if (!(c.identify === conCountry)) {
             _context.next = 567;
             break;
           }
 
-          c.regions.push(_i109);
+          c.regions.push(_i111);
           return _context.abrupt("break", 570);
 
         case 567:
-          _iteratorNormalCompletion34 = true;
+          _iteratorNormalCompletion40 = true;
           _context.next = 562;
           break;
 
@@ -2787,26 +2789,26 @@ function nextStep(store, func) {
         case 572:
           _context.prev = 572;
           _context.t20 = _context["catch"](560);
-          _didIteratorError34 = true;
-          _iteratorError34 = _context.t20;
+          _didIteratorError40 = true;
+          _iteratorError40 = _context.t20;
 
         case 576:
           _context.prev = 576;
           _context.prev = 577;
 
-          if (!_iteratorNormalCompletion34 && _iterator34["return"] != null) {
-            _iterator34["return"]();
+          if (!_iteratorNormalCompletion40 && _iterator40["return"] != null) {
+            _iterator40["return"]();
           }
 
         case 579:
           _context.prev = 579;
 
-          if (!_didIteratorError34) {
+          if (!_didIteratorError40) {
             _context.next = 582;
             break;
           }
 
-          throw _iteratorError34;
+          throw _iteratorError40;
 
         case 582:
           return _context.finish(579);
@@ -2815,11 +2817,11 @@ function nextStep(store, func) {
           return _context.finish(576);
 
         case 584:
-          newCountry.regions.splice(newCountry.regions.indexOf(_i109), 1);
+          newCountry.regions.splice(newCountry.regions.indexOf(_i111), 1);
           return _context.abrupt("break", 589);
 
         case 586:
-          _iteratorNormalCompletion32 = true;
+          _iteratorNormalCompletion36 = true;
           _context.next = 554;
           break;
 
@@ -2830,26 +2832,26 @@ function nextStep(store, func) {
         case 591:
           _context.prev = 591;
           _context.t21 = _context["catch"](552);
-          _didIteratorError32 = true;
-          _iteratorError32 = _context.t21;
+          _didIteratorError36 = true;
+          _iteratorError36 = _context.t21;
 
         case 595:
           _context.prev = 595;
           _context.prev = 596;
 
-          if (!_iteratorNormalCompletion32 && _iterator32["return"] != null) {
-            _iterator32["return"]();
+          if (!_iteratorNormalCompletion36 && _iterator36["return"] != null) {
+            _iterator36["return"]();
           }
 
         case 598:
           _context.prev = 598;
 
-          if (!_didIteratorError32) {
+          if (!_didIteratorError36) {
             _context.next = 601;
             break;
           }
 
-          throw _iteratorError32;
+          throw _iteratorError36;
 
         case 601:
           return _context.finish(598);
@@ -2858,19 +2860,19 @@ function nextStep(store, func) {
           return _context.finish(595);
 
         case 603:
-          _iteratorNormalCompletion33 = true;
-          _didIteratorError33 = false;
-          _iteratorError33 = undefined;
+          _iteratorNormalCompletion37 = true;
+          _didIteratorError37 = false;
+          _iteratorError37 = undefined;
           _context.prev = 606;
-          _iterator33 = newStore.country_ai[Symbol.iterator]();
+          _iterator37 = newStore.country_ai[Symbol.iterator]();
 
         case 608:
-          if (_iteratorNormalCompletion33 = (_step33 = _iterator33.next()).done) {
+          if (_iteratorNormalCompletion37 = (_step37 = _iterator37.next()).done) {
             _context.next = 635;
             break;
           }
 
-          _c = _step33.value;
+          _c = _step37.value;
 
           if (!(_c.identify === conCountry)) {
             _context.next = 632;
@@ -2878,18 +2880,18 @@ function nextStep(store, func) {
           }
 
           regs = _c.regions.slice(0);
-          _iteratorNormalCompletion35 = true;
-          _didIteratorError35 = false;
-          _iteratorError35 = undefined;
+          _iteratorNormalCompletion41 = true;
+          _didIteratorError41 = false;
+          _iteratorError41 = undefined;
           _context.prev = 615;
 
-          for (_iterator35 = regs[Symbol.iterator](); !(_iteratorNormalCompletion35 = (_step35 = _iterator35.next()).done); _iteratorNormalCompletion35 = true) {
-            _i110 = _step35.value;
+          for (_iterator41 = regs[Symbol.iterator](); !(_iteratorNormalCompletion41 = (_step41 = _iterator41.next()).done); _iteratorNormalCompletion41 = true) {
+            _i112 = _step41.value;
 
-            if (_war.occuped.includes(_i110.name) && _peace.own.includes(_i110.name)) {
-              newCountry.regions.push(_i110);
+            if (_war.occuped.includes(_i112.name) && _peace.own.includes(_i112.name)) {
+              newCountry.regions.push(_i112);
 
-              _c.regions.splice(_c.regions.indexOf(_i110), 1);
+              _c.regions.splice(_c.regions.indexOf(_i112), 1);
             }
           }
 
@@ -2899,26 +2901,26 @@ function nextStep(store, func) {
         case 619:
           _context.prev = 619;
           _context.t22 = _context["catch"](615);
-          _didIteratorError35 = true;
-          _iteratorError35 = _context.t22;
+          _didIteratorError41 = true;
+          _iteratorError41 = _context.t22;
 
         case 623:
           _context.prev = 623;
           _context.prev = 624;
 
-          if (!_iteratorNormalCompletion35 && _iterator35["return"] != null) {
-            _iterator35["return"]();
+          if (!_iteratorNormalCompletion41 && _iterator41["return"] != null) {
+            _iterator41["return"]();
           }
 
         case 626:
           _context.prev = 626;
 
-          if (!_didIteratorError35) {
+          if (!_didIteratorError41) {
             _context.next = 629;
             break;
           }
 
-          throw _iteratorError35;
+          throw _iteratorError41;
 
         case 629:
           return _context.finish(626);
@@ -2930,7 +2932,7 @@ function nextStep(store, func) {
           return _context.abrupt("break", 635);
 
         case 632:
-          _iteratorNormalCompletion33 = true;
+          _iteratorNormalCompletion37 = true;
           _context.next = 608;
           break;
 
@@ -2941,26 +2943,26 @@ function nextStep(store, func) {
         case 637:
           _context.prev = 637;
           _context.t23 = _context["catch"](606);
-          _didIteratorError33 = true;
-          _iteratorError33 = _context.t23;
+          _didIteratorError37 = true;
+          _iteratorError37 = _context.t23;
 
         case 641:
           _context.prev = 641;
           _context.prev = 642;
 
-          if (!_iteratorNormalCompletion33 && _iterator33["return"] != null) {
-            _iterator33["return"]();
+          if (!_iteratorNormalCompletion37 && _iterator37["return"] != null) {
+            _iterator37["return"]();
           }
 
         case 644:
           _context.prev = 644;
 
-          if (!_didIteratorError33) {
+          if (!_didIteratorError37) {
             _context.next = 647;
             break;
           }
 
-          throw _iteratorError33;
+          throw _iteratorError37;
 
         case 647:
           return _context.finish(644);
@@ -2969,48 +2971,162 @@ function nextStep(store, func) {
           return _context.finish(641);
 
         case 649:
+          enem = (0, _otherFunctions.getCountry)(newStore, conCountry);
+
+          if (!newCountry.regions.map(function (e) {
+            return e.name;
+          }).includes(newCountry.capital.name)) {
+            newCountry.capital = newCountry.regions[0];
+          }
+
+          if (!enem.regions.map(function (e) {
+            return e.name;
+          }).includes(enem.capital.name)) {
+            newStore.country_ai[newStore.country_ai.indexOf(enem)].capital = enem.regions[0];
+          }
+
+          _iteratorNormalCompletion38 = true;
+          _didIteratorError38 = false;
+          _iteratorError38 = undefined;
+          _context.prev = 655;
+
+          for (_iterator38 = newStore.squad[Symbol.iterator](); !(_iteratorNormalCompletion38 = (_step38 = _iterator38.next()).done); _iteratorNormalCompletion38 = true) {
+            _i113 = _step38.value;
+
+            if (!newCountry.regions.map(function (e) {
+              return e.name;
+            }).includes(_i113.place)) {
+              _i113.place = newCountry.capital;
+            }
+          }
+
+          _context.next = 663;
+          break;
+
+        case 659:
+          _context.prev = 659;
+          _context.t24 = _context["catch"](655);
+          _didIteratorError38 = true;
+          _iteratorError38 = _context.t24;
+
+        case 663:
+          _context.prev = 663;
+          _context.prev = 664;
+
+          if (!_iteratorNormalCompletion38 && _iterator38["return"] != null) {
+            _iterator38["return"]();
+          }
+
+        case 666:
+          _context.prev = 666;
+
+          if (!_didIteratorError38) {
+            _context.next = 669;
+            break;
+          }
+
+          throw _iteratorError38;
+
+        case 669:
+          return _context.finish(666);
+
+        case 670:
+          return _context.finish(663);
+
+        case 671:
+          _iteratorNormalCompletion39 = true;
+          _didIteratorError39 = false;
+          _iteratorError39 = undefined;
+          _context.prev = 674;
+
+          for (_iterator39 = newStore.squad_ai[Symbol.iterator](); !(_iteratorNormalCompletion39 = (_step39 = _iterator39.next()).done); _iteratorNormalCompletion39 = true) {
+            _i114 = _step39.value;
+
+            if (_i114.country === conCountry) {
+              if (!enem.regions.map(function (e) {
+                return e.name;
+              }).includes(_i114.place)) {
+                _i114.place = newCountry.capital;
+              }
+            }
+          }
+
+          _context.next = 682;
+          break;
+
+        case 678:
+          _context.prev = 678;
+          _context.t25 = _context["catch"](674);
+          _didIteratorError39 = true;
+          _iteratorError39 = _context.t25;
+
+        case 682:
+          _context.prev = 682;
+          _context.prev = 683;
+
+          if (!_iteratorNormalCompletion39 && _iterator39["return"] != null) {
+            _iterator39["return"]();
+          }
+
+        case 685:
+          _context.prev = 685;
+
+          if (!_didIteratorError39) {
+            _context.next = 688;
+            break;
+          }
+
+          throw _iteratorError39;
+
+        case 688:
+          return _context.finish(685);
+
+        case 689:
+          return _context.finish(682);
+
+        case 690:
           outBuffer.add(conBuff);
 
-        case 650:
+        case 691:
           _iteratorNormalCompletion16 = true;
           _context.next = 300;
           break;
 
-        case 653:
-          _context.next = 659;
+        case 694:
+          _context.next = 700;
           break;
 
-        case 655:
-          _context.prev = 655;
-          _context.t24 = _context["catch"](298);
+        case 696:
+          _context.prev = 696;
+          _context.t26 = _context["catch"](298);
           _didIteratorError16 = true;
-          _iteratorError16 = _context.t24;
+          _iteratorError16 = _context.t26;
 
-        case 659:
-          _context.prev = 659;
-          _context.prev = 660;
+        case 700:
+          _context.prev = 700;
+          _context.prev = 701;
 
           if (!_iteratorNormalCompletion16 && _iterator16["return"] != null) {
             _iterator16["return"]();
           }
 
-        case 662:
-          _context.prev = 662;
+        case 703:
+          _context.prev = 703;
 
           if (!_didIteratorError16) {
-            _context.next = 665;
+            _context.next = 706;
             break;
           }
 
           throw _iteratorError16;
 
-        case 665:
-          return _context.finish(662);
+        case 706:
+          return _context.finish(703);
 
-        case 666:
-          return _context.finish(659);
+        case 707:
+          return _context.finish(700);
 
-        case 667:
+        case 708:
           // Баффы "Юстиция"
           lawBuffer = {
             law_equal_rights: {
@@ -3183,16 +3299,15 @@ function nextStep(store, func) {
 
             if (_law.startsWith("law_")) {
               if (newCountry[_law]) {
-                console.log(_law);
                 outBuffer.add(lawBuffer[_law]);
               } else {
                 inverseBuff = Object.assign({}, lawBuffer[_law]);
 
-                for (_i111 = 0, _Object$keys66 = Object.keys(lawBuffer[_law]); _i111 < _Object$keys66.length; _i111++) {
-                  _type22 = _Object$keys66[_i111];
+                for (_i115 = 0, _Object$keys67 = Object.keys(lawBuffer[_law]); _i115 < _Object$keys67.length; _i115++) {
+                  _type22 = _Object$keys67[_i115];
 
-                  for (_i112 = 0, _Object$keys67 = Object.keys(lawBuffer[_law][_type22]); _i112 < _Object$keys67.length; _i112++) {
-                    bf = _Object$keys67[_i112];
+                  for (_i116 = 0, _Object$keys68 = Object.keys(lawBuffer[_law][_type22]); _i116 < _Object$keys68.length; _i116++) {
+                    bf = _Object$keys68[_i116];
                     inverseBuff[_type22][bf] = -lawBuffer[_law][_type22][bf];
                   }
                 }
@@ -3508,66 +3623,593 @@ function nextStep(store, func) {
           _iteratorNormalCompletion17 = true;
           _didIteratorError17 = false;
           _iteratorError17 = undefined;
-          _context.prev = 715;
+          _context.prev = 756;
 
           for (_iterator17 = newCountry.regions[Symbol.iterator](); !(_iteratorNormalCompletion17 = (_step17 = _iterator17.next()).done); _iteratorNormalCompletion17 = true) {
-            _i113 = _step17.value;
-            _i113.needs_blackmetall = parseInt(10 * _i113.population + 0.2 * _i113.industry_blacksmith + 0.1 * _i113.industry_jewelry + 0.1 * _i113.industry_other);
-            _i113.needs_colormetall = parseInt(5 * _i113.population + 0.1 * _i113.industry_blacksmith + 0.2 * _i113.industry_jewelry + 0.15 * _i113.industry_other);
-            _i113.needs_coal = parseInt(5 * _i113.population + 0.05 * _i113.industry_blacksmith + 0.05 * (_i113.industry_light + _i113.industry_jewelry));
-            _i113.needs_hunting = parseInt(200 * _i113.population);
-            _i113.needs_fishing = parseInt(170 * _i113.population);
-            _i113.needs_forestry = parseInt(100 * _i113.population + 0.3 * _i113.industry_typography + 0.3 * _i113.industry_jewelry + 0.15 * _i113.industry_other + 0.05 * _i113.industry_light);
-            _i113.needs_blacksmith = parseInt(100 * _i113.population + (0.2 * (_i113.industry_blackmetall + _i113.industry_colormetall + _i113.industry_coal) + 0.25 * _i113.industry_jewelry + 0.1 * _i113.industry_other));
-            _i113.needs_animals = parseInt((300 * _i113.population + 200 * _i113.area) * 0.3);
-            _i113.needs_vegetables = parseInt((300 * _i113.population + 200 * _i113.area) * 0.6);
-            _i113.needs_wheat = parseInt((300 * _i113.population + 200 * _i113.area) * 0.45);
-            _i113.needs_typography = parseInt(60 * _i113.population + 0.4 * _i113.industry_culture);
-            _i113.needs_light = parseInt(115 * _i113.population);
-            _i113.needs_eating = parseInt(150 * _i113.population);
-            _i113.needs_jewelry = parseInt(100 * _i113.population);
-            _i113.needs_transport = parseInt(80 * _i113.population + 0.02 * getEconomyRegSum(_i113, 'industry_transport'));
-            _i113.needs_alchemy = parseInt(70 * _i113.population + 200 * _i113.area);
-            _i113.needs_hiring = parseInt(100 * _i113.population + getEconomyRegSum(_i113, 'industry_hiring') * 0.035);
-            _i113.needs_culture = parseInt(100 * _i113.population + getEconomyRegSum(_i113, 'industry_culture') * 0.01);
-            _i113.needs_other = parseInt(130 * _i113.population + getEconomyRegSum(_i113, 'industry_other') * 0.015);
-          } // Проверка окончания игры
+            _i117 = _step17.value;
+            _i117.needs_blackmetall = parseInt(10 * _i117.population + 0.2 * _i117.industry_blacksmith + 0.1 * _i117.industry_jewelry + 0.1 * _i117.industry_other);
+            _i117.needs_colormetall = parseInt(5 * _i117.population + 0.1 * _i117.industry_blacksmith + 0.2 * _i117.industry_jewelry + 0.15 * _i117.industry_other);
+            _i117.needs_coal = parseInt(5 * _i117.population + 0.05 * _i117.industry_blacksmith + 0.05 * (_i117.industry_light + _i117.industry_jewelry));
+            _i117.needs_hunting = parseInt(200 * _i117.population);
+            _i117.needs_fishing = parseInt(170 * _i117.population);
+            _i117.needs_forestry = parseInt(100 * _i117.population + 0.3 * _i117.industry_typography + 0.3 * _i117.industry_jewelry + 0.15 * _i117.industry_other + 0.05 * _i117.industry_light);
+            _i117.needs_blacksmith = parseInt(100 * _i117.population + (0.2 * (_i117.industry_blackmetall + _i117.industry_colormetall + _i117.industry_coal) + 0.25 * _i117.industry_jewelry + 0.1 * _i117.industry_other));
+            _i117.needs_animals = parseInt((300 * _i117.population + 200 * _i117.area) * 0.3);
+            _i117.needs_vegetables = parseInt((300 * _i117.population + 200 * _i117.area) * 0.6);
+            _i117.needs_wheat = parseInt((300 * _i117.population + 200 * _i117.area) * 0.45);
+            _i117.needs_typography = parseInt(60 * _i117.population + 0.4 * _i117.industry_culture);
+            _i117.needs_light = parseInt(115 * _i117.population);
+            _i117.needs_eating = parseInt(150 * _i117.population);
+            _i117.needs_jewelry = parseInt(100 * _i117.population);
+            _i117.needs_transport = parseInt(80 * _i117.population + 0.02 * getEconomyRegSum(_i117, 'industry_transport'));
+            _i117.needs_alchemy = parseInt(70 * _i117.population + 200 * _i117.area);
+            _i117.needs_hiring = parseInt(100 * _i117.population + getEconomyRegSum(_i117, 'industry_hiring') * 0.035);
+            _i117.needs_culture = parseInt(100 * _i117.population + getEconomyRegSum(_i117, 'industry_culture') * 0.01);
+            _i117.needs_other = parseInt(130 * _i117.population + getEconomyRegSum(_i117, 'industry_other') * 0.015);
+          } // Изменение отрядов 
 
 
-          _context.next = 723;
+          _context.next = 764;
           break;
 
-        case 719:
-          _context.prev = 719;
-          _context.t25 = _context["catch"](715);
+        case 760:
+          _context.prev = 760;
+          _context.t27 = _context["catch"](756);
           _didIteratorError17 = true;
-          _iteratorError17 = _context.t25;
+          _iteratorError17 = _context.t27;
 
-        case 723:
-          _context.prev = 723;
-          _context.prev = 724;
+        case 764:
+          _context.prev = 764;
+          _context.prev = 765;
 
           if (!_iteratorNormalCompletion17 && _iterator17["return"] != null) {
             _iterator17["return"]();
           }
 
-        case 726:
-          _context.prev = 726;
+        case 767:
+          _context.prev = 767;
 
           if (!_didIteratorError17) {
-            _context.next = 729;
+            _context.next = 770;
             break;
           }
 
           throw _iteratorError17;
 
-        case 729:
-          return _context.finish(726);
+        case 770:
+          return _context.finish(767);
 
-        case 730:
-          return _context.finish(723);
+        case 771:
+          return _context.finish(764);
 
-        case 731:
+        case 772:
+          changedSquads = [];
+          _iteratorNormalCompletion18 = true;
+          _didIteratorError18 = false;
+          _iteratorError18 = undefined;
+          _context.prev = 776;
+
+          for (_iterator18 = store.changeGame[Symbol.iterator](); !(_iteratorNormalCompletion18 = (_step18 = _iterator18.next()).done); _iteratorNormalCompletion18 = true) {
+            _i118 = _step18.value;
+
+            if (_i118.startsWith('squad_status')) {
+              changedSquads.push(+_i118.split('_')[2]);
+            }
+          }
+
+          _context.next = 784;
+          break;
+
+        case 780:
+          _context.prev = 780;
+          _context.t28 = _context["catch"](776);
+          _didIteratorError18 = true;
+          _iteratorError18 = _context.t28;
+
+        case 784:
+          _context.prev = 784;
+          _context.prev = 785;
+
+          if (!_iteratorNormalCompletion18 && _iterator18["return"] != null) {
+            _iterator18["return"]();
+          }
+
+        case 787:
+          _context.prev = 787;
+
+          if (!_didIteratorError18) {
+            _context.next = 790;
+            break;
+          }
+
+          throw _iteratorError18;
+
+        case 790:
+          return _context.finish(787);
+
+        case 791:
+          return _context.finish(784);
+
+        case 792:
+          _iteratorNormalCompletion19 = true;
+          _didIteratorError19 = false;
+          _iteratorError19 = undefined;
+          _context.prev = 795;
+
+          for (_iterator19 = newStore.squad[Symbol.iterator](); !(_iteratorNormalCompletion19 = (_step19 = _iterator19.next()).done); _iteratorNormalCompletion19 = true) {
+            _i119 = _step19.value;
+
+            if (changedSquads.includes(_i119.id)) {
+              _i119.status = _i119.status === 'Q' ? 'R' : 'Q';
+            }
+          }
+
+          _context.next = 803;
+          break;
+
+        case 799:
+          _context.prev = 799;
+          _context.t29 = _context["catch"](795);
+          _didIteratorError19 = true;
+          _iteratorError19 = _context.t29;
+
+        case 803:
+          _context.prev = 803;
+          _context.prev = 804;
+
+          if (!_iteratorNormalCompletion19 && _iterator19["return"] != null) {
+            _iterator19["return"]();
+          }
+
+        case 806:
+          _context.prev = 806;
+
+          if (!_didIteratorError19) {
+            _context.next = 809;
+            break;
+          }
+
+          throw _iteratorError19;
+
+        case 809:
+          return _context.finish(806);
+
+        case 810:
+          return _context.finish(803);
+
+        case 811:
+          changedSquadTrans = {};
+          _i69 = 0, _Object$keys50 = Object.keys(store.squadTrans);
+
+        case 813:
+          if (!(_i69 < _Object$keys50.length)) {
+            _context.next = 912;
+            break;
+          }
+
+          _i120 = _Object$keys50[_i69];
+          curSquad = store.squadTrans[_i120];
+          newPlace = curSquad.place;
+
+          if (!(curSquad.place !== curSquad.target)) {
+            _context.next = 908;
+            break;
+          }
+
+          if (_seaSquad["default"][curSquad.target] === curSquad.place) {
+            newPlace = curSquad.target;
+          } else {
+            newPlace = _seaSquad["default"][curSquad.target];
+            curSquad.type = 'Ground';
+          }
+
+          curSquad.place = newPlace;
+          changer = false;
+          hasOwnSquad = false;
+          _iteratorNormalCompletion42 = true;
+          _didIteratorError42 = false;
+          _iteratorError42 = undefined;
+          _context.prev = 825;
+
+          for (_iterator42 = newStore.squad[Symbol.iterator](); !(_iteratorNormalCompletion42 = (_step42 = _iterator42.next()).done); _iteratorNormalCompletion42 = true) {
+            k = _step42.value;
+
+            if (k.id === +_i120.split('_')[0]) {
+              hasOwnSquad = true;
+            }
+          }
+
+          _context.next = 833;
+          break;
+
+        case 829:
+          _context.prev = 829;
+          _context.t30 = _context["catch"](825);
+          _didIteratorError42 = true;
+          _iteratorError42 = _context.t30;
+
+        case 833:
+          _context.prev = 833;
+          _context.prev = 834;
+
+          if (!_iteratorNormalCompletion42 && _iterator42["return"] != null) {
+            _iterator42["return"]();
+          }
+
+        case 836:
+          _context.prev = 836;
+
+          if (!_didIteratorError42) {
+            _context.next = 839;
+            break;
+          }
+
+          throw _iteratorError42;
+
+        case 839:
+          return _context.finish(836);
+
+        case 840:
+          return _context.finish(833);
+
+        case 841:
+          _iteratorNormalCompletion43 = true;
+          _didIteratorError43 = false;
+          _iteratorError43 = undefined;
+          _context.prev = 844;
+
+          for (_iterator43 = newStore.squad[Symbol.iterator](); !(_iteratorNormalCompletion43 = (_step43 = _iterator43.next()).done); _iteratorNormalCompletion43 = true) {
+            z = _step43.value;
+
+            if (z.place === curSquad.place) {
+              changer = true;
+              z.pechot_quan = z.pechot_quan + curSquad.pechot_quan;
+              z.archer_quan = z.archer_quan + curSquad.archer_quan;
+              z.cavallery_quan = z.cavallery_quan + curSquad.cavallery_quan;
+              z.catapult_quan = z.catapult_quan + curSquad.catapult_quan;
+            }
+          }
+
+          _context.next = 852;
+          break;
+
+        case 848:
+          _context.prev = 848;
+          _context.t31 = _context["catch"](844);
+          _didIteratorError43 = true;
+          _iteratorError43 = _context.t31;
+
+        case 852:
+          _context.prev = 852;
+          _context.prev = 853;
+
+          if (!_iteratorNormalCompletion43 && _iterator43["return"] != null) {
+            _iterator43["return"]();
+          }
+
+        case 855:
+          _context.prev = 855;
+
+          if (!_didIteratorError43) {
+            _context.next = 858;
+            break;
+          }
+
+          throw _iteratorError43;
+
+        case 858:
+          return _context.finish(855);
+
+        case 859:
+          return _context.finish(852);
+
+        case 860:
+          if (!changer) {
+            _context.next = 885;
+            break;
+          }
+
+          if (!hasOwnSquad) {
+            _context.next = 883;
+            break;
+          }
+
+          newSquadList = [];
+          _iteratorNormalCompletion44 = true;
+          _didIteratorError44 = false;
+          _iteratorError44 = undefined;
+          _context.prev = 866;
+
+          for (_iterator44 = newStore.squad[Symbol.iterator](); !(_iteratorNormalCompletion44 = (_step44 = _iterator44.next()).done); _iteratorNormalCompletion44 = true) {
+            _f3 = _step44.value;
+
+            if (_f3.id !== +_i120.split('_')[0]) {
+              newSquadList.push(_f3);
+            }
+          }
+
+          _context.next = 874;
+          break;
+
+        case 870:
+          _context.prev = 870;
+          _context.t32 = _context["catch"](866);
+          _didIteratorError44 = true;
+          _iteratorError44 = _context.t32;
+
+        case 874:
+          _context.prev = 874;
+          _context.prev = 875;
+
+          if (!_iteratorNormalCompletion44 && _iterator44["return"] != null) {
+            _iterator44["return"]();
+          }
+
+        case 877:
+          _context.prev = 877;
+
+          if (!_didIteratorError44) {
+            _context.next = 880;
+            break;
+          }
+
+          throw _iteratorError44;
+
+        case 880:
+          return _context.finish(877);
+
+        case 881:
+          return _context.finish(874);
+
+        case 882:
+          newStore.squad = newSquadList;
+
+        case 883:
+          _context.next = 908;
+          break;
+
+        case 885:
+          if (!hasOwnSquad) {
+            _context.next = 907;
+            break;
+          }
+
+          _iteratorNormalCompletion45 = true;
+          _didIteratorError45 = false;
+          _iteratorError45 = undefined;
+          _context.prev = 889;
+
+          for (_iterator45 = newStore.squad[Symbol.iterator](); !(_iteratorNormalCompletion45 = (_step45 = _iterator45.next()).done); _iteratorNormalCompletion45 = true) {
+            _f4 = _step45.value;
+
+            if (_f4.id === +_i120.split('_')[0]) {
+              _f4.pechot_quan = curSquad.pechot_quan;
+              _f4.archer_quan = curSquad.archer_quan;
+              _f4.cavallery_quan = curSquad.cavallery_quan;
+              _f4.catapult_quan = curSquad.catapult_quan;
+              _f4.place = curSquad.place;
+            }
+          }
+
+          _context.next = 897;
+          break;
+
+        case 893:
+          _context.prev = 893;
+          _context.t33 = _context["catch"](889);
+          _didIteratorError45 = true;
+          _iteratorError45 = _context.t33;
+
+        case 897:
+          _context.prev = 897;
+          _context.prev = 898;
+
+          if (!_iteratorNormalCompletion45 && _iterator45["return"] != null) {
+            _iterator45["return"]();
+          }
+
+        case 900:
+          _context.prev = 900;
+
+          if (!_didIteratorError45) {
+            _context.next = 903;
+            break;
+          }
+
+          throw _iteratorError45;
+
+        case 903:
+          return _context.finish(900);
+
+        case 904:
+          return _context.finish(897);
+
+        case 905:
+          _context.next = 908;
+          break;
+
+        case 907:
+          newStore.squad.push({
+            id: +_i120.split('_')[0],
+            pechot_quan: curSquad.pechot_quan,
+            archer_quan: curSquad.archer_quan,
+            cavallery_quan: curSquad.cavallery_quan,
+            catapult_quan: curSquad.catapult_quan,
+            place_type: "G",
+            status: "R",
+            place: curSquad.place,
+            country_id: 109,
+            country: "empire"
+          });
+
+        case 908:
+          if (curSquad.place !== curSquad.target) {
+            changedSquadTrans[_i120] = Object.assign({}, curSquad);
+          }
+
+        case 909:
+          _i69++;
+          _context.next = 813;
+          break;
+
+        case 912:
+          store.squadTrans = changedSquadTrans; // Проверка битв
+
+          battles = [];
+          _iteratorNormalCompletion20 = true;
+          _didIteratorError20 = false;
+          _iteratorError20 = undefined;
+          _context.prev = 917;
+          _iterator20 = newStore.squad[Symbol.iterator]();
+
+        case 919:
+          if (_iteratorNormalCompletion20 = (_step20 = _iterator20.next()).done) {
+            _context.next = 946;
+            break;
+          }
+
+          _i121 = _step20.value;
+
+          if (!(0, _otherFunctions.checkWarRegion)(newStore, _i121.place)) {
+            _context.next = 943;
+            break;
+          }
+
+          _whose = (0, _otherFunctions.whoseReg)(newStore, _i121.place);
+          enemySquads = (0, _otherFunctions.getSquads)(newStore, _whose);
+          _iteratorNormalCompletion46 = true;
+          _didIteratorError46 = false;
+          _iteratorError46 = undefined;
+          _context.prev = 927;
+
+          for (_iterator46 = enemySquads[Symbol.iterator](); !(_iteratorNormalCompletion46 = (_step46 = _iterator46.next()).done); _iteratorNormalCompletion46 = true) {
+            s = _step46.value;
+
+            if (_i121.place === s.place) {
+              own = {
+                pechot: _i121['pechot_quan'],
+                archer: _i121['archer_quan'],
+                cavallery: _i121['cavallery_quan'],
+                catapult: _i121['catapult_quan'],
+                quality: newBuff.army_quality
+              };
+              enemy = {
+                pechot: s['pechot_quan'],
+                archer: s['archer_quan'],
+                cavallery: s['cavallery_quan'],
+                catapult: s['catapult_quan'],
+                quality: (0, _otherFunctions.getCountry)(store.createGame, s.country).army_quality
+              };
+              exodus = (0, _neuroFunctions.getExodusBattle)(own, enemy);
+              battles.push({
+                region: (0, _otherFunctions.getRegion)(newStore, _i121.place),
+                enemy: s.country,
+                ownSquad: _i121,
+                enemySquad: s,
+                ownSpend: exodus.own,
+                enemySpend: exodus.enemy,
+                result: exodus.exodus === 'own' ? 'win' : 'loose'
+              });
+              console.log(own, {
+                pechot: _i121.pechot_quan - exodus.own.pechot,
+                archer: _i121.archer_quan - exodus.own.archer,
+                cavallery: _i121.cavallery_quan - exodus.own.cavallery,
+                catapult: _i121.catapult_quan - exodus.own.catapult
+              });
+              (0, _otherFunctions.makeBattleEffects)(store, func, {
+                region: (0, _otherFunctions.getRegion)(newStore, _i121.place),
+                enemyCountry: (0, _otherFunctions.getCountry)(store.createGame, s.country),
+                own: {
+                  pechot: _i121.pechot_quan - exodus.own.pechot,
+                  archer: _i121.archer_quan - exodus.own.archer,
+                  cavallery: _i121.cavallery_quan - exodus.own.cavallery,
+                  catapult: _i121.catapult_quan - exodus.own.catapult
+                },
+                enemy: {
+                  pechot: s.pechot_quan - exodus.enemy.pechot,
+                  archer: s.archer_quan - exodus.enemy.archer,
+                  cavallery: s.cavallery_quan - exodus.enemy.cavallery,
+                  catapult: s.catapult_quan - exodus.enemy.catapult
+                },
+                result: exodus.exodus
+              });
+            }
+          }
+
+          _context.next = 935;
+          break;
+
+        case 931:
+          _context.prev = 931;
+          _context.t34 = _context["catch"](927);
+          _didIteratorError46 = true;
+          _iteratorError46 = _context.t34;
+
+        case 935:
+          _context.prev = 935;
+          _context.prev = 936;
+
+          if (!_iteratorNormalCompletion46 && _iterator46["return"] != null) {
+            _iterator46["return"]();
+          }
+
+        case 938:
+          _context.prev = 938;
+
+          if (!_didIteratorError46) {
+            _context.next = 941;
+            break;
+          }
+
+          throw _iteratorError46;
+
+        case 941:
+          return _context.finish(938);
+
+        case 942:
+          return _context.finish(935);
+
+        case 943:
+          _iteratorNormalCompletion20 = true;
+          _context.next = 919;
+          break;
+
+        case 946:
+          _context.next = 952;
+          break;
+
+        case 948:
+          _context.prev = 948;
+          _context.t35 = _context["catch"](917);
+          _didIteratorError20 = true;
+          _iteratorError20 = _context.t35;
+
+        case 952:
+          _context.prev = 952;
+          _context.prev = 953;
+
+          if (!_iteratorNormalCompletion20 && _iterator20["return"] != null) {
+            _iterator20["return"]();
+          }
+
+        case 955:
+          _context.prev = 955;
+
+          if (!_didIteratorError20) {
+            _context.next = 958;
+            break;
+          }
+
+          throw _iteratorError20;
+
+        case 958:
+          return _context.finish(955);
+
+        case 959:
+          return _context.finish(952);
+
+        case 960:
+          // Проверка окончания игры
           loss = {
             status: false,
             cause: ''
@@ -3646,75 +4288,75 @@ function nextStep(store, func) {
           } // Корректировка значений и применение изменений
 
 
-          _i69 = 0, _relations2 = relations;
+          _i70 = 0, _relations2 = relations;
 
-        case 746:
-          if (!(_i69 < _relations2.length)) {
-            _context.next = 770;
+        case 975:
+          if (!(_i70 < _relations2.length)) {
+            _context.next = 999;
             break;
           }
 
-          _i114 = _relations2[_i69];
-          _iteratorNormalCompletion36 = true;
-          _didIteratorError36 = false;
-          _iteratorError36 = undefined;
-          _context.prev = 751;
+          _i122 = _relations2[_i70];
+          _iteratorNormalCompletion47 = true;
+          _didIteratorError47 = false;
+          _iteratorError47 = undefined;
+          _context.prev = 980;
 
-          for (_iterator36 = newStore.relations[Symbol.iterator](); !(_iteratorNormalCompletion36 = (_step36 = _iterator36.next()).done); _iteratorNormalCompletion36 = true) {
-            t = _step36.value;
+          for (_iterator47 = newStore.relations[Symbol.iterator](); !(_iteratorNormalCompletion47 = (_step47 = _iterator47.next()).done); _iteratorNormalCompletion47 = true) {
+            t = _step47.value;
 
-            if (t.pair.length === 1 && t.pair[0] === _i114.ident) {
-              t.value = _i114.value > 10 ? 10 : _i114.value < -10 ? -10 : _i114.value;
+            if (t.pair.length === 1 && t.pair[0] === _i122.ident) {
+              t.value = _i122.value > 10 ? 10 : _i122.value < -10 ? -10 : _i122.value;
             }
           }
 
-          _context.next = 759;
+          _context.next = 988;
           break;
 
-        case 755:
-          _context.prev = 755;
-          _context.t26 = _context["catch"](751);
-          _didIteratorError36 = true;
-          _iteratorError36 = _context.t26;
+        case 984:
+          _context.prev = 984;
+          _context.t36 = _context["catch"](980);
+          _didIteratorError47 = true;
+          _iteratorError47 = _context.t36;
 
-        case 759:
-          _context.prev = 759;
-          _context.prev = 760;
+        case 988:
+          _context.prev = 988;
+          _context.prev = 989;
 
-          if (!_iteratorNormalCompletion36 && _iterator36["return"] != null) {
-            _iterator36["return"]();
+          if (!_iteratorNormalCompletion47 && _iterator47["return"] != null) {
+            _iterator47["return"]();
           }
 
-        case 762:
-          _context.prev = 762;
+        case 991:
+          _context.prev = 991;
 
-          if (!_didIteratorError36) {
-            _context.next = 765;
+          if (!_didIteratorError47) {
+            _context.next = 994;
             break;
           }
 
-          throw _iteratorError36;
+          throw _iteratorError47;
 
-        case 765:
-          return _context.finish(762);
+        case 994:
+          return _context.finish(991);
 
-        case 766:
-          return _context.finish(759);
+        case 995:
+          return _context.finish(988);
 
-        case 767:
-          _i69++;
-          _context.next = 746;
+        case 996:
+          _i70++;
+          _context.next = 975;
           break;
 
-        case 770:
+        case 999:
           newCountryAI = [];
-          _iteratorNormalCompletion18 = true;
-          _didIteratorError18 = false;
-          _iteratorError18 = undefined;
-          _context.prev = 774;
+          _iteratorNormalCompletion21 = true;
+          _didIteratorError21 = false;
+          _iteratorError21 = undefined;
+          _context.prev = 1003;
 
           _loop3 = function _loop3() {
-            var i = _step18.value;
+            var i = _step21.value;
 
             if (i.regions.length) {
               newCountryAI.push(i);
@@ -3731,78 +4373,78 @@ function nextStep(store, func) {
             }
           };
 
-          for (_iterator18 = newStore.country_ai[Symbol.iterator](); !(_iteratorNormalCompletion18 = (_step18 = _iterator18.next()).done); _iteratorNormalCompletion18 = true) {
+          for (_iterator21 = newStore.country_ai[Symbol.iterator](); !(_iteratorNormalCompletion21 = (_step21 = _iterator21.next()).done); _iteratorNormalCompletion21 = true) {
             _loop3();
           }
 
-          _context.next = 783;
+          _context.next = 1012;
           break;
 
-        case 779:
-          _context.prev = 779;
-          _context.t27 = _context["catch"](774);
-          _didIteratorError18 = true;
-          _iteratorError18 = _context.t27;
+        case 1008:
+          _context.prev = 1008;
+          _context.t37 = _context["catch"](1003);
+          _didIteratorError21 = true;
+          _iteratorError21 = _context.t37;
 
-        case 783:
-          _context.prev = 783;
-          _context.prev = 784;
+        case 1012:
+          _context.prev = 1012;
+          _context.prev = 1013;
 
-          if (!_iteratorNormalCompletion18 && _iterator18["return"] != null) {
-            _iterator18["return"]();
+          if (!_iteratorNormalCompletion21 && _iterator21["return"] != null) {
+            _iterator21["return"]();
           }
 
-        case 786:
-          _context.prev = 786;
+        case 1015:
+          _context.prev = 1015;
 
-          if (!_didIteratorError18) {
-            _context.next = 789;
+          if (!_didIteratorError21) {
+            _context.next = 1018;
             break;
           }
 
-          throw _iteratorError18;
+          throw _iteratorError21;
 
-        case 789:
-          return _context.finish(786);
+        case 1018:
+          return _context.finish(1015);
 
-        case 790:
-          return _context.finish(783);
+        case 1019:
+          return _context.finish(1012);
 
-        case 791:
+        case 1020:
           newStore.country_ai = newCountryAI;
           outBuffer.commit();
           newCountry.alchemy = +newCountry.alchemy.toFixed(4);
           newCountry.education_avail = +newCountry.education_avail.toFixed(4);
           newCountry.education_quality = +newCountry.education_quality.toFixed(4);
           newCountry.export_trash = +newCountry.export_trash.toFixed(4);
-          newCountry.inflation = +newCountry.inflation.toFixed(4);
+          newCountry.inflation = newCountry.inflation > -0.02 ? +newCountry.inflation.toFixed(4) : -0.02;
           newCountry.magic = +newCountry.magic.toFixed(4);
           newCountry.science = +newCountry.science.toFixed(4);
           newCountry.technology = +newCountry.technology.toFixed(4);
           newCountry.support = +newCountry.support.toFixed(4);
           newCountry.stability = +newCountry.stability.toFixed(4);
-          mapper_correct = ['cargo_ship', 'people_ship', 'port', 'pave_road', 'stone_road', 'poverty', 'unemployment'];
+          mapper_correct = ['cargo_ship', 'people_ship', 'port', 'pave_road', 'stone_road'];
           mapper_correct.map(function (e) {
-            var _iteratorNormalCompletion19 = true;
-            var _didIteratorError19 = false;
-            var _iteratorError19 = undefined;
+            var _iteratorNormalCompletion22 = true;
+            var _didIteratorError22 = false;
+            var _iteratorError22 = undefined;
 
             try {
-              for (var _iterator19 = newCountry.regions[Symbol.iterator](), _step19; !(_iteratorNormalCompletion19 = (_step19 = _iterator19.next()).done); _iteratorNormalCompletion19 = true) {
-                var _i70 = _step19.value;
-                _i70[e] = +_i70[e].toFixed(4);
+              for (var _iterator22 = newCountry.regions[Symbol.iterator](), _step22; !(_iteratorNormalCompletion22 = (_step22 = _iterator22.next()).done); _iteratorNormalCompletion22 = true) {
+                var _i71 = _step22.value;
+                _i71[e] = +_i71[e].toFixed(4);
               }
             } catch (err) {
-              _didIteratorError19 = true;
-              _iteratorError19 = err;
+              _didIteratorError22 = true;
+              _iteratorError22 = err;
             } finally {
               try {
-                if (!_iteratorNormalCompletion19 && _iterator19["return"] != null) {
-                  _iterator19["return"]();
+                if (!_iteratorNormalCompletion22 && _iterator22["return"] != null) {
+                  _iterator22["return"]();
                 }
               } finally {
-                if (_didIteratorError19) {
-                  throw _iteratorError19;
+                if (_didIteratorError22) {
+                  throw _iteratorError22;
                 }
               }
             }
@@ -3812,57 +4454,57 @@ function nextStep(store, func) {
           mapper_correct = ['universities', 'schools', 'population', 'avg_salary', 'aqueducs', 'industry'];
           mapper_correct.map(function (e) {
             if (e === 'industry') {
-              var _iteratorNormalCompletion20 = true;
-              var _didIteratorError20 = false;
-              var _iteratorError20 = undefined;
+              var _iteratorNormalCompletion23 = true;
+              var _didIteratorError23 = false;
+              var _iteratorError23 = undefined;
 
               try {
-                for (var _iterator20 = newCountry.regions[Symbol.iterator](), _step20; !(_iteratorNormalCompletion20 = (_step20 = _iterator20.next()).done); _iteratorNormalCompletion20 = true) {
-                  var _i71 = _step20.value;
+                for (var _iterator23 = newCountry.regions[Symbol.iterator](), _step23; !(_iteratorNormalCompletion23 = (_step23 = _iterator23.next()).done); _iteratorNormalCompletion23 = true) {
+                  var _i72 = _step23.value;
 
-                  for (var _i72 = 0, _Object$keys50 = Object.keys(_i71); _i72 < _Object$keys50.length; _i72++) {
-                    var t = _Object$keys50[_i72];
+                  for (var _i73 = 0, _Object$keys51 = Object.keys(_i72); _i73 < _Object$keys51.length; _i73++) {
+                    var t = _Object$keys51[_i73];
 
                     if (t.startsWith('industry')) {
-                      _i71[t] = parseInt(_i71[t]);
+                      _i72[t] = parseInt(_i72[t]);
                     }
                   }
                 }
               } catch (err) {
-                _didIteratorError20 = true;
-                _iteratorError20 = err;
+                _didIteratorError23 = true;
+                _iteratorError23 = err;
               } finally {
                 try {
-                  if (!_iteratorNormalCompletion20 && _iterator20["return"] != null) {
-                    _iterator20["return"]();
+                  if (!_iteratorNormalCompletion23 && _iterator23["return"] != null) {
+                    _iterator23["return"]();
                   }
                 } finally {
-                  if (_didIteratorError20) {
-                    throw _iteratorError20;
+                  if (_didIteratorError23) {
+                    throw _iteratorError23;
                   }
                 }
               }
             } else {
-              var _iteratorNormalCompletion21 = true;
-              var _didIteratorError21 = false;
-              var _iteratorError21 = undefined;
+              var _iteratorNormalCompletion24 = true;
+              var _didIteratorError24 = false;
+              var _iteratorError24 = undefined;
 
               try {
-                for (var _iterator21 = newCountry.regions[Symbol.iterator](), _step21; !(_iteratorNormalCompletion21 = (_step21 = _iterator21.next()).done); _iteratorNormalCompletion21 = true) {
-                  var _i73 = _step21.value;
-                  _i73[e] = parseInt(_i73[e]);
+                for (var _iterator24 = newCountry.regions[Symbol.iterator](), _step24; !(_iteratorNormalCompletion24 = (_step24 = _iterator24.next()).done); _iteratorNormalCompletion24 = true) {
+                  var _i74 = _step24.value;
+                  _i74[e] = parseInt(_i74[e]);
                 }
               } catch (err) {
-                _didIteratorError21 = true;
-                _iteratorError21 = err;
+                _didIteratorError24 = true;
+                _iteratorError24 = err;
               } finally {
                 try {
-                  if (!_iteratorNormalCompletion21 && _iterator21["return"] != null) {
-                    _iterator21["return"]();
+                  if (!_iteratorNormalCompletion24 && _iterator24["return"] != null) {
+                    _iterator24["return"]();
                   }
                 } finally {
-                  if (_didIteratorError21) {
-                    throw _iteratorError21;
+                  if (_didIteratorError24) {
+                    throw _iteratorError24;
                   }
                 }
               }
@@ -3870,64 +4512,100 @@ function nextStep(store, func) {
 
             return null;
           });
-          _iteratorNormalCompletion22 = true;
-          _didIteratorError22 = false;
-          _iteratorError22 = undefined;
-          _context.prev = 810;
+          mapper_correct = ['poverty', 'unemployment'];
+          mapper_correct.map(function (e) {
+            var _iteratorNormalCompletion25 = true;
+            var _didIteratorError25 = false;
+            var _iteratorError25 = undefined;
 
-          for (_iterator22 = newCountry.regions[Symbol.iterator](); !(_iteratorNormalCompletion22 = (_step22 = _iterator22.next()).done); _iteratorNormalCompletion22 = true) {
-            _i115 = _step22.value;
+            try {
+              for (var _iterator25 = newCountry.regions[Symbol.iterator](), _step25; !(_iteratorNormalCompletion25 = (_step25 = _iterator25.next()).done); _iteratorNormalCompletion25 = true) {
+                var _i75 = _step25.value;
 
-            if (_i115.id === newCountry.capital.id) {
-              newCountry.capital = _i115;
+                if (_i75[e] < 0.01) {
+                  _i75[e] = 0.01;
+                } else {
+                  _i75[e] = +_i75[e].toFixed(4);
+                }
+              }
+            } catch (err) {
+              _didIteratorError25 = true;
+              _iteratorError25 = err;
+            } finally {
+              try {
+                if (!_iteratorNormalCompletion25 && _iterator25["return"] != null) {
+                  _iterator25["return"]();
+                }
+              } finally {
+                if (_didIteratorError25) {
+                  throw _iteratorError25;
+                }
+              }
+            }
+          });
+          _iteratorNormalCompletion26 = true;
+          _didIteratorError26 = false;
+          _iteratorError26 = undefined;
+          _context.prev = 1041;
+
+          for (_iterator26 = newCountry.regions[Symbol.iterator](); !(_iteratorNormalCompletion26 = (_step26 = _iterator26.next()).done); _iteratorNormalCompletion26 = true) {
+            _i123 = _step26.value;
+
+            if (_i123.id === newCountry.capital.id) {
+              newCountry.capital = _i123;
             }
           }
 
-          _context.next = 818;
+          _context.next = 1049;
           break;
 
-        case 814:
-          _context.prev = 814;
-          _context.t28 = _context["catch"](810);
-          _didIteratorError22 = true;
-          _iteratorError22 = _context.t28;
+        case 1045:
+          _context.prev = 1045;
+          _context.t38 = _context["catch"](1041);
+          _didIteratorError26 = true;
+          _iteratorError26 = _context.t38;
 
-        case 818:
-          _context.prev = 818;
-          _context.prev = 819;
+        case 1049:
+          _context.prev = 1049;
+          _context.prev = 1050;
 
-          if (!_iteratorNormalCompletion22 && _iterator22["return"] != null) {
-            _iterator22["return"]();
+          if (!_iteratorNormalCompletion26 && _iterator26["return"] != null) {
+            _iterator26["return"]();
           }
 
-        case 821:
-          _context.prev = 821;
+        case 1052:
+          _context.prev = 1052;
 
-          if (!_didIteratorError22) {
-            _context.next = 824;
+          if (!_didIteratorError26) {
+            _context.next = 1055;
             break;
           }
 
-          throw _iteratorError22;
+          throw _iteratorError26;
 
-        case 824:
-          return _context.finish(821);
+        case 1055:
+          return _context.finish(1052);
 
-        case 825:
-          return _context.finish(818);
+        case 1056:
+          return _context.finish(1049);
 
-        case 826:
+        case 1057:
           newStore.country = newCountry;
           newStore.buffs = newBuff;
           store.changeGame = [];
           store.peaceList = [];
+          newStore.squad = store.createGame.squad;
+          newStore.squad_ai = store.createGame.squad_ai;
           func.create_game(newStore);
-          return _context.abrupt("return", 0);
+          return _context.abrupt("return", {
+            news: newsArr,
+            battles: battles
+          });
 
-        case 832:
+        case 1065:
         case "end":
           return _context.stop();
       }
     }
-  }, null, null, [[21, 25, 29, 37], [30,, 32, 36], [40, 44, 48, 56], [49,, 51, 55], [68, 73, 77, 85], [78,, 80, 84], [89, 94, 98, 106], [99,, 101, 105], [128, 132, 136, 144], [137,, 139, 143], [149, 153, 157, 165], [158,, 160, 164], [191, 195, 199, 207], [200,, 202, 206], [211, 215, 219, 227], [220,, 222, 226], [233, 276, 280, 288], [281,, 283, 287], [298, 655, 659, 667], [324, 328, 332, 340], [333,, 335, 339], [344, 348, 352, 360], [353,, 355, 359], [367, 371, 375, 383], [376,, 378, 382], [389, 393, 397, 405], [398,, 400, 404], [408, 412, 416, 424], [417,, 419, 423], [443, 447, 451, 459], [452,, 454, 458], [471, 483, 487, 495], [488,, 490, 494], [501, 513, 517, 525], [518,, 520, 524], [530, 534, 538, 546], [539,, 541, 545], [552, 591, 595, 603], [560, 572, 576, 584], [577,, 579, 583], [596,, 598, 602], [606, 637, 641, 649], [615, 619, 623, 631], [624,, 626, 630], [642,, 644, 648], [660,, 662, 666], [715, 719, 723, 731], [724,, 726, 730], [751, 755, 759, 767], [760,, 762, 766], [774, 779, 783, 791], [784,, 786, 790], [810, 814, 818, 826], [819,, 821, 825]]);
+  }, null, null, [[21, 25, 29, 37], [30,, 32, 36], [40, 44, 48, 56], [49,, 51, 55], [68, 73, 77, 85], [78,, 80, 84], [89, 94, 98, 106], [99,, 101, 105], [128, 132, 136, 144], [137,, 139, 143], [149, 153, 157, 165], [158,, 160, 164], [191, 195, 199, 207], [200,, 202, 206], [211, 215, 219, 227], [220,, 222, 226], [233, 276, 280, 288], [281,, 283, 287], [298, 696, 700, 708], [324, 328, 332, 340], [333,, 335, 339], [344, 348, 352, 360], [353,, 355, 359], [367, 371, 375, 383], [376,, 378, 382], [389, 393, 397, 405], [398,, 400, 404], [408, 412, 416, 424], [417,, 419, 423], [443, 447, 451, 459], [452,, 454, 458], [471, 483, 487, 495], [488,, 490, 494], [501, 513, 517, 525], [518,, 520, 524], [530, 534, 538, 546], [539,, 541, 545], [552, 591, 595, 603], [560, 572, 576, 584], [577,, 579, 583], [596,, 598, 602], [606, 637, 641, 649], [615, 619, 623, 631], [624,, 626, 630], [642,, 644, 648], [655, 659, 663, 671], [664,, 666, 670], [674, 678, 682, 690], [683,, 685, 689], [701,, 703, 707], [756, 760, 764, 772], [765,, 767, 771], [776, 780, 784, 792], [785,, 787, 791], [795, 799, 803, 811], [804,, 806, 810], [825, 829, 833, 841], [834,, 836, 840], [844, 848, 852, 860], [853,, 855, 859], [866, 870, 874, 882], [875,, 877, 881], [889, 893, 897, 905], [898,, 900, 904], [917, 948, 952, 960], [927, 931, 935, 943], [936,, 938, 942], [953,, 955, 959], [980, 984, 988, 996], [989,, 991, 995], [1003, 1008, 1012, 1020], [1013,, 1015, 1019], [1041, 1045, 1049, 1057], [1050,, 1052, 1056]]);
 }

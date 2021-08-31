@@ -43,6 +43,8 @@ exports.getRegsOfCountry = getRegsOfCountry;
 exports.getSeaRegs = getSeaRegs;
 exports.whoseReg = whoseReg;
 exports.canBeTarget = canBeTarget;
+exports.canBeRetreat = canBeRetreat;
+exports.canBeTargetAI = canBeTargetAI;
 exports.checkSeaside = checkSeaside;
 exports.getPhysTaxes = getPhysTaxes;
 exports.getJuridTaxes = getJuridTaxes;
@@ -73,10 +75,13 @@ exports.checkContract = checkContract;
 exports.getMaxId = getMaxId;
 exports.getInfrastructure = getInfrastructure;
 exports.getGdpPerPopulation = getGdpPerPopulation;
+exports.makeBattleEffects = makeBattleEffects;
 
 var _identCountries = _interopRequireDefault(require("./identCountries"));
 
 var _colorMap = _interopRequireDefault(require("./colorMap"));
+
+var _movingSquad = _interopRequireDefault(require("./movingSquad"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -1503,6 +1508,137 @@ function canBeTarget(store, reg) {
   return false;
 }
 
+function canBeRetreat(store, reg) {
+  var country = whoseReg(store, reg);
+  var occuped = [];
+  var regs = store.country.regions.map(function (e) {
+    return e.name;
+  });
+  var _iteratorNormalCompletion38 = true;
+  var _didIteratorError38 = false;
+  var _iteratorError38 = undefined;
+
+  try {
+    for (var _iterator38 = store.contracts[Symbol.iterator](), _step38; !(_iteratorNormalCompletion38 = (_step38 = _iterator38.next()).done); _iteratorNormalCompletion38 = true) {
+      var i = _step38.value;
+
+      if (i.con_type === 'DW') {
+        if (i.pair.length === 1) {
+          if (!regs.includes(reg) && !i.occuped.split(',').includes(reg)) {
+            occuped.push(i.occuped.split(','));
+          }
+        } else {
+          occuped.push(i.occuped.split(','));
+        }
+      }
+    }
+  } catch (err) {
+    _didIteratorError38 = true;
+    _iteratorError38 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion38 && _iterator38["return"] != null) {
+        _iterator38["return"]();
+      }
+    } finally {
+      if (_didIteratorError38) {
+        throw _iteratorError38;
+      }
+    }
+  }
+
+  if (occuped.includes(reg)) {
+    return false;
+  }
+
+  if (regs.includes(reg)) {
+    return true;
+  }
+
+  var _iteratorNormalCompletion39 = true;
+  var _didIteratorError39 = false;
+  var _iteratorError39 = undefined;
+
+  try {
+    for (var _iterator39 = store.contracts[Symbol.iterator](), _step39; !(_iteratorNormalCompletion39 = (_step39 = _iterator39.next()).done); _iteratorNormalCompletion39 = true) {
+      var _i5 = _step39.value;
+
+      if (_i5.con_type === "AL" || _i5.con_type === "VC" || _i5.con_type === "PA") {
+        if (_i5.pair.length === 1 && _i5.pair.indexOf(country) !== -1) {
+          if (_i5.con_type === "PA") {
+            if (_i5.priority === store.country.indentify) {
+              return true;
+            } else {
+              return false;
+            }
+          }
+
+          return true;
+        }
+      }
+    }
+  } catch (err) {
+    _didIteratorError39 = true;
+    _iteratorError39 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion39 && _iterator39["return"] != null) {
+        _iterator39["return"]();
+      }
+    } finally {
+      if (_didIteratorError39) {
+        throw _iteratorError39;
+      }
+    }
+  }
+
+  return false;
+}
+
+function canBeTargetAI(store, reg, ai) {
+  var regs = getCountry(store, ai).regions.map(function (e) {
+    return e.name;
+  });
+  var _iteratorNormalCompletion40 = true;
+  var _didIteratorError40 = false;
+  var _iteratorError40 = undefined;
+
+  try {
+    for (var _iterator40 = store.contracts[Symbol.iterator](), _step40; !(_iteratorNormalCompletion40 = (_step40 = _iterator40.next()).done); _iteratorNormalCompletion40 = true) {
+      var i = _step40.value;
+
+      if (i.con_type === 'DW') {
+        if (i.pair.includes(ai)) {
+          if (!regs.includes(reg) && i.occuped.split(',').includes(reg)) {
+            return true;
+          }
+
+          if (regs.includes(reg) && i.occuped.split(',').includes(reg)) {
+            return false;
+          }
+        }
+      }
+    }
+  } catch (err) {
+    _didIteratorError40 = true;
+    _iteratorError40 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion40 && _iterator40["return"] != null) {
+        _iterator40["return"]();
+      }
+    } finally {
+      if (_didIteratorError40) {
+        throw _iteratorError40;
+      }
+    }
+  }
+
+  if (regs.includes(reg)) {
+    return true;
+  }
+}
+
 function checkSeaside(store, reg) {
   return getRegion(store, reg).seaside;
 }
@@ -1537,19 +1673,19 @@ function getJuridTaxes(country) {
   summ = summ + (getResource(country, "alchemy", false) + getResource(country, "light", false) + getResource(country, "blacksmith", false) + getResource(country, "other", false) + getResource(country, "typography", false)) * taxes.govern;
   var indus = [];
 
-  for (var _i5 = 0, _Object$keys = Object.keys(country.capital); _i5 < _Object$keys.length; _i5++) {
-    var i = _Object$keys[_i5];
+  for (var _i6 = 0, _Object$keys = Object.keys(country.capital); _i6 < _Object$keys.length; _i6++) {
+    var i = _Object$keys[_i6];
 
     if (i.indexOf("industry_") !== -1) {
       indus.push(i.split("_")[1]);
     }
   }
 
-  for (var _i6 = 0, _indus = indus; _i6 < _indus.length; _i6++) {
-    var _i7 = _indus[_i6];
+  for (var _i7 = 0, _indus = indus; _i7 < _indus.length; _i7++) {
+    var _i8 = _indus[_i7];
 
-    if (getResource(country, _i7, false) > getNeed(country, _i7, false)) {
-      summ = summ + (getResource(country, _i7, false) - getNeed(country, _i7, false)) * taxes["export"] * 4;
+    if (getResource(country, _i8, false) > getNeed(country, _i8, false)) {
+      summ = summ + (getResource(country, _i8, false) - getNeed(country, _i8, false)) * taxes["export"] * 4;
     }
   }
 
@@ -1559,13 +1695,13 @@ function getJuridTaxes(country) {
 function getSalaryPension(store) {
   var salar = getArmySalary(store.country, false);
   var summ = 0;
-  var _iteratorNormalCompletion38 = true;
-  var _didIteratorError38 = false;
-  var _iteratorError38 = undefined;
+  var _iteratorNormalCompletion41 = true;
+  var _didIteratorError41 = false;
+  var _iteratorError41 = undefined;
 
   try {
-    for (var _iterator38 = store.squad[Symbol.iterator](), _step38; !(_iteratorNormalCompletion38 = (_step38 = _iterator38.next()).done); _iteratorNormalCompletion38 = true) {
-      var i = _step38.value;
+    for (var _iterator41 = store.squad[Symbol.iterator](), _step41; !(_iteratorNormalCompletion41 = (_step41 = _iterator41.next()).done); _iteratorNormalCompletion41 = true) {
+      var i = _step41.value;
       var quan = i.archer_quan + i.cavallery_quan + i.catapult_quan * 20 + i.pechot_quan;
       var incr = 0;
       incr = incr + quan * salar.avgSalary;
@@ -1573,16 +1709,16 @@ function getSalaryPension(store) {
       summ = summ + incr / (i.status === "r" ? 1 : 2);
     }
   } catch (err) {
-    _didIteratorError38 = true;
-    _iteratorError38 = err;
+    _didIteratorError41 = true;
+    _iteratorError41 = err;
   } finally {
     try {
-      if (!_iteratorNormalCompletion38 && _iterator38["return"] != null) {
-        _iterator38["return"]();
+      if (!_iteratorNormalCompletion41 && _iterator41["return"] != null) {
+        _iterator41["return"]();
       }
     } finally {
-      if (_didIteratorError38) {
-        throw _iteratorError38;
+      if (_didIteratorError41) {
+        throw _iteratorError41;
       }
     }
   }
@@ -1593,13 +1729,13 @@ function getSalaryPension(store) {
 function getMaintain(store) {
   var main = getArmyMaintain(store.country, false);
   var summ = 0;
-  var _iteratorNormalCompletion39 = true;
-  var _didIteratorError39 = false;
-  var _iteratorError39 = undefined;
+  var _iteratorNormalCompletion42 = true;
+  var _didIteratorError42 = false;
+  var _iteratorError42 = undefined;
 
   try {
-    for (var _iterator39 = store.squad[Symbol.iterator](), _step39; !(_iteratorNormalCompletion39 = (_step39 = _iterator39.next()).done); _iteratorNormalCompletion39 = true) {
-      var i = _step39.value;
+    for (var _iterator42 = store.squad[Symbol.iterator](), _step42; !(_iteratorNormalCompletion42 = (_step42 = _iterator42.next()).done); _iteratorNormalCompletion42 = true) {
+      var i = _step42.value;
       var quan = i.archer_quan + i.cavallery_quan + i.catapult_quan * 20 + i.pechot_quan;
       var incr = 0;
       incr = incr + 300 * quan * main.food;
@@ -1608,16 +1744,16 @@ function getMaintain(store) {
       summ = summ + incr / (i.status === "r" ? 1 : 2);
     }
   } catch (err) {
-    _didIteratorError39 = true;
-    _iteratorError39 = err;
+    _didIteratorError42 = true;
+    _iteratorError42 = err;
   } finally {
     try {
-      if (!_iteratorNormalCompletion39 && _iterator39["return"] != null) {
-        _iterator39["return"]();
+      if (!_iteratorNormalCompletion42 && _iterator42["return"] != null) {
+        _iterator42["return"]();
       }
     } finally {
-      if (_didIteratorError39) {
-        throw _iteratorError39;
+      if (_didIteratorError42) {
+        throw _iteratorError42;
       }
     }
   }
@@ -1660,26 +1796,26 @@ function getBalance(store) {
 function getPersOfGdp(store, infrastructure) {
   var infras = 0;
   var gdp = getEconomy(store.country, false);
-  var _iteratorNormalCompletion40 = true;
-  var _didIteratorError40 = false;
-  var _iteratorError40 = undefined;
+  var _iteratorNormalCompletion43 = true;
+  var _didIteratorError43 = false;
+  var _iteratorError43 = undefined;
 
   try {
-    for (var _iterator40 = store.country.regions[Symbol.iterator](), _step40; !(_iteratorNormalCompletion40 = (_step40 = _iterator40.next()).done); _iteratorNormalCompletion40 = true) {
-      var i = _step40.value;
+    for (var _iterator43 = store.country.regions[Symbol.iterator](), _step43; !(_iteratorNormalCompletion43 = (_step43 = _iterator43.next()).done); _iteratorNormalCompletion43 = true) {
+      var i = _step43.value;
       infras += i[infrastructure];
     }
   } catch (err) {
-    _didIteratorError40 = true;
-    _iteratorError40 = err;
+    _didIteratorError43 = true;
+    _iteratorError43 = err;
   } finally {
     try {
-      if (!_iteratorNormalCompletion40 && _iterator40["return"] != null) {
-        _iterator40["return"]();
+      if (!_iteratorNormalCompletion43 && _iterator43["return"] != null) {
+        _iterator43["return"]();
       }
     } finally {
-      if (_didIteratorError40) {
-        throw _iteratorError40;
+      if (_didIteratorError43) {
+        throw _iteratorError43;
       }
     }
   }
@@ -1689,73 +1825,73 @@ function getPersOfGdp(store, infrastructure) {
 
 function getPersOfWorld(store, infrastructure) {
   var infras = 0;
-  var _iteratorNormalCompletion41 = true;
-  var _didIteratorError41 = false;
-  var _iteratorError41 = undefined;
+  var _iteratorNormalCompletion44 = true;
+  var _didIteratorError44 = false;
+  var _iteratorError44 = undefined;
 
   try {
-    for (var _iterator41 = store.country.regions[Symbol.iterator](), _step41; !(_iteratorNormalCompletion41 = (_step41 = _iterator41.next()).done); _iteratorNormalCompletion41 = true) {
-      var i = _step41.value;
+    for (var _iterator44 = store.country.regions[Symbol.iterator](), _step44; !(_iteratorNormalCompletion44 = (_step44 = _iterator44.next()).done); _iteratorNormalCompletion44 = true) {
+      var i = _step44.value;
       infras += i[infrastructure];
     }
   } catch (err) {
-    _didIteratorError41 = true;
-    _iteratorError41 = err;
+    _didIteratorError44 = true;
+    _iteratorError44 = err;
   } finally {
     try {
-      if (!_iteratorNormalCompletion41 && _iterator41["return"] != null) {
-        _iterator41["return"]();
+      if (!_iteratorNormalCompletion44 && _iterator44["return"] != null) {
+        _iterator44["return"]();
       }
     } finally {
-      if (_didIteratorError41) {
-        throw _iteratorError41;
+      if (_didIteratorError44) {
+        throw _iteratorError44;
       }
     }
   }
 
   var gdp = infras;
-  var _iteratorNormalCompletion42 = true;
-  var _didIteratorError42 = false;
-  var _iteratorError42 = undefined;
+  var _iteratorNormalCompletion45 = true;
+  var _didIteratorError45 = false;
+  var _iteratorError45 = undefined;
 
   try {
-    for (var _iterator42 = store.country_ai[Symbol.iterator](), _step42; !(_iteratorNormalCompletion42 = (_step42 = _iterator42.next()).done); _iteratorNormalCompletion42 = true) {
-      var f = _step42.value;
-      var _iteratorNormalCompletion43 = true;
-      var _didIteratorError43 = false;
-      var _iteratorError43 = undefined;
+    for (var _iterator45 = store.country_ai[Symbol.iterator](), _step45; !(_iteratorNormalCompletion45 = (_step45 = _iterator45.next()).done); _iteratorNormalCompletion45 = true) {
+      var f = _step45.value;
+      var _iteratorNormalCompletion46 = true;
+      var _didIteratorError46 = false;
+      var _iteratorError46 = undefined;
 
       try {
-        for (var _iterator43 = f.regions[Symbol.iterator](), _step43; !(_iteratorNormalCompletion43 = (_step43 = _iterator43.next()).done); _iteratorNormalCompletion43 = true) {
-          var _i8 = _step43.value;
-          gdp += _i8[infrastructure];
+        for (var _iterator46 = f.regions[Symbol.iterator](), _step46; !(_iteratorNormalCompletion46 = (_step46 = _iterator46.next()).done); _iteratorNormalCompletion46 = true) {
+          var _i9 = _step46.value;
+          gdp += _i9[infrastructure];
         }
       } catch (err) {
-        _didIteratorError43 = true;
-        _iteratorError43 = err;
+        _didIteratorError46 = true;
+        _iteratorError46 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion43 && _iterator43["return"] != null) {
-            _iterator43["return"]();
+          if (!_iteratorNormalCompletion46 && _iterator46["return"] != null) {
+            _iterator46["return"]();
           }
         } finally {
-          if (_didIteratorError43) {
-            throw _iteratorError43;
+          if (_didIteratorError46) {
+            throw _iteratorError46;
           }
         }
       }
     }
   } catch (err) {
-    _didIteratorError42 = true;
-    _iteratorError42 = err;
+    _didIteratorError45 = true;
+    _iteratorError45 = err;
   } finally {
     try {
-      if (!_iteratorNormalCompletion42 && _iterator42["return"] != null) {
-        _iterator42["return"]();
+      if (!_iteratorNormalCompletion45 && _iterator45["return"] != null) {
+        _iterator45["return"]();
       }
     } finally {
-      if (_didIteratorError42) {
-        throw _iteratorError42;
+      if (_didIteratorError45) {
+        throw _iteratorError45;
       }
     }
   }
@@ -1767,8 +1903,8 @@ function getBalanceRes(country, persentage) {
   var res = 0;
   var needs = 0;
 
-  for (var _i9 = 0, _Object$keys2 = Object.keys(country.regions[0]); _i9 < _Object$keys2.length; _i9++) {
-    var i = _Object$keys2[_i9];
+  for (var _i10 = 0, _Object$keys2 = Object.keys(country.regions[0]); _i10 < _Object$keys2.length; _i10++) {
+    var i = _Object$keys2[_i10];
 
     if (~i.indexOf("industry_")) {
       res = res + getResource(country, i.split("_")[1], false);
@@ -1787,29 +1923,29 @@ function getBalanceRes(country, persentage) {
 
 function getWarDetails(store, country) {
   var contract;
-  var _iteratorNormalCompletion44 = true;
-  var _didIteratorError44 = false;
-  var _iteratorError44 = undefined;
+  var _iteratorNormalCompletion47 = true;
+  var _didIteratorError47 = false;
+  var _iteratorError47 = undefined;
 
   try {
-    for (var _iterator44 = store.contracts[Symbol.iterator](), _step44; !(_iteratorNormalCompletion44 = (_step44 = _iterator44.next()).done); _iteratorNormalCompletion44 = true) {
-      var i = _step44.value;
+    for (var _iterator47 = store.contracts[Symbol.iterator](), _step47; !(_iteratorNormalCompletion47 = (_step47 = _iterator47.next()).done); _iteratorNormalCompletion47 = true) {
+      var i = _step47.value;
 
       if (i.con_type === "DW" && i.pair.length === 1 && i.pair.indexOf(country) !== -1) {
         contract = i;
       }
     }
   } catch (err) {
-    _didIteratorError44 = true;
-    _iteratorError44 = err;
+    _didIteratorError47 = true;
+    _iteratorError47 = err;
   } finally {
     try {
-      if (!_iteratorNormalCompletion44 && _iterator44["return"] != null) {
-        _iterator44["return"]();
+      if (!_iteratorNormalCompletion47 && _iterator47["return"] != null) {
+        _iterator47["return"]();
       }
     } finally {
-      if (_didIteratorError44) {
-        throw _iteratorError44;
+      if (_didIteratorError47) {
+        throw _iteratorError47;
       }
     }
   }
@@ -1844,29 +1980,29 @@ function getWarDetails(store, country) {
 
 function getBalanceRegion(store, con) {
   var incr = 0;
-  var _iteratorNormalCompletion45 = true;
-  var _didIteratorError45 = false;
-  var _iteratorError45 = undefined;
+  var _iteratorNormalCompletion48 = true;
+  var _didIteratorError48 = false;
+  var _iteratorError48 = undefined;
 
   try {
-    for (var _iterator45 = con.regions[Symbol.iterator](), _step45; !(_iteratorNormalCompletion45 = (_step45 = _iterator45.next()).done); _iteratorNormalCompletion45 = true) {
-      var i = _step45.value;
+    for (var _iterator48 = con.regions[Symbol.iterator](), _step48; !(_iteratorNormalCompletion48 = (_step48 = _iterator48.next()).done); _iteratorNormalCompletion48 = true) {
+      var i = _step48.value;
 
       if (store.country.regions.indexOf(getRegion(store, i)) !== -1) {
         incr++;
       }
     }
   } catch (err) {
-    _didIteratorError45 = true;
-    _iteratorError45 = err;
+    _didIteratorError48 = true;
+    _iteratorError48 = err;
   } finally {
     try {
-      if (!_iteratorNormalCompletion45 && _iterator45["return"] != null) {
-        _iterator45["return"]();
+      if (!_iteratorNormalCompletion48 && _iterator48["return"] != null) {
+        _iterator48["return"]();
       }
     } finally {
-      if (_didIteratorError45) {
-        throw _iteratorError45;
+      if (_didIteratorError48) {
+        throw _iteratorError48;
       }
     }
   }
@@ -1886,13 +2022,13 @@ function getSocialSpends(country) {
 
 function getDiplomatySpends(store) {
   var list = [];
-  var _iteratorNormalCompletion46 = true;
-  var _didIteratorError46 = false;
-  var _iteratorError46 = undefined;
+  var _iteratorNormalCompletion49 = true;
+  var _didIteratorError49 = false;
+  var _iteratorError49 = undefined;
 
   try {
-    for (var _iterator46 = store.contracts[Symbol.iterator](), _step46; !(_iteratorNormalCompletion46 = (_step46 = _iterator46.next()).done); _iteratorNormalCompletion46 = true) {
-      var i = _step46.value;
+    for (var _iterator49 = store.contracts[Symbol.iterator](), _step49; !(_iteratorNormalCompletion49 = (_step49 = _iterator49.next()).done); _iteratorNormalCompletion49 = true) {
+      var i = _step49.value;
 
       if (i.con_type === "FW") {
         if (i.pair.length === 1) {
@@ -1905,16 +2041,16 @@ function getDiplomatySpends(store) {
       }
     }
   } catch (err) {
-    _didIteratorError46 = true;
-    _iteratorError46 = err;
+    _didIteratorError49 = true;
+    _iteratorError49 = err;
   } finally {
     try {
-      if (!_iteratorNormalCompletion46 && _iterator46["return"] != null) {
-        _iterator46["return"]();
+      if (!_iteratorNormalCompletion49 && _iterator49["return"] != null) {
+        _iterator49["return"]();
       }
     } finally {
-      if (_didIteratorError46) {
-        throw _iteratorError46;
+      if (_didIteratorError49) {
+        throw _iteratorError49;
       }
     }
   }
@@ -1932,8 +2068,8 @@ function getDiplomatySpends(store) {
 }
 
 function getTransOfPlace(transition, place) {
-  for (var _i10 = 0, _Object$keys3 = Object.keys(transition); _i10 < _Object$keys3.length; _i10++) {
-    var i = _Object$keys3[_i10];
+  for (var _i11 = 0, _Object$keys3 = Object.keys(transition); _i11 < _Object$keys3.length; _i11++) {
+    var i = _Object$keys3[_i11];
 
     if (transition[i].place === place) {
       return transition[i];
@@ -1946,13 +2082,13 @@ function getTransOfPlace(transition, place) {
 function getOccupedRegions(store, type) {
   var arr = [];
   var detail = {};
-  var _iteratorNormalCompletion47 = true;
-  var _didIteratorError47 = false;
-  var _iteratorError47 = undefined;
+  var _iteratorNormalCompletion50 = true;
+  var _didIteratorError50 = false;
+  var _iteratorError50 = undefined;
 
   try {
     var _loop = function _loop() {
-      var i = _step47.value;
+      var i = _step50.value;
 
       if (i.con_type === "DW") {
         i.occuped.split(",").map(function (e) {
@@ -1990,20 +2126,20 @@ function getOccupedRegions(store, type) {
       }
     };
 
-    for (var _iterator47 = store.contracts[Symbol.iterator](), _step47; !(_iteratorNormalCompletion47 = (_step47 = _iterator47.next()).done); _iteratorNormalCompletion47 = true) {
+    for (var _iterator50 = store.contracts[Symbol.iterator](), _step50; !(_iteratorNormalCompletion50 = (_step50 = _iterator50.next()).done); _iteratorNormalCompletion50 = true) {
       _loop();
     }
   } catch (err) {
-    _didIteratorError47 = true;
-    _iteratorError47 = err;
+    _didIteratorError50 = true;
+    _iteratorError50 = err;
   } finally {
     try {
-      if (!_iteratorNormalCompletion47 && _iterator47["return"] != null) {
-        _iterator47["return"]();
+      if (!_iteratorNormalCompletion50 && _iterator50["return"] != null) {
+        _iterator50["return"]();
       }
     } finally {
-      if (_didIteratorError47) {
-        throw _iteratorError47;
+      if (_didIteratorError50) {
+        throw _iteratorError50;
       }
     }
   }
@@ -2028,29 +2164,29 @@ function checkWarRegion(store, reg) {
   } else if (arr.includes(reg)) {
     return !details[reg].agress !== _colorMap["default"][store.country.identify];
   } else {
-    var _iteratorNormalCompletion48 = true;
-    var _didIteratorError48 = false;
-    var _iteratorError48 = undefined;
+    var _iteratorNormalCompletion51 = true;
+    var _didIteratorError51 = false;
+    var _iteratorError51 = undefined;
 
     try {
-      for (var _iterator48 = store.contracts[Symbol.iterator](), _step48; !(_iteratorNormalCompletion48 = (_step48 = _iterator48.next()).done); _iteratorNormalCompletion48 = true) {
-        var i = _step48.value;
+      for (var _iterator51 = store.contracts[Symbol.iterator](), _step51; !(_iteratorNormalCompletion51 = (_step51 = _iterator51.next()).done); _iteratorNormalCompletion51 = true) {
+        var i = _step51.value;
 
         if (i.con_type === "DW" && i.pair.includes(country) && i.pair.length === 1) {
           return true;
         }
       }
     } catch (err) {
-      _didIteratorError48 = true;
-      _iteratorError48 = err;
+      _didIteratorError51 = true;
+      _iteratorError51 = err;
     } finally {
       try {
-        if (!_iteratorNormalCompletion48 && _iterator48["return"] != null) {
-          _iterator48["return"]();
+        if (!_iteratorNormalCompletion51 && _iterator51["return"] != null) {
+          _iterator51["return"]();
         }
       } finally {
-        if (_didIteratorError48) {
-          throw _iteratorError48;
+        if (_didIteratorError51) {
+          throw _iteratorError51;
         }
       }
     }
@@ -2060,29 +2196,29 @@ function checkWarRegion(store, reg) {
 }
 
 function getCountry(store, ident) {
-  var _iteratorNormalCompletion49 = true;
-  var _didIteratorError49 = false;
-  var _iteratorError49 = undefined;
+  var _iteratorNormalCompletion52 = true;
+  var _didIteratorError52 = false;
+  var _iteratorError52 = undefined;
 
   try {
-    for (var _iterator49 = store.country_ai[Symbol.iterator](), _step49; !(_iteratorNormalCompletion49 = (_step49 = _iterator49.next()).done); _iteratorNormalCompletion49 = true) {
-      var i = _step49.value;
+    for (var _iterator52 = store.country_ai[Symbol.iterator](), _step52; !(_iteratorNormalCompletion52 = (_step52 = _iterator52.next()).done); _iteratorNormalCompletion52 = true) {
+      var i = _step52.value;
 
       if (ident === i.identify) {
         return i;
       }
     }
   } catch (err) {
-    _didIteratorError49 = true;
-    _iteratorError49 = err;
+    _didIteratorError52 = true;
+    _iteratorError52 = err;
   } finally {
     try {
-      if (!_iteratorNormalCompletion49 && _iterator49["return"] != null) {
-        _iterator49["return"]();
+      if (!_iteratorNormalCompletion52 && _iterator52["return"] != null) {
+        _iterator52["return"]();
       }
     } finally {
-      if (_didIteratorError49) {
-        throw _iteratorError49;
+      if (_didIteratorError52) {
+        throw _iteratorError52;
       }
     }
   }
@@ -2113,29 +2249,29 @@ function getDate(store) {
 
 function getOwnContracts(store) {
   var cont = [];
-  var _iteratorNormalCompletion50 = true;
-  var _didIteratorError50 = false;
-  var _iteratorError50 = undefined;
+  var _iteratorNormalCompletion53 = true;
+  var _didIteratorError53 = false;
+  var _iteratorError53 = undefined;
 
   try {
-    for (var _iterator50 = store.contracts[Symbol.iterator](), _step50; !(_iteratorNormalCompletion50 = (_step50 = _iterator50.next()).done); _iteratorNormalCompletion50 = true) {
-      var i = _step50.value;
+    for (var _iterator53 = store.contracts[Symbol.iterator](), _step53; !(_iteratorNormalCompletion53 = (_step53 = _iterator53.next()).done); _iteratorNormalCompletion53 = true) {
+      var i = _step53.value;
 
       if (i.pair.length === 1) {
         cont.push(i);
       }
     }
   } catch (err) {
-    _didIteratorError50 = true;
-    _iteratorError50 = err;
+    _didIteratorError53 = true;
+    _iteratorError53 = err;
   } finally {
     try {
-      if (!_iteratorNormalCompletion50 && _iterator50["return"] != null) {
-        _iterator50["return"]();
+      if (!_iteratorNormalCompletion53 && _iterator53["return"] != null) {
+        _iterator53["return"]();
       }
     } finally {
-      if (_didIteratorError50) {
-        throw _iteratorError50;
+      if (_didIteratorError53) {
+        throw _iteratorError53;
       }
     }
   }
@@ -2152,29 +2288,29 @@ function getReparation(country) {
 }
 
 function getRelation(store, country) {
-  var _iteratorNormalCompletion51 = true;
-  var _didIteratorError51 = false;
-  var _iteratorError51 = undefined;
+  var _iteratorNormalCompletion54 = true;
+  var _didIteratorError54 = false;
+  var _iteratorError54 = undefined;
 
   try {
-    for (var _iterator51 = store.relations[Symbol.iterator](), _step51; !(_iteratorNormalCompletion51 = (_step51 = _iterator51.next()).done); _iteratorNormalCompletion51 = true) {
-      var i = _step51.value;
+    for (var _iterator54 = store.relations[Symbol.iterator](), _step54; !(_iteratorNormalCompletion54 = (_step54 = _iterator54.next()).done); _iteratorNormalCompletion54 = true) {
+      var i = _step54.value;
 
       if (i.pair.length === 1 && i.pair[0] === country) {
         return i.value;
       }
     }
   } catch (err) {
-    _didIteratorError51 = true;
-    _iteratorError51 = err;
+    _didIteratorError54 = true;
+    _iteratorError54 = err;
   } finally {
     try {
-      if (!_iteratorNormalCompletion51 && _iterator51["return"] != null) {
-        _iterator51["return"]();
+      if (!_iteratorNormalCompletion54 && _iterator54["return"] != null) {
+        _iterator54["return"]();
       }
     } finally {
-      if (_didIteratorError51) {
-        throw _iteratorError51;
+      if (_didIteratorError54) {
+        throw _iteratorError54;
       }
     }
   }
@@ -2182,29 +2318,29 @@ function getRelation(store, country) {
 
 function checkContract(store, type, country) {
   var priority = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-  var _iteratorNormalCompletion52 = true;
-  var _didIteratorError52 = false;
-  var _iteratorError52 = undefined;
+  var _iteratorNormalCompletion55 = true;
+  var _didIteratorError55 = false;
+  var _iteratorError55 = undefined;
 
   try {
-    for (var _iterator52 = store.contracts[Symbol.iterator](), _step52; !(_iteratorNormalCompletion52 = (_step52 = _iterator52.next()).done); _iteratorNormalCompletion52 = true) {
-      var i = _step52.value;
+    for (var _iterator55 = store.contracts[Symbol.iterator](), _step55; !(_iteratorNormalCompletion55 = (_step55 = _iterator55.next()).done); _iteratorNormalCompletion55 = true) {
+      var i = _step55.value;
 
       if (i.pair.includes(country) && i.pair.length === 1 && i.con_type === type && (priority ? i.priority === priority || i.priority === "0" : true)) {
         return true;
       }
     }
   } catch (err) {
-    _didIteratorError52 = true;
-    _iteratorError52 = err;
+    _didIteratorError55 = true;
+    _iteratorError55 = err;
   } finally {
     try {
-      if (!_iteratorNormalCompletion52 && _iterator52["return"] != null) {
-        _iterator52["return"]();
+      if (!_iteratorNormalCompletion55 && _iterator55["return"] != null) {
+        _iterator55["return"]();
       }
     } finally {
-      if (_didIteratorError52) {
-        throw _iteratorError52;
+      if (_didIteratorError55) {
+        throw _iteratorError55;
       }
     }
   }
@@ -2222,26 +2358,26 @@ function getMaxId(arr) {
 
 function getInfrastructure(country) {
   var val = 0;
-  var _iteratorNormalCompletion53 = true;
-  var _didIteratorError53 = false;
-  var _iteratorError53 = undefined;
+  var _iteratorNormalCompletion56 = true;
+  var _didIteratorError56 = false;
+  var _iteratorError56 = undefined;
 
   try {
-    for (var _iterator53 = country.regions[Symbol.iterator](), _step53; !(_iteratorNormalCompletion53 = (_step53 = _iterator53.next()).done); _iteratorNormalCompletion53 = true) {
-      var i = _step53.value;
+    for (var _iterator56 = country.regions[Symbol.iterator](), _step56; !(_iteratorNormalCompletion56 = (_step56 = _iterator56.next()).done); _iteratorNormalCompletion56 = true) {
+      var i = _step56.value;
       val = val + i.infrastructure;
     }
   } catch (err) {
-    _didIteratorError53 = true;
-    _iteratorError53 = err;
+    _didIteratorError56 = true;
+    _iteratorError56 = err;
   } finally {
     try {
-      if (!_iteratorNormalCompletion53 && _iterator53["return"] != null) {
-        _iterator53["return"]();
+      if (!_iteratorNormalCompletion56 && _iterator56["return"] != null) {
+        _iterator56["return"]();
       }
     } finally {
-      if (_didIteratorError53) {
-        throw _iteratorError53;
+      if (_didIteratorError56) {
+        throw _iteratorError56;
       }
     }
   }
@@ -2251,4 +2387,115 @@ function getInfrastructure(country) {
 
 function getGdpPerPopulation(country) {
   return parseInt(getEconomy(country, false) / getPopulation(country, false));
+}
+
+function makeBattleEffects(store, props, obj) {
+  var changerOwn = {
+    pechot_quan: obj.own.pechot,
+    archer_quan: obj.own.archer,
+    cavallery_quan: obj.own.cavallery,
+    catapult_quan: obj.own.catapult,
+    country: store.createGame.country.identify,
+    country_id: store.createGame.country.id,
+    id: 1,
+    place: obj.region.name,
+    place_type: 'G',
+    status: 'R'
+  };
+  var changerEnemy = {
+    pechot_quan: obj.enemy.pechot,
+    archer_quan: obj.enemy.archer,
+    cavallery_quan: obj.enemy.cavallery,
+    catapult_quan: obj.enemy.catapult,
+    country: obj.enemyCountry.identify,
+    country_id: obj.enemyCountry.id,
+    id: 1,
+    place: obj.region.name,
+    place_type: 'G',
+    status: 'R'
+  };
+
+  if (obj.result === 'own') {
+    props.change_occuped({
+      own: store.createGame.country.name,
+      enemy: obj.enemyCountry.identify,
+      region: obj.region.name
+    });
+    props.change_squad(changerOwn);
+    props.new_squad(changerOwn);
+
+    if (obj.enemy.pechot + obj.enemy.archer + obj.enemy.cavallery + obj.enemy.catapult > 0) {
+      var _iteratorNormalCompletion57 = true;
+      var _didIteratorError57 = false;
+      var _iteratorError57 = undefined;
+
+      try {
+        for (var _iterator57 = _movingSquad["default"][obj.region.name][Symbol.iterator](), _step57; !(_iteratorNormalCompletion57 = (_step57 = _iterator57.next()).done); _iteratorNormalCompletion57 = true) {
+          var i = _step57.value;
+
+          if (canBeTargetAI(store.createGame, i, obj.enemyCountry.identify)) {
+            props.delete_ai_squad(changerEnemy);
+            changerEnemy.place = i;
+            props.new_ai_squad(changerEnemy);
+            return null;
+          }
+        }
+      } catch (err) {
+        _didIteratorError57 = true;
+        _iteratorError57 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion57 && _iterator57["return"] != null) {
+            _iterator57["return"]();
+          }
+        } finally {
+          if (_didIteratorError57) {
+            throw _iteratorError57;
+          }
+        }
+      }
+
+      props.delete_ai_squad(changerEnemy);
+    } else {
+      props.delete_ai_squad(changerEnemy);
+    }
+  } else {
+    props.change_ai_squad(changerEnemy);
+
+    if (obj.own.pechot + obj.own.archer + obj.own.cavallery + obj.own.catapult > 0) {
+      var _iteratorNormalCompletion58 = true;
+      var _didIteratorError58 = false;
+      var _iteratorError58 = undefined;
+
+      try {
+        for (var _iterator58 = _movingSquad["default"][obj.region.name][Symbol.iterator](), _step58; !(_iteratorNormalCompletion58 = (_step58 = _iterator58.next()).done); _iteratorNormalCompletion58 = true) {
+          var _i12 = _step58.value;
+
+          if (canBeRetreat(store.createGame, _i12)) {
+            props.delete_squad(changerOwn);
+            changerOwn.place = _i12;
+            props.new_squad(changerOwn);
+            return null;
+          }
+        }
+      } catch (err) {
+        _didIteratorError58 = true;
+        _iteratorError58 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion58 && _iterator58["return"] != null) {
+            _iterator58["return"]();
+          }
+        } finally {
+          if (_didIteratorError58) {
+            throw _iteratorError58;
+          }
+        }
+      }
+
+      props.delete_squad(changerOwn);
+    } else {
+      props.delete_squad(changerOwn);
+    }
+  }
 }
