@@ -75,6 +75,7 @@ exports.checkContract = checkContract;
 exports.getMaxId = getMaxId;
 exports.getInfrastructure = getInfrastructure;
 exports.getGdpPerPopulation = getGdpPerPopulation;
+exports.haveSeaside = haveSeaside;
 exports.makeBattleEffects = makeBattleEffects;
 
 var _identCountries = _interopRequireDefault(require("./identCountries"));
@@ -2389,6 +2390,37 @@ function getGdpPerPopulation(country) {
   return parseInt(getEconomy(country, false) / getPopulation(country, false));
 }
 
+function haveSeaside(country) {
+  var _iteratorNormalCompletion57 = true;
+  var _didIteratorError57 = false;
+  var _iteratorError57 = undefined;
+
+  try {
+    for (var _iterator57 = country.regions[Symbol.iterator](), _step57; !(_iteratorNormalCompletion57 = (_step57 = _iterator57.next()).done); _iteratorNormalCompletion57 = true) {
+      var i = _step57.value;
+
+      if (i.seaside) {
+        return i.name;
+      }
+    }
+  } catch (err) {
+    _didIteratorError57 = true;
+    _iteratorError57 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion57 && _iterator57["return"] != null) {
+        _iterator57["return"]();
+      }
+    } finally {
+      if (_didIteratorError57) {
+        throw _iteratorError57;
+      }
+    }
+  }
+
+  return false;
+}
+
 function makeBattleEffects(store, props, obj) {
   var changerOwn = {
     pechot_quan: obj.own.pechot,
@@ -2421,60 +2453,22 @@ function makeBattleEffects(store, props, obj) {
       enemy: obj.enemyCountry.identify,
       region: obj.region.name
     });
-    props.change_squad(changerOwn);
+    props.delete_squad(changerOwn);
     props.new_squad(changerOwn);
 
     if (obj.enemy.pechot + obj.enemy.archer + obj.enemy.cavallery + obj.enemy.catapult > 0) {
-      var _iteratorNormalCompletion57 = true;
-      var _didIteratorError57 = false;
-      var _iteratorError57 = undefined;
-
-      try {
-        for (var _iterator57 = _movingSquad["default"][obj.region.name][Symbol.iterator](), _step57; !(_iteratorNormalCompletion57 = (_step57 = _iterator57.next()).done); _iteratorNormalCompletion57 = true) {
-          var i = _step57.value;
-
-          if (canBeTargetAI(store.createGame, i, obj.enemyCountry.identify)) {
-            props.delete_ai_squad(changerEnemy);
-            changerEnemy.place = i;
-            props.new_ai_squad(changerEnemy);
-            return null;
-          }
-        }
-      } catch (err) {
-        _didIteratorError57 = true;
-        _iteratorError57 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion57 && _iterator57["return"] != null) {
-            _iterator57["return"]();
-          }
-        } finally {
-          if (_didIteratorError57) {
-            throw _iteratorError57;
-          }
-        }
-      }
-
-      props.delete_ai_squad(changerEnemy);
-    } else {
-      props.delete_ai_squad(changerEnemy);
-    }
-  } else {
-    props.change_ai_squad(changerEnemy);
-
-    if (obj.own.pechot + obj.own.archer + obj.own.cavallery + obj.own.catapult > 0) {
       var _iteratorNormalCompletion58 = true;
       var _didIteratorError58 = false;
       var _iteratorError58 = undefined;
 
       try {
         for (var _iterator58 = _movingSquad["default"][obj.region.name][Symbol.iterator](), _step58; !(_iteratorNormalCompletion58 = (_step58 = _iterator58.next()).done); _iteratorNormalCompletion58 = true) {
-          var _i12 = _step58.value;
+          var i = _step58.value;
 
-          if (canBeRetreat(store.createGame, _i12)) {
-            props.delete_squad(changerOwn);
-            changerOwn.place = _i12;
-            props.new_squad(changerOwn);
+          if (canBeTargetAI(store.createGame, i, obj.enemyCountry.identify)) {
+            props.delete_ai_squad(changerEnemy);
+            changerEnemy.place = i;
+            props.new_ai_squad(changerEnemy);
             return null;
           }
         }
@@ -2491,6 +2485,58 @@ function makeBattleEffects(store, props, obj) {
             throw _iteratorError58;
           }
         }
+      }
+
+      if (obj.region.seaside && haveSeaside(obj.enemy)) {
+        props.delete_squad(changerEnemy);
+        changerEnemy.place = haveSeaside(obj.enemy);
+        props.new_squad(changerEnemy);
+        return null;
+      }
+
+      props.delete_ai_squad(changerEnemy);
+    } else {
+      props.delete_ai_squad(changerEnemy);
+    }
+  } else {
+    props.change_ai_squad(changerEnemy);
+
+    if (obj.own.pechot + obj.own.archer + obj.own.cavallery + obj.own.catapult > 0) {
+      var _iteratorNormalCompletion59 = true;
+      var _didIteratorError59 = false;
+      var _iteratorError59 = undefined;
+
+      try {
+        for (var _iterator59 = _movingSquad["default"][obj.region.name][Symbol.iterator](), _step59; !(_iteratorNormalCompletion59 = (_step59 = _iterator59.next()).done); _iteratorNormalCompletion59 = true) {
+          var _i12 = _step59.value;
+
+          if (canBeRetreat(store.createGame, _i12)) {
+            props.delete_squad(changerOwn);
+            changerOwn.place = _i12;
+            props.new_squad(changerOwn);
+            return null;
+          }
+        }
+      } catch (err) {
+        _didIteratorError59 = true;
+        _iteratorError59 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion59 && _iterator59["return"] != null) {
+            _iterator59["return"]();
+          }
+        } finally {
+          if (_didIteratorError59) {
+            throw _iteratorError59;
+          }
+        }
+      }
+
+      if (obj.region.seaside && haveSeaside(store.createGame.country)) {
+        props.delete_squad(changerOwn);
+        changerOwn.place = haveSeaside(store.createGame.country);
+        props.new_squad(changerOwn);
+        return null;
       }
 
       props.delete_squad(changerOwn);

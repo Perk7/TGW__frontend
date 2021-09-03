@@ -3798,9 +3798,9 @@ function nextStep(store, func) {
 
           if (_seaSquad["default"][curSquad.target] === curSquad.place) {
             newPlace = curSquad.target;
+            curSquad.type = 'Ground';
           } else {
             newPlace = _seaSquad["default"][curSquad.target];
-            curSquad.type = 'Ground';
           }
 
           curSquad.place = newPlace;
@@ -4109,12 +4109,6 @@ function nextStep(store, func) {
                 ownSpend: exodus.own,
                 enemySpend: exodus.enemy,
                 result: exodus.exodus === 'own' ? 'win' : 'loose'
-              });
-              console.log(own, {
-                pechot: _i121.pechot_quan - exodus.own.pechot,
-                archer: _i121.archer_quan - exodus.own.archer,
-                cavallery: _i121.cavallery_quan - exodus.own.cavallery,
-                catapult: _i121.catapult_quan - exodus.own.catapult
               });
               (0, _otherFunctions.makeBattleEffects)(store, func, {
                 region: (0, _otherFunctions.getRegion)(newStore, _i121.place),

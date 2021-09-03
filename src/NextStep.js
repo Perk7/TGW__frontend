@@ -2689,9 +2689,9 @@ export default async function nextStep(store, func) {
         if (curSquad.place !== curSquad.target) {
             if (seaSquad[curSquad.target] === curSquad.place) {
                 newPlace = curSquad.target
+                curSquad.type = 'Ground'
             } else {
                 newPlace = seaSquad[curSquad.target]
-                curSquad.type = 'Ground'
             }
             curSquad.place = newPlace
 
@@ -2783,7 +2783,6 @@ export default async function nextStep(store, func) {
 
                         quality: getCountry(store.createGame, s.country).army_quality,
                     }
-
                     let exodus = getExodusBattle(own, enemy)
                     battles.push({
                         region: getRegion(newStore, i.place),
@@ -2797,13 +2796,6 @@ export default async function nextStep(store, func) {
 
                         result: exodus.exodus === 'own' ? 'win' : 'loose',
                     })
-                    console.log(own, {
-                        pechot: i.pechot_quan - exodus.own.pechot,
-                        archer: i.archer_quan - exodus.own.archer,
-                        cavallery: i.cavallery_quan - exodus.own.cavallery,
-                        catapult: i.catapult_quan - exodus.own.catapult, 
-                    })
-
                     makeBattleEffects(store, func, {
                         region: getRegion(newStore, i.place),
                         enemyCountry: getCountry(store.createGame, s.country),

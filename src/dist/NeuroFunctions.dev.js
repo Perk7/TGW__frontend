@@ -111,5 +111,6 @@ function getExodusBattle(own, enemy) {
     }
   }
 
+  console.log(ret);
   return ret;
 }

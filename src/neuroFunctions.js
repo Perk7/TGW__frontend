@@ -124,5 +124,6 @@ export function getExodusBattle(own, enemy) {
             ret.enemy[i] = enemy[i]
         }
     }
+    console.log(ret)
     return ret
 }

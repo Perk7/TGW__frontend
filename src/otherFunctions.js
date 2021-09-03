@@ -1185,6 +1185,15 @@ export function getGdpPerPopulation(country) {
   return parseInt(getEconomy(country, false) / getPopulation(country, false))
 }
 
+export function haveSeaside(country) {
+  for (let i of country.regions) {
+    if (i.seaside) {
+      return i.name
+    }
+  }
+  return false
+}
+
 export function makeBattleEffects(store, props, obj) {
   let changerOwn = {
       pechot_quan: obj.own.pechot,
@@ -1219,7 +1228,7 @@ export function makeBattleEffects(store, props, obj) {
           enemy: obj.enemyCountry.identify,
           region: obj.region.name
       })
-      props.change_squad(changerOwn)
+      props.delete_squad(changerOwn)
       props.new_squad(changerOwn)
       if ((obj.enemy.pechot + obj.enemy.archer + obj.enemy.cavallery + obj.enemy.catapult) > 0) {
           for (let i of movingSquad[obj.region.name]) {
@@ -1229,6 +1238,12 @@ export function makeBattleEffects(store, props, obj) {
                   props.new_ai_squad(changerEnemy)
                   return null
               }
+          }
+          if (obj.region.seaside && haveSeaside(obj.enemy)) {
+            props.delete_squad(changerEnemy)
+            changerEnemy.place = haveSeaside(obj.enemy)
+            props.new_squad(changerEnemy)
+            return null
           }
           props.delete_ai_squad(changerEnemy)
       } else {
@@ -1244,6 +1259,12 @@ export function makeBattleEffects(store, props, obj) {
                   props.new_squad(changerOwn)
                   return null
               }
+          }
+          if (obj.region.seaside && haveSeaside(store.createGame.country)) {
+            props.delete_squad(changerOwn)
+            changerOwn.place = haveSeaside(store.createGame.country)
+            props.new_squad(changerOwn)
+            return null
           }
           props.delete_squad(changerOwn)
       } else {
