@@ -187,3 +187,7 @@
 .start-game__map-block__squad-target__header > span:last-child {
     text-align: right;
 }
+
+.redact__select-all {
+    width: 92% !important;
+}

@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import {mapStateToProps} from "../../storage/reduxGet";
 import {create_game, change_buffs, change_game} from "../../storage/actions";
 import Tutorial from "../../elements/Tutorial";
-import {getSchools, getUniversities} from "../../otherFunctions";
+import {getPopulation, getSchools, getUniversities} from "../../otherFunctions";
 import EmptyActions from "../../elements/EmptyActions";
 import Header from "../../elements/Header";
 import ValueBar from "../../elements/ValueBar";
@@ -123,6 +123,13 @@ class EducationGame extends Component {
         }
     }
 
+    checkUnivDisable() {
+        return parseInt(getPopulation(this.props.store.createGame.country, false) * 0.05 / 2000) - getUniversities(this.props.store.createGame.country) > 0
+    }
+    checkSchoolDisable() {
+        return parseInt(getPopulation(this.props.store.createGame.country, false) * 0.2 / 700) - getSchools(this.props.store.createGame.country) > 0
+    }
+
     render() {
         if (!this.state.load) {
             return (
@@ -163,7 +170,7 @@ class EducationGame extends Component {
                                 </span>
                                 <div className='education-game__redact__value'>
                                     <span>{getSchools(this.props.store.createGame.country)} шт.</span>
-                                    <button className='redact__controls' data-target='schools'>+</button>
+                                    <button disabled={!this.checkSchoolDisable()} className='redact__controls' data-target='schools'>+</button>
                                     <span>
                                         <span className='education-game__redact__increase'>{this.props.store.createGame.buffs.schools
                                             ? `+${this.props.store.createGame.buffs.schools}` 
@@ -181,7 +188,7 @@ class EducationGame extends Component {
                                 </span>
                                 <div className='education-game__redact__value'>
                                     <span>{getUniversities(this.props.store.createGame.country)} шт.</span>
-                                    <button className='redact__controls' data-target='universtites'>+</button>
+                                    <button disabled={!this.checkUnivDisable()} className='redact__controls' data-target='universtites'>+</button>
                                     <span>
                                         <span className='education-game__redact__increase'>{this.props.store.createGame.buffs.universtites
                                             ? `+${this.props.store.createGame.buffs.universtites}` 

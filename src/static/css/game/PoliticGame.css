@@ -188,3 +188,10 @@ div:last-child > .politic-game__redact__item__values_selected {
 .politic-game__redact__item__values_input:checked + .politic-game__redact__item__values {
     background-color: var(--gray);
 }
+
+.politic-game__vassal-tittle {
+    color: #fff;
+    font-size: 1.3em;
+    text-align: left;
+    padding: 1em 2em 0;
+}

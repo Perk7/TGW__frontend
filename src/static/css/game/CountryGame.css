@@ -116,3 +116,31 @@ header > .country-game__header__time {
     vertical-align: middle;
     margin-bottom: 0.25em;
 }
+
+.country-game__map-block__legend {
+    background-color: #444;
+    list-style-type: none;
+    padding: 1em 0 0.5em;
+    border: 1px solid #444;
+    outline: 1px solid #444;
+}
+
+.country-game__map-block__legend__item:first-child {
+    margin-top: 0;
+}
+
+.country-game__map-block__legend__item {
+    margin-top: 0.5em;
+}
+
+.country-game__map-block__legend__item > div {
+    width: 1.4em;
+    border: 1px solid #FFF;
+    height: 1.4em;
+    display: inline-block;
+    font-size: 0.8em;
+}
+
+.country-game__map-block__legend__item > span {
+    margin-left: 1em;
+}

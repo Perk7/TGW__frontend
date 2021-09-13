@@ -1194,6 +1194,19 @@ export function haveSeaside(country) {
   return false
 }
 
+export function getPeacingCountries(store) {
+  let arr = []
+  for (let i of store.contracts) {
+    if (i.con_type === 'FW' && i.pair.length === 1) {
+      arr.push(i.pair[0])
+    }
+    if (i.con_type === 'CP' && i.pair.length === 1) {
+      arr.push(i.pair[0])
+    }
+  }
+  return arr
+}
+
 export function makeBattleEffects(store, props, obj) {
   let changerOwn = {
       pechot_quan: obj.own.pechot,

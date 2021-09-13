@@ -76,6 +76,7 @@ exports.getMaxId = getMaxId;
 exports.getInfrastructure = getInfrastructure;
 exports.getGdpPerPopulation = getGdpPerPopulation;
 exports.haveSeaside = haveSeaside;
+exports.getPeacingCountries = getPeacingCountries;
 exports.makeBattleEffects = makeBattleEffects;
 
 var _identCountries = _interopRequireDefault(require("./identCountries"));
@@ -2421,6 +2422,42 @@ function haveSeaside(country) {
   return false;
 }
 
+function getPeacingCountries(store) {
+  var arr = [];
+  var _iteratorNormalCompletion58 = true;
+  var _didIteratorError58 = false;
+  var _iteratorError58 = undefined;
+
+  try {
+    for (var _iterator58 = store.contracts[Symbol.iterator](), _step58; !(_iteratorNormalCompletion58 = (_step58 = _iterator58.next()).done); _iteratorNormalCompletion58 = true) {
+      var i = _step58.value;
+
+      if (i.con_type === 'FW' && i.pair.length === 1) {
+        arr.push(i.pair[0]);
+      }
+
+      if (i.con_type === 'CP' && i.pair.length === 1) {
+        arr.push(i.pair[0]);
+      }
+    }
+  } catch (err) {
+    _didIteratorError58 = true;
+    _iteratorError58 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion58 && _iterator58["return"] != null) {
+        _iterator58["return"]();
+      }
+    } finally {
+      if (_didIteratorError58) {
+        throw _iteratorError58;
+      }
+    }
+  }
+
+  return arr;
+}
+
 function makeBattleEffects(store, props, obj) {
   var changerOwn = {
     pechot_quan: obj.own.pechot,
@@ -2457,13 +2494,13 @@ function makeBattleEffects(store, props, obj) {
     props.new_squad(changerOwn);
 
     if (obj.enemy.pechot + obj.enemy.archer + obj.enemy.cavallery + obj.enemy.catapult > 0) {
-      var _iteratorNormalCompletion58 = true;
-      var _didIteratorError58 = false;
-      var _iteratorError58 = undefined;
+      var _iteratorNormalCompletion59 = true;
+      var _didIteratorError59 = false;
+      var _iteratorError59 = undefined;
 
       try {
-        for (var _iterator58 = _movingSquad["default"][obj.region.name][Symbol.iterator](), _step58; !(_iteratorNormalCompletion58 = (_step58 = _iterator58.next()).done); _iteratorNormalCompletion58 = true) {
-          var i = _step58.value;
+        for (var _iterator59 = _movingSquad["default"][obj.region.name][Symbol.iterator](), _step59; !(_iteratorNormalCompletion59 = (_step59 = _iterator59.next()).done); _iteratorNormalCompletion59 = true) {
+          var i = _step59.value;
 
           if (canBeTargetAI(store.createGame, i, obj.enemyCountry.identify)) {
             props.delete_ai_squad(changerEnemy);
@@ -2473,16 +2510,16 @@ function makeBattleEffects(store, props, obj) {
           }
         }
       } catch (err) {
-        _didIteratorError58 = true;
-        _iteratorError58 = err;
+        _didIteratorError59 = true;
+        _iteratorError59 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion58 && _iterator58["return"] != null) {
-            _iterator58["return"]();
+          if (!_iteratorNormalCompletion59 && _iterator59["return"] != null) {
+            _iterator59["return"]();
           }
         } finally {
-          if (_didIteratorError58) {
-            throw _iteratorError58;
+          if (_didIteratorError59) {
+            throw _iteratorError59;
           }
         }
       }
@@ -2502,13 +2539,13 @@ function makeBattleEffects(store, props, obj) {
     props.change_ai_squad(changerEnemy);
 
     if (obj.own.pechot + obj.own.archer + obj.own.cavallery + obj.own.catapult > 0) {
-      var _iteratorNormalCompletion59 = true;
-      var _didIteratorError59 = false;
-      var _iteratorError59 = undefined;
+      var _iteratorNormalCompletion60 = true;
+      var _didIteratorError60 = false;
+      var _iteratorError60 = undefined;
 
       try {
-        for (var _iterator59 = _movingSquad["default"][obj.region.name][Symbol.iterator](), _step59; !(_iteratorNormalCompletion59 = (_step59 = _iterator59.next()).done); _iteratorNormalCompletion59 = true) {
-          var _i12 = _step59.value;
+        for (var _iterator60 = _movingSquad["default"][obj.region.name][Symbol.iterator](), _step60; !(_iteratorNormalCompletion60 = (_step60 = _iterator60.next()).done); _iteratorNormalCompletion60 = true) {
+          var _i12 = _step60.value;
 
           if (canBeRetreat(store.createGame, _i12)) {
             props.delete_squad(changerOwn);
@@ -2518,16 +2555,16 @@ function makeBattleEffects(store, props, obj) {
           }
         }
       } catch (err) {
-        _didIteratorError59 = true;
-        _iteratorError59 = err;
+        _didIteratorError60 = true;
+        _iteratorError60 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion59 && _iterator59["return"] != null) {
-            _iterator59["return"]();
+          if (!_iteratorNormalCompletion60 && _iterator60["return"] != null) {
+            _iterator60["return"]();
           }
         } finally {
-          if (_didIteratorError59) {
-            throw _iteratorError59;
+          if (_didIteratorError60) {
+            throw _iteratorError60;
           }
         }
       }

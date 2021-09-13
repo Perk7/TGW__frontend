@@ -1,6 +1,12 @@
 .diplomacy-game__main-block {
     display: grid;
-    grid-template-columns: 40% 60%;
+    grid-template-columns: 60% 40%;
+}
+
+.diplomacy-game__main-block > svg {
+    transform: translateX(-18vw);
+    margin: auto;
+    margin-left: 12%;
 }
 
 .diplomacy-game__relations-list {

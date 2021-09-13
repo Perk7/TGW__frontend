@@ -6,6 +6,7 @@ import { change_game, change_buffs } from "../../storage/actions";
 import Tutorial from "../../elements/Tutorial";
 import {
     getAqueducs,
+    getArea,
     getCargoDelivery,
     getInfrastructure,
     getPaveRoads,
@@ -176,6 +177,11 @@ class TransportGame extends Component {
         )
     }
 
+    getAquaDisable() {
+        return parseInt(getPopulation(this.props.store.createGame.country)*getArea(this.props.store.createGame.country, false) / 10**10)
+               - getAqueducs(this.props.store.createGame.country) > 0
+    }
+
     render() {
         if (!this.state.load) {
             return (
@@ -323,7 +329,8 @@ class TransportGame extends Component {
                                         redactorArr: [1,5,10,25],
                                         current: 'aqueducs'
                                     })
-                                }} className='redact__controls'>+</button>
+                                }} className='redact__controls'
+                                   disabled={!this.getAquaDisable()}>+</button>
                             </div>
                         </div>
                     </div>

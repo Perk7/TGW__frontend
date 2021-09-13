@@ -5,6 +5,7 @@ import { mapStateToProps } from "../../storage/reduxGet";
 import { create_game } from "../../storage/actions";
 import Tutorial from "../../elements/Tutorial";
 import PeaceContract from "../../elements/PeaceContract";
+import coordsRegions from "../../coordsMap";
 import identCountries from "../../identCountries";
 import {
   getBalanceRegion,
@@ -16,6 +17,7 @@ import Relations from "../../elements/Relations";
 import EmptyActions from "../../elements/EmptyActions";
 import Header from "../../elements/Header";
 import Flags from "../../Flags";
+import MapRegion from "../../elements/maps/MapRegion";
 
 class DiplomacyGame extends Component {
   constructor() {
@@ -24,7 +26,7 @@ class DiplomacyGame extends Component {
       load: true,
       tutorial: false,
       description:
-        'Здесь находится вся информация о ваших отношениях с другими странами, а также' +
+        'Здесь находится вся информация о ваших отношениях с другими странами, а также ' +
         "все текущие войны мира и военные альянсы других государств.;;" +
         "Если у вас имеются вассальные государства, то вы будете получать от них свою долю, а также " +
         "сможете размещать войска на их территории и принуждать их к вступлению в войны.;" +
@@ -41,6 +43,8 @@ class DiplomacyGame extends Component {
 
       emptyActions: false,
       emptyHeader: "",
+
+      regions: [],
     };
 
     this.getRelationsList = this.getRelationsList.bind(this);
@@ -49,21 +53,27 @@ class DiplomacyGame extends Component {
     this.getVassals = this.getVassals.bind(this);
     this.changeLoader = this.changeLoader.bind(this);
   }
-
+  
   componentDidMount() {
-    if (document.readyState === "complete") {
-      this.setState({
-        load: false,
-      });
-    } else {
-      document.addEventListener("readystatechange", () => {
-        if (document.readyState === "complete") {
+      if (document.readyState === 'complete') {
+          if (!this.state.regions.length) {
+              this.makeMap()
+          }
           this.setState({
-            load: false,
-          });
-        }
-      });
-    }
+              load: false
+          })
+      } else {
+          document.addEventListener('readystatechange', () => {
+              if (!this.state.regions.length) {
+                  this.makeMap()
+              }
+              if (document.readyState === 'complete') {
+                  this.setState({
+                      load: false
+                  })
+              }
+          })
+      }
   }
 
   changeLoader() {
@@ -89,6 +99,41 @@ class DiplomacyGame extends Component {
       return "#ff4225";
     }
     return "#ff0000";
+  }
+
+  makeMap() {
+      let relations = {};
+      for (let i of this.props.store.createGame.relations) {
+        if (i.pair.length === 1) {
+          relations[i.pair[0]] = i.value
+        }
+      }
+      let arr = []
+      for (let i of this.props.store.createGame.country.regions) {
+          let coords = coordsRegions[i.name]
+          arr.push({
+              coords: coords,
+              color: '#5599ec',
+              name: i.name
+          })
+      }
+
+      for (let i of this.props.store.createGame.country_ai) {
+          let hash = relations[i.identify]
+          let color = this.getRelationColor(hash)
+          for (let t of i.regions) {
+              let coords = coordsRegions[t.name]
+              arr.push({
+                  coords: coords,
+                  color: color,
+                  name: t.name
+              })
+          }
+      }
+
+      this.setState({
+          regions: arr
+      })
   }
 
   getRelationsList() {
@@ -458,11 +503,28 @@ class DiplomacyGame extends Component {
           />
           <div>
             <div className="diplomacy-game__main-block">
+              <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="70vw" height="80vh"
+                        viewBox={`0 0 200 200`}
+                        version="1.1"
+                        id="1svg8"
+                    >
+                        <g
+                            id="Море"
+                            style={{userSelect: 'none',strokeWidth:'0.188976',strokeMiterlimit:'4',strokeDasharray:'none'}}
+                        >
+                            {this.state.regions.map((reg) => <MapRegion coord={reg.coords} identy={reg.name} color={reg.color} key={reg.name} />)}
+                            <MapRegion coord={coordsRegions['Ввандерфелл']} identy="Ввандерфелл" color='#bbb' />
+                        </g>
+              </svg>
+              {/*
               <section>
                 <ul className="diplomacy-game__relations-list overflowing">
                   {this.getRelationsList()}
                 </ul>
               </section>
+              */}
               <section className="diplomacy-game__contracts-block overflowing">
                 <div className="diplomacy-game__contracts__alliance">
                   <span>Альянсы:</span>

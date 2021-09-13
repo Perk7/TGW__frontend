@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import {mapStateToProps} from "../../storage/reduxGet";
 import {change_game, change_buffs, set_social} from "../../storage/actions";
 import Tutorial from "../../elements/Tutorial";
-import {getSocialSpends} from "../../otherFunctions";
+import {getGdpPerPopulation, getSocialSpends} from "../../otherFunctions";
 import EmptyActions from "../../elements/EmptyActions";
 import Header from "../../elements/Header";
 
@@ -45,6 +45,22 @@ class SocialGame extends Component {
         }
     }
 
+    getMaternalDisable() {
+        return (getGdpPerPopulation(this.props.store.createGame.country) * 5) - this.props.store.createGame.country.maternal_capital > 0
+    }
+
+    getPensionlDisable() {
+        return (getGdpPerPopulation(this.props.store.createGame.country) * 2) - this.props.store.createGame.country.avg_pension > 0
+    }
+
+    getUnemploylDisable() {
+        return (getGdpPerPopulation(this.props.store.createGame.country) / 2) - this.props.store.createGame.country.allowance_unemploy > 0
+    }
+
+    getInvalidlDisable() {
+        return (getGdpPerPopulation(this.props.store.createGame.country) / 2) - this.props.store.createGame.country.allowance_disability > 0
+    }
+
     getRedactSocial() {
         let properties = {
             avg_pension: this.props.store.createGame.country.avg_pension,
@@ -77,7 +93,7 @@ class SocialGame extends Component {
                         <button data-type='dec' data-target='maternal_capital' className='social-game__list__controls redact__controls'>-</button>
                         <input id='maternal_capital__value' type="number" className='social-game__list__number redact__number' disabled={true} value={properties.maternal_capital} />
                         <img className='icons_mini' src={'images/icons/coin.svg'} alt=""/>
-                        <button data-type='inc' data-target='maternal_capital' className='social-game__list__controls redact__controls'>+</button>
+                        <button disabled={!this.getMaternalDisable()} data-type='inc' data-target='maternal_capital' className='social-game__list__controls redact__controls'>+</button>
                     </div>
                 </li>
                 <li className='social-game__list__item' key='2'>
@@ -86,7 +102,7 @@ class SocialGame extends Component {
                         <button data-type='dec' data-target='avg_pension' className='social-game__list__controls redact__controls'>-</button>
                         <input id='avg_pension__value' type="number" className='social-game__list__number redact__number' disabled={true} value={properties.avg_pension} />
                         <img className='icons_mini' src={'images/icons/coin.svg'} alt=""/>
-                        <button data-type='inc' data-target='avg_pension' className='social-game__list__controls redact__controls'>+</button>
+                        <button disabled={!this.getPensionlDisable()} data-type='inc' data-target='avg_pension' className='social-game__list__controls redact__controls'>+</button>
                     </div>
                 </li>
                 <li className='social-game__list__item' key='3'>
@@ -95,7 +111,7 @@ class SocialGame extends Component {
                         <button data-type='dec' data-target='allowance_unemploy' className='social-game__list__controls redact__controls'>-</button>
                         <input id='allowance_unemploy__value' type="number" className='social-game__list__number redact__number' disabled={true} value={properties.allowance_unemploy} />
                         <img className='icons_mini' src={'images/icons/coin.svg'} alt=""/>
-                        <button data-type='inc' data-target='allowance_unemploy' className='social-game__list__controls redact__controls'>+</button>
+                        <button disabled={!this.getUnemploylDisable()} data-type='inc' data-target='allowance_unemploy' className='social-game__list__controls redact__controls'>+</button>
                     </div>
                 </li>
                 <li className='social-game__list__item' key='4'>
@@ -104,7 +120,7 @@ class SocialGame extends Component {
                         <button data-type='dec' data-target='allowance_disability' className='social-game__list__controls redact__controls'>-</button>
                         <input id='allowance_disability__value' type="number" className='social-game__list__number redact__number' disabled={true} value={properties.allowance_disability} />
                         <img className='icons_mini' src={'images/icons/coin.svg'} alt=""/>
-                        <button data-type='inc' data-target='allowance_disability' className='social-game__list__controls redact__controls'>+</button>
+                        <button disabled={!this.getInvalidlDisable()} data-type='inc' data-target='allowance_disability' className='social-game__list__controls redact__controls'>+</button>
                     </div>
                 </li>
                 <li className='social-game__list__item' key='5'>

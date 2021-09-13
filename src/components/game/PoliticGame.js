@@ -6,7 +6,7 @@ import {connect} from "react-redux";
 import {mapStateToProps} from "../../storage/reduxGet";
 import LoadingScreen from "react-loading-screen";
 import {create_game, change_capital, change_buffs, change_game, change_government, change_area_format} from "../../storage/actions";
-import {getColor, getGovernment, getAreaFormat} from "../../otherFunctions";
+import {getColor, getGovernment, getAreaFormat, isVassal} from "../../otherFunctions";
 import EmptyActions from "../../elements/EmptyActions";
 
 class PoliticGame extends Component {
@@ -14,7 +14,10 @@ class PoliticGame extends Component {
         super();
         this.state = {
             description: 'Во вкладке "Политика" можно посмотреть уровень вашей поддержки среди населения, а также ' +
-                         'показатель стабильности политической обстановки в стране.;;Чем меньше уровень поддержки, ' +
+                         'показатель стабильности политической обстановки в стране.;; Если вы являетесь вассалом, ' +
+                         'то у вас будут очень ограниченые дипломатические возможности, также вас могут принудить к вступлению в войны и ' +
+                         'сюзерен будет облагать вас данью. Вы можете обрести независимость мирным путем, но, в случае отказа,' +
+                         ' вы имеете вариант военного восстания против своего угнетателя. ;;Чем меньше уровень поддержки, ' +
                          'тем больше вероятность государственного переворота, который сместит вас с власти. Если в ' +
                          'вашем государстве установлена республика, то при поддержке менее 50%, вы проиграете ближайшие выборы.;;' +
                          'Показатель стабильности влияет на благосостояние граждан и экономики. При низкой стабильности ' +
@@ -268,6 +271,10 @@ class PoliticGame extends Component {
                         this.setState({tutorial: !this.state.tutorial})
                     }} />
                     <div className='politic-game__scroll-block overflowing'>
+                        {isVassal(this.props.store.createGame) &&
+                        <div className='politic-game__vassal-tittle'>
+                            Вы являетесь вассальным государством
+                        </div>}
                         <section className='politic-game__sas'>
                             <div className='politic-game__sas-block'>
                                 <div className="politic-game__sas-label">
