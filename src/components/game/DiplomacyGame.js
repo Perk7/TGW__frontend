@@ -525,60 +525,75 @@ class DiplomacyGame extends Component {
                 </ul>
               </section>
               */}
-              <section className="diplomacy-game__contracts-block overflowing">
-                <div className="diplomacy-game__contracts__alliance">
-                  <span>Альянсы:</span>
-                  <div>
-                    <ul className="diplomacy-game__contracts__alliance__list overflowing">
-                      {this.getContract("AL")}
-                    </ul>
+              <section className="diplomacy-game__info-block">
+                <div className='diplomacy-game__info-selected'>
+                  <div className="diplomacy-game__info-selected__heading">
+                    <div
+                      style={Flags['dominion']}
+                      className="flag diplomacy-game__info-selected__flag"
+                    />
+                    <span className='diplomacy-game__info-selected__country'>Альдмерский Доминион</span>
+                  </div>
+                  <div className="diplomacy-game__info-selected__body">
+                    <span className="diplomacy-game__info-selected__index">-7</span>
+                    <button className="diplomacy-game__info-selected__btn">Заключить договор</button>
                   </div>
                 </div>
-                <div className="diplomacy-game__contracts__alliance">
-                  <span>Войны:</span>
-                  <div>
-                    <ul className="diplomacy-game__contracts__alliance__list overflowing">
-                      {this.getContract("DW", "#860000")}
-                    </ul>
+                <section className="diplomacy-game__contracts-block overflowing">
+                  <div className="diplomacy-game__contracts__alliance">
+                    <span>Альянсы:</span>
+                    <div>
+                      <ul className="diplomacy-game__contracts__alliance__list overflowing">
+                        {this.getContract("AL")}
+                      </ul>
+                    </div>
                   </div>
-                </div>
-                <div className="diplomacy-game__contracts__alliance">
-                  {isVassal(this.props.store.createGame) ? (
-                    <>
-                      <span>Сюзерен:</span>
-                      <div>
-                        <ul className="diplomacy-game__contracts__alliance__list overflowing">
-                          {this.getSouseren()}
-                        </ul>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <span>Вассалы:</span>
-                      <div>
-                        <ul className="diplomacy-game__contracts__alliance__list overflowing">
-                          {this.getVassals()}
-                        </ul>
-                      </div>
-                    </>
-                  )}
-                </div>
-                <div className="diplomacy-game__contracts__alliance">
-                  <span>Получаемые репарации:</span>
-                  <div>
-                    <ul className="diplomacy-game__contracts__alliance__list overflowing">
-                      {this.getOwnContract("FW", null, "own")}
-                    </ul>
+                  <div className="diplomacy-game__contracts__alliance">
+                    <span>Войны:</span>
+                    <div>
+                      <ul className="diplomacy-game__contracts__alliance__list overflowing">
+                        {this.getContract("DW", "#860000")}
+                      </ul>
+                    </div>
                   </div>
-                </div>
-                <div className="diplomacy-game__contracts__alliance">
-                  <span>Выплачиваемые репарации:</span>
-                  <div>
-                    <ul className="diplomacy-game__contracts__alliance__list overflowing">
-                      {this.getOwnContract("FW", null, "ai")}
-                    </ul>
+                  <div className="diplomacy-game__contracts__alliance">
+                    {isVassal(this.props.store.createGame) ? (
+                      <>
+                        <span>Сюзерен:</span>
+                        <div>
+                          <ul className="diplomacy-game__contracts__alliance__list overflowing">
+                            {this.getSouseren()}
+                          </ul>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <span>Вассалы:</span>
+                        <div>
+                          <ul className="diplomacy-game__contracts__alliance__list overflowing">
+                            {this.getVassals()}
+                          </ul>
+                        </div>
+                      </>
+                    )}
                   </div>
-                </div>
+                  <div className="diplomacy-game__contracts__alliance">
+                    <span>Получаемые репарации:</span>
+                    <div>
+                      <ul className="diplomacy-game__contracts__alliance__list overflowing">
+                        {this.getOwnContract("FW", null, "own")}
+                      </ul>
+                    </div>
+                  </div>
+                  <div className="diplomacy-game__contracts__alliance">
+                    <span>Выплачиваемые репарации:</span>
+                    <div>
+                      <ul className="diplomacy-game__contracts__alliance__list overflowing">
+                        {this.getOwnContract("FW", null, "ai")}
+                      </ul>
+                    </div>
+                  </div>
+                </section>
               </section>
             </div>
           </div>

@@ -48,13 +48,13 @@
 }
 
 .diplomacy-game__contracts-block {
-    max-height: 85vh;
+    max-height: 48vh;
+    margin-top: 1em;
     overflow-y: auto;
 }
 
 .diplomacy-game__contracts__alliance {
     color: #FFF;
-    margin-top: 2em;
 }
 
 .diplomacy-game__contracts__alliance > span {
@@ -202,4 +202,43 @@
     left: 0;
     top: 0;
     background-color: #3ec4e7;
+}
+
+.diplomacy-game__info-selected {
+    padding: 1em 0;
+    background-color: #fff1;
+}
+
+.diplomacy-game__info-selected__heading {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.diplomacy-game__info-selected__flag {
+    width: calc(2.5vw*var(--flag));
+    height: 2.5vw;
+    background-position: 0px 19.048%;
+}
+
+.diplomacy-game__info-selected__country {
+    font-size: 1.1em;
+    color: #fff;
+}
+
+.diplomacy-game__info-selected__body {
+    display: flex;
+    margin-top: 1em;
+    justify-content: space-around;
+}
+
+.diplomacy-game__info-selected__index {
+    color: #f00;
+    font-weight: 600;
+}
+
+.diplomacy-game__info-selected__btn {
+    color: #fff;
+    background-color: var(--dark-gray);
+    font-size: 1em;
+    padding: 0.3em 0.5em;
 }
