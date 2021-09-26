@@ -118,7 +118,9 @@ function Relations(props) {
                         props.store.createGame.country.identify
                     )
                 ),
-                text: "Наложить экономические санкции",
+                text: !checkContract(props.store.createGame, "ES", props.country)
+                    ? "Наложить экономические санкции"
+                    : "Снять экономические санкции"
             },
             CP: {
                 status: !(

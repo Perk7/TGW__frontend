@@ -16,7 +16,7 @@ import {
     getVassals,
     getEconomy,
     getPopulation,
-    getPoverty, getUnemployment, getWars, getBalance, getDate, getPeacingCountries
+    getPoverty, getUnemployment, getWars, getBalance, getDate, getPeacingCountries, getSouseren
 } from "../../otherFunctions";
 import Flags from "../../Flags";
 
@@ -109,17 +109,7 @@ class CountryGame extends Component {
         })
     }
 
-    getSouseren() {
-        for (let i of this.props.store.createGame.contracts) {
-          if (
-            i.con_type === "VC" &&
-            i.pair.length === 1 &&
-            i.priority !== this.props.store.createGame.country.name
-          ) {
-            return i.pair[0]
-          }
-        }
-    }
+    
 
     makeMap() {
         let arr = []
@@ -135,7 +125,7 @@ class CountryGame extends Component {
         let wars = getWars(this.props.store.createGame, this.props.store.createGame.country.name).map(e => e.ident)
         let vassals =  getVassals(this.props.store.createGame, this.props.store.createGame.country.name).map(e => e.ident)
         let alliances = getAlliance(this.props.store.createGame, this.props.store.createGame.country.name).map(e => e.ident)
-        let souseren = this.getSouseren()
+        let souseren = getSouseren(this.props.store.createGame)
         let peaces = getPeacingCountries(this.props.store.createGame)
 
         for (let i of this.props.store.createGame.country_ai) {

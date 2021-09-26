@@ -78,6 +78,7 @@ exports.getGdpPerPopulation = getGdpPerPopulation;
 exports.haveSeaside = haveSeaside;
 exports.getPeacingCountries = getPeacingCountries;
 exports.makeBattleEffects = makeBattleEffects;
+exports.getSouseren = getSouseren;
 
 var _identCountries = _interopRequireDefault(require("./identCountries"));
 
@@ -2579,6 +2580,35 @@ function makeBattleEffects(store, props, obj) {
       props.delete_squad(changerOwn);
     } else {
       props.delete_squad(changerOwn);
+    }
+  }
+}
+
+function getSouseren(store) {
+  var _iteratorNormalCompletion61 = true;
+  var _didIteratorError61 = false;
+  var _iteratorError61 = undefined;
+
+  try {
+    for (var _iterator61 = store.contracts[Symbol.iterator](), _step61; !(_iteratorNormalCompletion61 = (_step61 = _iterator61.next()).done); _iteratorNormalCompletion61 = true) {
+      var i = _step61.value;
+
+      if (i.con_type === "VC" && i.pair.length === 1 && i.priority !== store.country.name) {
+        return i.pair[0];
+      }
+    }
+  } catch (err) {
+    _didIteratorError61 = true;
+    _iteratorError61 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion61 && _iterator61["return"] != null) {
+        _iterator61["return"]();
+      }
+    } finally {
+      if (_didIteratorError61) {
+        throw _iteratorError61;
+      }
     }
   }
 }

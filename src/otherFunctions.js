@@ -1285,3 +1285,15 @@ export function makeBattleEffects(store, props, obj) {
       }
   }
 }
+
+export function getSouseren(store) {
+  for (let i of store.contracts) {
+    if (
+      i.con_type === "VC" &&
+      i.pair.length === 1 &&
+      i.priority !== store.country.name
+    ) {
+      return i.pair[0]
+    }
+  }
+}

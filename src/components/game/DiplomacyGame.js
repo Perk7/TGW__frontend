@@ -9,9 +9,17 @@ import coordsRegions from "../../coordsMap";
 import identCountries from "../../identCountries";
 import {
   getBalanceRegion,
+  getCountry,
+  getRelation,
   getReparation,
   getWarDetails,
   isVassal,
+  whoseReg,
+  getAlliance,
+  getVassals,
+  getWars,
+  getPeacingCountries,
+  getSouseren
 } from "../../otherFunctions";
 import Relations from "../../elements/Relations";
 import EmptyActions from "../../elements/EmptyActions";
@@ -43,15 +51,18 @@ class DiplomacyGame extends Component {
 
       emptyActions: false,
       emptyHeader: "",
+      currentContracts: false,
 
       regions: [],
+      mapSet: false,
+      ownRegions: []
     };
 
-    this.getRelationsList = this.getRelationsList.bind(this);
     this.getContract = this.getContract.bind(this);
     this.getOwnContract = this.getOwnContract.bind(this);
     this.getVassals = this.getVassals.bind(this);
     this.changeLoader = this.changeLoader.bind(this);
+    this.getCurrentContracts = this.getCurrentContracts.bind(this);
   }
   
   componentDidMount() {
@@ -83,25 +94,37 @@ class DiplomacyGame extends Component {
   }
 
   getRelationColor(value) {
-    if (value > 7) {
-      return "#00c02a";
+    if (value === 10) {
+      return "#10a009";
     }
-    if (value > 3) {
-      return "#80f046";
+    if (value > 7) {
+      return "#23c11c";
+    }
+    if (value > 4) {
+      return "#39ec31";
+    }
+    if (value > 2) {
+      return "#bdf442";
     }
     if (value > 0) {
-      return "#efff00";
+      return "#fff551";
     }
-    if (value > -3) {
-      return "#ffa900";
+    if (value > -2) {
+      return "#eccd4d";
+    }
+    if (value > -4) {
+      return "#fdb23a";
     }
     if (value > -7) {
-      return "#ff4225";
+      return "#dc4f06";
     }
-    return "#ff0000";
+    if (value > -10) {
+      return "#ff0000";
+    }
+    return "#bf0000";
   }
 
-  makeMap() {
+  makeMap(country = [], bool=this.state.mapSet) {
       let relations = {};
       for (let i of this.props.store.createGame.relations) {
         if (i.pair.length === 1) {
@@ -110,70 +133,62 @@ class DiplomacyGame extends Component {
       }
       let arr = []
       for (let i of this.props.store.createGame.country.regions) {
-          let coords = coordsRegions[i.name]
-          arr.push({
-              coords: coords,
-              color: '#5599ec',
-              name: i.name
-          })
+        let coords = coordsRegions[i.name]
+        arr.push({
+            coords: coords,
+            color: '#5599ec',
+            name: i.name
+        })
       }
 
-      for (let i of this.props.store.createGame.country_ai) {
-          let hash = relations[i.identify]
-          let color = this.getRelationColor(hash)
-          for (let t of i.regions) {
-              let coords = coordsRegions[t.name]
-              arr.push({
-                  coords: coords,
-                  color: color,
-                  name: t.name
-              })
-          }
+      if (!bool) {
+        for (let i of this.props.store.createGame.country_ai) {
+            let hash = relations[i.identify]
+            let color = this.getRelationColor(hash)
+            for (let t of i.regions) {
+                let coords = coordsRegions[t.name]
+                arr.push({
+                    coords: coords,
+                    color: country.includes(t.name) ? `${color}88` : color,
+                    name: t.name
+                })
+            }
+        }
+      } else {
+        let wars = getWars(this.props.store.createGame, this.props.store.createGame.country.name).map(e => e.ident)
+        let vassals =  getVassals(this.props.store.createGame, this.props.store.createGame.country.name).map(e => e.ident)
+        let alliances = getAlliance(this.props.store.createGame, this.props.store.createGame.country.name).map(e => e.ident)
+        let souseren = getSouseren(this.props.store.createGame)
+        let peaces = getPeacingCountries(this.props.store.createGame)
+
+        for (let i of this.props.store.createGame.country_ai) {
+            let color = '#8a9d93'
+            if (peaces.indexOf(i.identify) !== -1) {
+              color = '#f6f039'
+            } else if (i.identify === souseren) {
+                color = '#dca60e'
+            } else if (wars.indexOf(i.identify) !== -1) {
+                color = '#a30101'
+            } else if (vassals.indexOf(i.identify) !== -1) {
+                color = '#18b46e'
+            } else if (alliances.indexOf(i.identify) !== -1) {
+                color = '#8615bd'
+            }
+
+            for (let t of i.regions) {
+                let coords = coordsRegions[t.name]
+                arr.push({
+                    coords: coords,
+                    color: country.includes(t.name) ? `${color}88` : color,
+                    name: t.name
+                })
+            }
+        }
       }
 
       this.setState({
           regions: arr
       })
-  }
-
-  getRelationsList() {
-    let relations = [];
-    for (let i of this.props.store.createGame.relations) {
-      if (i.pair.length === 1) {
-        relations.push({
-          country: identCountries[i.pair[0]],
-          value: i.value,
-          ident: i.pair[0],
-        });
-      }
-    }
-
-    relations.sort((a, b) => {
-      if (a.value < b.value) {
-        return 1;
-      }
-      if (a.value > b.value) {
-        return -1;
-      }
-      return 0;
-    });
-
-    return relations.map((e) => (
-      <li
-        onClick={() => {
-          this.setState({ redactContracts: !this.state.redactContracts });
-          this.setState({ currentRelation: e.ident });
-        }}
-        style={{
-          color: this.getRelationColor(e.value),
-        }}
-        className="diplomacy-game__relations-list__item"
-        key={e.ident}
-      >
-        <div style={Flags[e.ident]} className="flag" />
-        <h3>{e.country}</h3> <span>{e.value}</span>
-      </li>
-    ));
   }
 
   getContract(type, priority = null) {
@@ -491,6 +506,43 @@ class DiplomacyGame extends Component {
     );
   }
 
+  getCurrentContracts() {
+    let hash = {
+      AL: 'Альянс',
+      CM: 'Общий рынок',
+      PA: 'Проход войск',
+
+      CT: 'Культурный обмен',
+      SH: 'Соц. взаимопомощь',
+      EH: 'Экон. взаимопомощь',
+      CP: 'Дог. о ненападении',
+
+      ES: 'Экон. санкции',
+      DW: 'Война',
+      FW: 'Перемирие',
+
+      VC: 'Вассальный договор',
+    }
+    let arr = []
+    for (let i of this.props.store.createGame.contracts) {
+      if (i.pair.length == 1 && i.pair[0] == this.state.currentRelation) {
+        arr.push({
+          type: hash[i.con_type],
+          priority: i.priority !== '0' ? i.priority : 'Нет',
+          deadline: i.deadline === 9999 ? 'Бессрочно' : `до ${i.deadline} хода`
+        })
+      }
+    }
+
+    if (arr.length === 0) {
+      return false
+    }
+
+    return arr.map(e => (
+      <li className='diplomacy-game__current-contracts__item'><span>{e.type}</span> <span>{e.deadline}</span> <span>{e.priority}</span></li>
+    ))
+  }
+
   render() {
     if (!this.state.load) {
       return (
@@ -502,6 +554,10 @@ class DiplomacyGame extends Component {
             }}
           />
           <div>
+            <button onClick={() => {
+              this.setState({ mapSet: !this.state.mapSet })
+              this.makeMap([], !this.state.mapSet)
+            }} className='diplomacy-game__change-map-btn game__button'>Режим карты</button>
             <div className="diplomacy-game__main-block">
               <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -514,30 +570,52 @@ class DiplomacyGame extends Component {
                             id="Море"
                             style={{userSelect: 'none',strokeWidth:'0.188976',strokeMiterlimit:'4',strokeDasharray:'none'}}
                         >
-                            {this.state.regions.map((reg) => <MapRegion coord={reg.coords} identy={reg.name} color={reg.color} key={reg.name} />)}
+                            {this.state.regions.map((reg) => <MapRegion coord={reg.coords} identy={reg.name} 
+                            color={reg.color} 
+                            key={reg.name} 
+                            onClick={(e) => {
+                              let reg = e.target.id.split('_').join(' ')
+                              let country = whoseReg(this.props.store.createGame, reg)
+                              let newRegs = country !== this.props.store.createGame.country.identify 
+                                ? getCountry(this.props.store.createGame, country).regions.map(e => e.name) 
+                                : []
+                              this.setState({
+                                ownRegions: newRegs
+                              })
+                              this.setState({ currentRelation: country });
+                              
+                              this.makeMap(newRegs)
+                            }} />)}
                             <MapRegion coord={coordsRegions['Ввандерфелл']} identy="Ввандерфелл" color='#bbb' />
                         </g>
               </svg>
-              {/*
-              <section>
-                <ul className="diplomacy-game__relations-list overflowing">
-                  {this.getRelationsList()}
-                </ul>
-              </section>
-              */}
               <section className="diplomacy-game__info-block">
                 <div className='diplomacy-game__info-selected'>
-                  <div className="diplomacy-game__info-selected__heading">
-                    <div
-                      style={Flags['dominion']}
-                      className="flag diplomacy-game__info-selected__flag"
-                    />
-                    <span className='diplomacy-game__info-selected__country'>Альдмерский Доминион</span>
-                  </div>
-                  <div className="diplomacy-game__info-selected__body">
-                    <span className="diplomacy-game__info-selected__index">-7</span>
-                    <button className="diplomacy-game__info-selected__btn">Заключить договор</button>
-                  </div>
+                  {this.state.currentRelation && this.state.currentRelation !== this.props.store.createGame.country.identify 
+                  ? <>
+                    <div className="diplomacy-game__info-selected__heading">
+                      <div
+                        style={Flags[this.state.currentRelation]}
+                        className="flag diplomacy-game__info-selected__flag"
+                      />
+                      <span className='diplomacy-game__info-selected__country'>{identCountries[this.state.currentRelation]}</span>
+                    </div>
+                    <div className="diplomacy-game__info-selected__body">
+                      <span style={{color: this.getRelationColor(getRelation(this.props.store.createGame, this.state.currentRelation))}} 
+                            className="diplomacy-game__info-selected__index">
+                              {getRelation(this.props.store.createGame, this.state.currentRelation)}
+                      </span>
+                      <button 
+                        onClick={() => this.setState({ currentContracts: !this.state.currentContracts })} 
+                        className='diplomacy-game__current-contracts__btn'
+                        disabled={!this.getCurrentContracts() ? true : false}
+                        >f</button>
+                      <button onClick={() => this.setState({ redactContracts: !this.state.redactContracts })} className="diplomacy-game__info-selected__btn">Заключить договор</button>
+                    </div>
+                  </>
+                  : <div className="diplomacy-game__info-selected__nothing">
+                      <span className='diplomacy-game__info-selected__country'>Выберите государство на карте</span>
+                    </div>}
                 </div>
                 <section className="diplomacy-game__contracts-block overflowing">
                   <div className="diplomacy-game__contracts__alliance">
@@ -627,6 +705,24 @@ class DiplomacyGame extends Component {
               }}
               className="economy-game__budget-quit modal-quit"
               hidden={!this.state.redactContracts}
+            >
+              &#215;
+            </button>
+          </div>
+          <div className="diplomacy-game__redact-relations_list modal-blur"
+               hidden={!this.state.currentContracts} 
+          >
+            <ul>
+            <li className='diplomacy-game__current-contracts__item'><span>Договор</span> <span>Срок</span> <span>Инициатор</span></li>
+              {this.state.currentContracts &&
+                this.getCurrentContracts()}
+            </ul>
+            <button
+              onClick={(e) => {
+                this.setState({ currentContracts: !this.state.currentContracts });
+              }}
+              className="economy-game__budget-quit modal-quit"
+              hidden={!this.state.currentContracts}
             >
               &#215;
             </button>
