@@ -1,5 +1,5 @@
 import axios from 'axios';
-const API_URL = 'http://192.168.1.13:8000';
+const API_URL = 'http://192.168.1.159:8000';
 
 export default class UserService {
 

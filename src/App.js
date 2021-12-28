@@ -41,6 +41,7 @@ class App extends Component {
               <Route history={history} path='/registration' component={Registration} />
 
               <Route history={history} path='/start_game' component={StartGame} />
+              
               <Route history={history} path='/country' component={CountryGame} />
               <Route history={history} path='/politic' component={PoliticGame} />
               <Route history={history} path='/army' component={ArmyGame} />

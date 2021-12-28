@@ -9,7 +9,6 @@ import {createBrowserHistory} from 'history'
 import {Provider} from "react-redux";
 import getStore from "./storage/init";
 import { PersistGate } from 'redux-persist/integration/react'
-import { createStore } from 'redux'
 import LoadingScreen from "react-loading-screen";
 
 const { store, persistor } = getStore()
