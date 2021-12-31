@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from "react-router-dom"
 import {connect} from "react-redux";
 import {mapStateToProps} from "../../storage/reduxGet";
-import UserService from "../../CustomersService";
+import UserService from "../../RequestService";
 import LoadingScreen from "react-loading-screen";
 import {create_game} from "../../storage/actions";
 

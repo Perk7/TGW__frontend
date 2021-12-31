@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import {mapStateToProps} from "../../storage/reduxGet";
 import {change_game, change_buffs, change_laws} from "../../storage/actions";
 import Tutorial from "../../elements/Tutorial";
-import lawBuffs from '../../lawBuffs';
+import lawBuffs from '../../step_system/lawBuffs';
 import EmptyActions from "../../elements/EmptyActions";
 import Header from "../../elements/Header";
 import ValueBar from "../../elements/ValueBar";

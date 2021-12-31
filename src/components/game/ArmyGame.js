@@ -12,8 +12,7 @@ import {
 import Tutorial from "../../elements/Tutorial";
 import EmptyActions from "../../elements/EmptyActions";
 import Header from "../../elements/Header";
-import {seaList} from "../../seaSquad";
-import { getExodusBattle } from '../../neuroFunctions';
+import {seaList} from "../../map_data/seaSquad";
 
 class ArmyGame extends Component {
     constructor() {

@@ -14,8 +14,8 @@ import {
   change_buffs,
   change_squad, delete_squad, new_squad, change_occuped, change_ai_squad, new_ai_squad, delete_ai_squad
 } from "../../storage/actions";
-import UserService from "../../CustomersService";
-import nextStep from "../../NextStep";
+import UserService from "../../RequestService";
+import nextStep from "../../step_system/NextStep";
 import { getDate } from "../../otherFunctions";
 
 const userService = new UserService();

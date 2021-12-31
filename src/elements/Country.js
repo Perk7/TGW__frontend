@@ -1,7 +1,7 @@
 import React from 'react'
 import {Link} from "react-router-dom";
-import UserService from "../CustomersService";
-import Flags from '../Flags';
+import UserService from "../RequestService";
+import Flags from '../static_components/Flags';
 import { create_game } from "../storage/actions";
 import { connect } from 'react-redux';
 import {mapStateToProps} from "../storage/reduxGet";

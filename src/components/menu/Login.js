@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import UserService from "../../CustomersService";
+import UserService from "../../RequestService";
 import {change_user, auth} from "../../storage/actions";
 import {setCookie, offBoard, onBoard} from "../../otherFunctions";
 import { connect } from 'react-redux'

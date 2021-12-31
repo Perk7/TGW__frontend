@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import MapRegion from "./maps/MapRegion";
-import coordsmap from '../coordsMap'
+import coordsmap from '../map_data/coordsMap'
 
 class SmallMap extends Component {
     render() {

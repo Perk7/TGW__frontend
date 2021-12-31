@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from "react-router-dom";
 
 import Country from '../../elements/Country.js';
-import UserService from '../../CustomersService';
+import UserService from '../../RequestService';
 import LoadingScreen from 'react-loading-screen'
 
 const userService = new UserService();

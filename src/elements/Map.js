@@ -8,14 +8,14 @@ import {useEffect, useRef} from 'react';
 import {mapStateToProps} from "../storage/reduxGet";
 import SquadList from "./maps/SquadList";
 import Battle from "./Battle";
-import movingSquad from '../movingSquad';
-import seaSquad, {seaList} from '../seaSquad'
+import movingSquad from '../map_data/movingSquad';
+import seaSquad, {seaList} from '../map_data/seaSquad'
 import identCountries from '../identCountries';
 import { PanZoom } from 'react-easy-panzoom'
-import colorsRegions from '../colorMap';
-import coordsRegions from '../coordsMap';
-import coordsCityMap from '../coordsCityMap';
-import colorSquad from '../colorSquad';
+import colorsRegions from '../map_data/colorMap';
+import coordsRegions from '../map_data/coordsMap';
+import coordsCityMap from '../map_data/coordsCityMap';
+import colorSquad from '../map_data/colorSquad';
 import {set_colormap, set_capitals, change_game, change_buffs, transition_squad, change_squad, delete_squad, new_squad, change_occuped, 
 change_ai_squad, new_ai_squad, delete_ai_squad} from "../storage/actions";
 import {
@@ -34,7 +34,7 @@ import {
     makeBattleEffects,
     whoseReg
 } from "../otherFunctions";
-import Flags from "../Flags";
+import Flags from "../static_components/Flags";
 import EmptyActions from "./EmptyActions";
 import { getExodusBattle } from '../neuroFunctions';
 

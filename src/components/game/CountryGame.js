@@ -5,8 +5,8 @@ import {mapStateToProps} from "../../storage/reduxGet";
 import LoadingScreen from "react-loading-screen";
 import MapRegion from "../../elements/maps/MapRegion";
 import identCountries from '../../identCountries';
-import coordsRegions from "../../coordsMap";
-import Icons from '../../Icons';
+import coordsRegions from "../../map_data/coordsMap";
+import Icons from '../../static_components/Icons';
 import {
     getAlliance,
     getAllRegions,
@@ -18,7 +18,7 @@ import {
     getPopulation,
     getPoverty, getUnemployment, getWars, getBalance, getDate, getPeacingCountries, getSouseren
 } from "../../otherFunctions";
-import Flags from "../../Flags";
+import Flags from "../../static_components/Flags";
 
 class CountryGame extends Component {
     constructor() {

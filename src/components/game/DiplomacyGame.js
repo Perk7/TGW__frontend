@@ -5,7 +5,7 @@ import { mapStateToProps } from "../../storage/reduxGet";
 import { create_game } from "../../storage/actions";
 import Tutorial from "../../elements/Tutorial";
 import PeaceContract from "../../elements/PeaceContract";
-import coordsRegions from "../../coordsMap";
+import coordsRegions from "../../map_data/coordsMap";
 import identCountries from "../../identCountries";
 import {
   getBalanceRegion,
@@ -24,7 +24,7 @@ import {
 import Relations from "../../elements/Relations";
 import EmptyActions from "../../elements/EmptyActions";
 import Header from "../../elements/Header";
-import Flags from "../../Flags";
+import Flags from "../../static_components/Flags";
 import MapRegion from "../../elements/maps/MapRegion";
 
 class DiplomacyGame extends Component {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import UserService from "../../CustomersService";
+import UserService from "../../RequestService";
 import {offBoard, onBoard} from "../../otherFunctions";
 
 const userService = new UserService();

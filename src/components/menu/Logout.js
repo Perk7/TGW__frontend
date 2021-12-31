@@ -4,7 +4,7 @@ import {mapStateToProps} from "../../storage/reduxGet";
 import {Link} from "react-router-dom";
 import {deleteCookie} from "../../otherFunctions";
 import {change_user, auth} from "../../storage/actions";
-import UserService from "../../CustomersService";
+import UserService from "../../RequestService";
 
 const userService = new UserService()
 

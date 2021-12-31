@@ -4,7 +4,7 @@ import '../../static/css/styles.css'
 import {getCookie} from "../../otherFunctions";
 import { connect } from "react-redux";
 import {mapStateToProps} from "../../storage/reduxGet";
-import UserService from "../../CustomersService";
+import UserService from "../../RequestService";
 import {change_user, auth} from "../../storage/actions";
 
 const userService = new UserService()

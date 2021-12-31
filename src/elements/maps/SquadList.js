@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Squad from "./Squad";
-import colorSquad from "../../colorSquad";
-import coordsSquadMap from "../../coordsSquadMap";
+import colorSquad from "../../map_data/colorSquad";
+import coordsSquadMap from "../../map_data/coordsSquadMap";
 import {getVassals, getSquads, getWars, getAlliance} from "../../otherFunctions";
 import {connect} from "react-redux";
 import {mapStateToProps} from "../../storage/reduxGet";

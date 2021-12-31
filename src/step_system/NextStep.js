@@ -31,10 +31,10 @@ import {
     isVassal,
     makeBattleEffects,
     whoseReg,
-} from "./otherFunctions";
-import identCountries from "./identCountries";
-import { getAnswerPeace, getExodusBattle } from "./neuroFunctions";
-import seaSquad from './seaSquad';
+} from "../otherFunctions";
+import identCountries from "../identCountries";
+import { getAnswerPeace, getExodusBattle } from "../neuroFunctions";
+import seaSquad from '../map_data/seaSquad';
 
 export default async function nextStep(store, func) {
     let newStore = Object.assign({}, store.createGame);

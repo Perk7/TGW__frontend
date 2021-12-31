@@ -10,13 +10,13 @@ import {
   set_peace,
 } from "../storage/actions";
 import MapRegion from "./maps/MapRegion";
-import coordsCityMap from "../coordsCityMap";
+import coordsCityMap from "../map_data/coordsCityMap";
 import MapCity from "./maps/MapCity";
 import MapVillage from "./maps/MapVillage";
 import identCountries from "../identCountries";
 import { PanZoom } from "react-easy-panzoom";
-import coordsRegions from "../coordsMap";
-import colorsRegions from "../colorMap";
+import coordsRegions from "../map_data/coordsMap";
+import colorsRegions from "../map_data/colorMap";
 import { getWarDetails } from "../otherFunctions";
 import EmptyActions from "./EmptyActions";
 

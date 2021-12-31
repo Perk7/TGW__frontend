@@ -1,6 +1,6 @@
 import identCountries from "./identCountries";
-import colorMap from "./colorMap";
-import movingSquad from './movingSquad';
+import colorMap from "./map_data/colorMap";
+import movingSquad from './map_data/movingSquad';
 
 export function setCookie(name, value, options = {}) {
   options = {
