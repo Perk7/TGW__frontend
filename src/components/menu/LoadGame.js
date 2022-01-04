@@ -52,7 +52,7 @@ class LoadGame extends React.Component {
 
   startSave(time) {
         const data = {
-            user: this.props.store.auth.login,
+            login: this.props.store.auth.login,
             time: time,
         }
         this.setState({
@@ -75,7 +75,7 @@ class LoadGame extends React.Component {
   deleteSave() {
       userService.deleteSave({
           time: this.state.time,
-          user: this.props.store.auth.login,
+          login: this.props.store.auth.login,
       })
           .then(res => res.data)
           .then(

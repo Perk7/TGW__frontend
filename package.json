@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^12.6.3",
     "@types/react-redux": "^7.1.16",
     "axios": "^0.21.1",
+    "dotenv": "^10.0.0",
     "hammer": "0.0.5",
     "hammerjs": "^2.0.8",
     "js-sha256": "^0.9.0",

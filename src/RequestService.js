@@ -1,8 +1,30 @@
 import axios from 'axios';
-const API_URL = 'http://192.168.1.159:8000';
+import sha256 from 'js-sha256';
+
+require('dotenv').config();
+
+const API_URL = 'http://127.0.0.1:8000';
+
+function getPublicCode() {
+    const chars = 'qwertyuiop[]asdfghjkl;zxcvbnm,./1234567890-=!@#$%^&*()'
+    let key = ''
+    for (let i=0;i<=20;i++) {
+        let index = Math.trunc(Math.random() * (chars.length - 0));
+        key += chars[index]
+    }
+
+    return key
+}
 
 function makeApiKey(data) {
-    
+    let secret = process.env.REACT_APP_SECRET_KEY
+    let publicKey = getPublicCode()
+
+    let ready_key = secret + ':' + data.login.split('').reverse().join('') + ':' + publicKey
+    return Object.assign({
+        key: sha256(ready_key),
+        code: publicKey,
+    }, data)
 }
 
 export default class UserService {
@@ -15,11 +37,13 @@ export default class UserService {
     }
 
     savedGames(user) {
+        let data = makeApiKey(user) 
         const url = `${API_URL}/api/saved_games/`;
-        return axios.post(url, user);
+        return axios.post(url, data);
     }
 
-    deleteSave(data) {
+    deleteSave(user) {
+        let data = makeApiKey(user) 
         const url = `${API_URL}/api/delete_save/`;
         return axios.post(url, data);
     }
@@ -58,17 +82,20 @@ export default class UserService {
 
     /* Start Game */
 
-    createGame(data) {
+    createGame(user) {
+        let data = makeApiKey(user) 
         const url = `${API_URL}/game/start_game/`;
         return axios.post(url, data);
     }
 
-    loadGame(data) {
+    loadGame(user) {
+        let data = makeApiKey(user) 
         const url = `${API_URL}/game/load_game/`;
         return axios.post(url, data);
     }
 
-    saveGame(data) {
+    saveGame(user) {
+        let data = makeApiKey(user) 
         const url = `${API_URL}/game/save_game/`;
         return axios.post(url, data)
     }

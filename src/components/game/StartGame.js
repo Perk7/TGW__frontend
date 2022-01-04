@@ -113,7 +113,7 @@ class StartGame extends Component {
                     userService
                       .saveGame({
                         store: this.props.store.createGame,
-                        auth: this.props.store.auth.login,
+                        login: this.props.store.auth.login,
                       })
                       .then((res) => res.data)
                       .then((data) => {

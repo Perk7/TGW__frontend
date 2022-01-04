@@ -25,7 +25,7 @@ class Country extends React.Component {
 
 	startGame() {
 		const data = {
-			user: this.props.store.auth.login,
+			login: this.props.store.auth.login,
 			country: this.props.field.identify
 		}
 		this.setState({
