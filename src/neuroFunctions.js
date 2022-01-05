@@ -1,6 +1,3 @@
-import { isElementOfType } from "react-dom/cjs/react-dom-test-utils.production.min"
-import { getRandomRange } from "./otherFunctions"
-
 export function getAnswerPeace(prop) {
  let obj = prop
  for (let i of Object.keys(obj)) {

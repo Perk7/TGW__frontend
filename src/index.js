@@ -14,29 +14,25 @@ import LoadingScreen from "react-loading-screen";
 const { store, persistor } = getStore()
 const history = createBrowserHistory()
 
-
 ReactDOM.render(
   <React.Fragment>
   <Provider store={store}>
-  <PersistGate loading={<LoadingScreen
-      loading={true}
-      bgColor='#000'
-      spinnerColor='#FFF'
-      textColor='#FFF'
-      text='Загрузка игровых данных' >
-    children
-  </LoadingScreen>
-  } persistor={persistor}>
-  <Router history={history}>
-    <App />
-  </Router>
-  </PersistGate>
+    <PersistGate loading={<LoadingScreen
+        loading={true}
+        bgColor='#000'
+        spinnerColor='#FFF'
+        textColor='#FFF'
+        text='Загрузка игровых данных' >
+      children
+    </LoadingScreen>
+    } persistor={persistor}>
+      <Router history={history}>
+        <App />
+      </Router>
+    </PersistGate>
   </Provider>
   </React.Fragment>,
   document.getElementById('root')
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

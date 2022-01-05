@@ -6,6 +6,7 @@ import MainMenu from './components/menu/MainMenu.js';
 import NewGame from './components/menu/NewGame.js';
 import Login from './components/menu/Login.js';
 import Logout from './components/menu/Logout.js';
+import Registration from "./components/menu/Registration";
 
 import {
     Route,
@@ -13,8 +14,8 @@ import {
     Redirect,
   } from "react-router-dom"
 
-import Registration from "./components/menu/Registration";
 import StartGame from "./components/game/StartGame";
+
 import CountryGame from './components/game/CountryGame';
 import PoliticGame from "./components/game/PoliticGame";
 import ArmyGame from "./components/game/ArmyGame";
@@ -53,7 +54,7 @@ class App extends Component {
               <Route history={history} path='/science' component={ScienceGame} />
               <Route history={history} path='/education' component={EducationGame} />
 
-                <Redirect from='/' to='/home' />
+              <Redirect from='/' to='/home' />
             </Switch>
         </div>
       );

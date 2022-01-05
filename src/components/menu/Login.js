@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+import MenuHeader from '../../elements/MenuHeader';
 import UserService from "../../RequestService";
 import {change_user, auth} from "../../storage/actions";
 import {setCookie, offBoard, onBoard} from "../../otherFunctions";
@@ -194,10 +194,7 @@ class Login extends React.Component {
 		return (
 			<div className='view'>
 				<div className='login__relative-div'>
-				<header className='side-header'>
-					<Link to={'/home'} className='header__btn_back' ref={this.back}>←</Link>
-          			<h1 className='side-heading'>Авторизация</h1>
-				</header>
+				<MenuHeader header='Загрузить игру' ref={this.back} />
 				{logger}
 				{form}
 				<button style={{display: this.state.btnForget}} className='login__forget-btn' onClick={() => {

@@ -1,12 +1,16 @@
-import React from 'react'
-import { Link } from "react-router-dom"
+import React from 'react';
+import { Link } from "react-router-dom";
+
 import {connect} from "react-redux";
 import {mapStateToProps} from "../../storage/reduxGet";
-import UserService from "../../RequestService";
-import LoadingScreen from "react-loading-screen";
 import {create_game} from "../../storage/actions";
 
-const userService = new UserService()
+import UserService from "../../RequestService";
+
+import LoadingWrap from '../../elements/build/LoadingWrap';
+import MenuHeader from '../../elements/MenuHeader';
+
+const userService = new UserService();
 
 class LoadGame extends React.Component {
 
@@ -21,11 +25,10 @@ class LoadGame extends React.Component {
         loadLogger: false,
     }
 
+    this.redir = React.createRef();
+
     this.loadSaves = this.loadSaves.bind(this)
     this.deleteSave = this.deleteSave.bind(this)
-    this.startSave = this.startSave.bind(this)
-
-    this.redir = React.createRef();
   }
 
   loadSaves() {
@@ -36,17 +39,17 @@ class LoadGame extends React.Component {
       userService.savedGames(user)
           .then(res => res.data)
           .then(
-              (result) => {
-                  let par = JSON.parse(result);
-                  if (par.saves !== 'error') {
+              result => {
+                  let parsed = JSON.parse(result);
+                  if (parsed.saves !== 'error') {
                       this.setState({
-                          saves: par,
+                          saves: parsed,
                           load: false
                       })
                   }
           })
-          .catch((result) => {
-              console.log('There was an error! Please re-check your form.');
+          .catch(_ => {
+              console.error('There was an error! Please re-check your form.');
           });
   }
 
@@ -62,13 +65,13 @@ class LoadGame extends React.Component {
         userService.loadGame(data)
             .then(res => res.data)
             .then(
-                (result) => {
-                    let par = JSON.parse(result);
-                    this.props.create_game(par)
+                result => {
+                    let parsed = JSON.parse(result);
+                    this.props.create_game(parsed)
                     this.redir.current.click()
                 })
-            .catch((result) => {
-                console.log('There was an error! Please re-check your form: ', result);
+            .catch(_ => {
+                console.log('There was an error! Please re-check your form: ');
             });
   }
 
@@ -79,15 +82,29 @@ class LoadGame extends React.Component {
       })
           .then(res => res.data)
           .then(
-              (result) => {
-                  let par = JSON.parse(result);
-                  if (par.saves !== 'error') {
+              result => {
+                  let parsed = JSON.parse(result);
+                  if (parsed.saves !== 'error') {
                       this.setState({
-                          saves: par,
+                          saves: parsed,
                           load: false,
                       })
                   }
           })
+  }
+
+  handleDeleteSave() {
+        this.deleteSave()
+        this.setState({
+            modal: false,
+        })
+  }
+
+  changeModalVisible(time) {
+    this.setState({
+        modal: !this.state.modal,
+        time: time === undefined ? this.state.time : time
+    })
   }
 
   componentDidMount() {
@@ -96,62 +113,50 @@ class LoadGame extends React.Component {
         } else {
             setTimeout(this.loadSaves, 2000)
         }
-    }
+  }
 
   render() {
+    let savesList = this.state.saves.length > 0
+        ? (<ul>
+            {this.state.saves.map(item => {
+                return (<li key={item.fields.save_date}>
+                            <div key={item.fields.save_date} className='load-scroll-view__btn' onClick={this.startSave.bind(this, item.fields.save_date)}>
+                                {item.fields.save_name}
+                                <span className='load-scroll-view__btn_time'>
+                                    {item.fields.save_date.substr(0,10)} {item.fields.save_date.substr(11,8)}
+                                </span>
+                            </div>
+                            <div className='load-scroll-view__delete' onClick={this.changeModalVisible.bind(this, item.fields.save_date)}>а</div>
+                        </li>)
+            })}
+          </ul>)
+        : (<div style={{border: '2px solid #FFF', padding: '5vh 5vw', marginTop: '10vh', color: '#FFF', fontSize: '3vw'}}>У вас нет сохраненных игр</div>)
+        
     return (
-        <LoadingScreen
+        <LoadingWrap
             loading={this.state.load}
-            bgColor='#000'
-            spinnerColor='#FFF'
-            textColor='#FFF'
             text={this.state.loadLogger?'Загрузка игровых данных':'Loading...'} >
             <div className='view'>
-                <header className='side-header'>
-                  <Link to={'/home'} className='header__btn_back'>←</Link>
-                  <h1 className='side-heading'>Загрузить игру</h1>
-                </header>
+                <MenuHeader header='Загрузить игру' />
+
                 <nav className='load-scroll-view'>
-                    <ul>
-                    {this.state.saves.length > 0
-                        ? this.state.saves.map((item) => {
-                            return <li key={item.fields.save_date}><div key={item.fields.save_date} className='load-scroll-view__btn' onClick={() => {
-                                    this.startSave(item.fields.save_date)
-                                 }}>{item.fields.save_name}<span
-                            className='load-scroll-view__btn_time'>{item.fields.save_date.substr(0,10)} {item.fields.save_date.substr(11,8)}</span>
-                            </div>
-                            <div className='load-scroll-view__delete' onClick={() => {
-                                    this.setState({
-                                        modal: true,
-                                        time: item.fields.save_date
-                                    })
-                            }}>а </div></li>
-                        })
-                        : <div style={{border: '2px solid #FFF', padding: '5vh 5vw', marginTop: '10vh', color: '#FFF', fontSize: '3vw'}}>У вас нет сохраненных игр</div>
-                    }
-                    </ul>
+                 {savesList}
                 </nav>
+
                 <div style={{display: this.state.modal?'block':'none',}} className='load__modal-view'>
                     <div className='logout__popup-view__heading'>Вы уверены, что хотите удалить сохранение?</div>
                     <div className='logout__popup-view__btn-block'>
-                        <button className='popup-view__btn-block__btn popup-view__btn-block__btn_left' onClick={(event) => {
-                            this.deleteSave()
-                            this.setState({
-                                modal: false,
-                            })
-                        }}>
+                        <button className='popup-view__btn-block__btn popup-view__btn-block__btn_left' onClick={this.handleDeleteSave.bind(this)}>
                             ДА
                         </button>
-                        <button className='popup-view__btn-block__btn popup-view__btn-block__btn_right' onClick={() => {
-                            this.setState({
-                                modal: false,
-                            })
-                        }}>НЕТ</button>
+                        <button className='popup-view__btn-block__btn popup-view__btn-block__btn_right' onClick={this.changeModalVisible.bind(this)}>
+                            НЕТ
+                        </button>
                     </div>
                 </div>
                 <Link ref={this.redir} hidden to={'/start_game'}>НАЧАТЬ ИГРУ</Link>
             </div>
-        </LoadingScreen>
+        </LoadingWrap>
     )
   }
 }
