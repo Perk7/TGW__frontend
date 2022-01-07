@@ -2,7 +2,7 @@ import React from 'react';
 import MenuHeader from '../../elements/MenuHeader';
 import UserService from "../../RequestService";
 import {change_user, auth} from "../../storage/actions";
-import {setCookie, offBoard, onBoard} from "../../otherFunctions";
+import {offBoard, onBoard} from "../../otherFunctions";
 import { connect } from 'react-redux'
 import {mapStateToProps} from "../../storage/reduxGet";
 
@@ -18,9 +18,28 @@ class Login extends React.Component {
 
 			logger: '',
 			form: '',
-			code: null,
+
+			code: '',
 			tryCode: '',
+
 			btnForget: false
+		}
+
+		this.formStatus = {
+			empty: '',
+			code: 'code',
+			forget: 'forget',
+			loading: 'loading',
+			change: 'change'
+		}
+
+		this.loggerStatus = {
+			empty: '',
+			wrong: 'wrong', 
+			success: 'success', 
+			email: 'email',
+			fail: 'fail',
+			wrongCode: 'wrongCode'
 		}
 
 		this.login = React.createRef()
@@ -30,10 +49,22 @@ class Login extends React.Component {
 		this.forget = React.createRef()
 
 		this.tryLogin = this.tryLogin.bind(this)
-		this.getLogger = this.getLogger.bind(this)
-		this.getForm = this.getForm.bind(this)
 		this.sendCode = this.sendCode.bind(this)
 		this.changePassword = this.changePassword.bind(this)
+
+		this.getLogger = this.getLogger.bind(this)
+		this.getForm = this.getForm.bind(this)
+
+		this.changePassword = this.changePassword.bind(this)
+		this.setFormLogger = this.setFormLogger.bind(this)
+		this.checkEqualCode = this.checkEqualCode.bind(this)
+	}
+
+	setFormLogger(newForm, newLogger) {
+		this.setState({
+			logger: newLogger ?? this.state.logger,
+			form: newForm ?? this.state.form
+		})
 	}
 
 	tryLogin() {
@@ -41,151 +72,169 @@ class Login extends React.Component {
 			"login": this.state.login,
 			"password": this.state.password,
 		};
+
 		userService.login(user)
-			.then((result) => {
-				let par = JSON.parse(result.data);
-				if (par.status === 'success') {
-					this.props.change_user()
-					this.props.auth({ login: user.login, password: user.password })
-					const date = new Date(Date.now() + 120*86400e3);
-					setCookie('login', user.login, { expires: date, samesite: 'strict'})
-					setCookie('password', user.password, {expires: date, samesite: 'strict'})
-					this.setState({
-						logger: 'success'
-					})
-				} else if (par.status === 'wrong') {
-					this.setState({
-						logger: 'wrong'
-					})
-				}
+			.then(() => {
+				this.props.change_user()
+				this.props.auth({ login: user.login, password: user.password })
+
+				localStorage.setItem('login', user.login)
+				localStorage.setItem('password', user.password)
+
+				this.setFormLogger.bind(this, null, this.loggerStatus.success)
 			})
-			.catch((result) => {
-				console.log('There was an error! Please re-check your form.');
-			});
+			.catch(this.setFormLogger.bind(this, null, this.loggerStatus.wrong));
 	}
 
 	sendCode(mail) {
-		this.setState({
-			form: 'loading'
-		})
-		userService.recoveryPasswordCode({ mail: mail})
-			.then((result) => {
-				let par = JSON.parse(result.data);
-				if (par.status === 'success') {
-					this.setState({
-						logger: '',
-						code: par.code,
-						form: 'code',
-						password: ''
-					})
-				} else {
-					this.setState({
-						logger: 'email',
-						form: 'forget'
-					})
-				}
+		this.setFormLogger(this.formStatus.loading)
+
+		userService.recoveryPasswordCode({ mail: mail })
+			.then(result => {
+				let parsed = JSON.parse(result.data);
+
+				this.setFormLogger(this.formStatus.code, this.loggerStatus.empty)
+				this.setState({
+					code: parsed.code,
+					password: ''
+				})
 			})
-			.catch((result) => {
-				console.log('There was an error! Please re-check your form.');
-			});
+			.catch(this.setFormLogger.bind(this, this.formStatus.forget, this.loggerStatus.email));
 	}
 
 	changePassword(password) {
-		this.setState({
-			form: 'loading'
-		})
-		userService.recoveryPassword({ mail: this.state.email, password: password})
-			.then((result) => {
-				let par = JSON.parse(result.data);
-				if (par.status === 'success') {
-					this.setState({
-						logger: '',
-						form: '',
-						password: this.state.password,
-						btnForget: 'inline-block'
-					})
-					this.password.current.disabled = false
-					this.submit.current.disabled = false
-				}
+		this.setFormLogger(this.formStatus.loading)
+
+		userService.recoveryPassword({ mail: this.state.email, password: password })
+			.then(() => {
+					
+				this.setFormLogger(this.formStatus.empty, this.loggerStatus.empty)
+				this.setState({
+					password: '',
+					btnForget: 'inline-block'
+				})
+
+				this.password.current.disabled = false
+				this.submit.current.disabled = false
 			})
-			.catch((result) => {
-				console.log('There was an error! Please re-check your form.');
-			});
+			.catch(this.setFormLogger.bind(this, this.formStatus.empty, this.loggerStatus.fail));
+	}
+
+	getLoggerTemplate(text, style) {
+		return ( <div style={style ?? {}} className='login__form-block__logger'>{text}</div> )
 	}
 
 	getLogger() {
 		let form = document.querySelector('.login__form-block')
-		if (this.state.logger === '') {
-			return <div style={{marginTop: '15vh'}}> </div>
-		} else if (this.state.logger === 'wrong') {
-			form.classList.add('login__form-block_with-logger')
-			return <div className='login__form-block__logger'>Неверный логин и(или) пароль</div>
-		} else if (this.state.logger === 'success') {
-			form.classList.add('login__form-block_with-logger')
-			setTimeout(() => {
-				if (this.back.current) {
-					this.back.current.click()
-				}
-			}, 2000)
-			this.login.current.disabled = true
-			this.password.current.disabled = true
-			this.submit.current.disabled = true
-			this.forget.current.disabled = true
-			return <div style={{color: 'limegreen',}} className='login__form-block__logger'>Авторизация прошла успешно</div>
-		} else if (this.state.logger === 'email') {
-			return <div className='login__form-block__logger'>Пользователя с таким email не найдено</div>
+		const setStyleToForm = function() { 
+			form.classList.add('login__form-block_with-logger') 
+		}
+
+		switch (this.state.logger) {
+			case this.loggerStatus.wrongCode:
+				setStyleToForm()
+				return this.getLoggerTemplate('Произошла ошибка')
+
+			case this.loggerStatus.fail:
+				setStyleToForm()
+				return this.getLoggerTemplate('Неверный код')
+
+			case this.loggerStatus.wrong:
+				setStyleToForm()
+				return this.getLoggerTemplate('Неверный логин и(или) пароль')
+
+			case this.loggerStatus.success:
+				setStyleToForm()
+
+				setTimeout(() => {
+					if (this.back.current) {
+						this.back.current.click()
+					} 
+				}, 2000);
+
+				this.login.current.disabled = true
+				this.password.current.disabled = true
+				this.submit.current.disabled = true
+				this.forget.current.disabled = true
+
+				return this.getLoggerTemplate('Авторизация прошла успешно', {color: 'limegreen'})
+
+			case this.loggerStatus.email:
+				return this.getLoggerTemplate('Пользователя с таким email не найдено')
+
+			default:
+				return <div style={{marginTop: '15vh'}}> </div>
 		}
 	}
 
-	getForm() {
-		if (this.state.code === this.state.tryCode && this.state.form === 'code') {
-			return <div className='login__form-block'>
-					<form onSubmit={(event) => {
+	checkEqualCode() {
+		if (this.state.tryCode === this.state.code) {
+			this.setFormLogger(this.formStatus.change, this.loggerStatus.empty)
+		} else {
+			this.setFormLogger(this.formStatus.forget, this.loggerStatus.wrongCode)
+		}
+	}
+
+	getFormTemplate(fields, submitFunction, submitBtnText, submitBtnRef) {
+		return (<div className='login__form-block'>
+					<form onSubmit={event => {
 						event.preventDefault()
-						this.changePassword(this.state.password)
+						submitFunction()
 					}}>
-						<input className='login__form-block__input' onBlur={offBoard} onFocus={onBoard} autoComplete="off" onChange={(e) => { this.setState({password: e.target.value}) }}
-							   placeholder='Новый пароль' value={this.state.password} type="password" name='password' ref={this.password} />
-						<button className='login__form-block__submit' type='submit' ref={this.submit} >СМЕНИТЬ ПАРОЛЬ</button>
+						{fields}
+						<button className='login__form-block__submit' type='submit' ref={submitBtnRef ?? null} >{submitBtnText}</button>
 					</form>
-				   </div>
+				</div>)
+	}
+
+	getForm() {
+		let fields = (<div style={{ marginLeft: '15vw', textAlign: 'left', color: '#FFF', fontSize: '3vw'}}>Loading...</div>)
+
+		switch (this.state.form) {
+			case this.formStatus.change: 
+				fields = (<input className='login__form-block__input' onBlur={offBoard} onFocus={onBoard} autoComplete="off" 
+							onChange={(e) => { this.setState({password: e.target.value}) }}
+							placeholder='Новый пароль' value={this.state.password} type="password" name='password' ref={this.password} />)
+
+				return this.getFormTemplate(fields, this.changePassword.bind(this, this.state.password), 'СМЕНИТЬ ПАРОЛЬ')
+							
+			case this.formStatus.forget:
+				fields = (<input id='email' className='login__form-block__input' onBlur={offBoard} onFocus={onBoard} autoComplete="off"
+							onChange={(e) => { this.setState({email: e.target.value}) }}
+							placeholder='Почта' value={this.state.email} type="email" name='email' />)
+
+				return this.getFormTemplate(fields, this.sendCode.bind(this, this.state.email), 'ОТПРАВИТЬ КОД', this.submit)
+								
+			case this.formStatus.loading:
+				return fields
+
+			case this.formStatus.code:
+				fields = (<input className='login__form-block__input' onBlur={offBoard} onFocus={onBoard} autoComplete="off" 
+							onChange={(e) => { this.setState({tryCode: e.target.value}) }}
+							placeholder='Введите код' maxLength='4' type="text" value={this.state.tryCode} name='code'/>)
+
+				return this.getFormTemplate(fields, this.checkEqualCode, 'ПОДТВЕРДИТЬ')
+
+			default:
+				fields = (<>
+							<input className='login__form-block__input' onBlur={offBoard} onFocus={onBoard} autoComplete="off" 
+								onChange={(e) => { this.setState({login: e.target.value}) }}
+								placeholder='Логин' value={this.state.login} type="text" name='login' ref={this.login} />
+							<input className='login__form-block__input' onBlur={offBoard} onFocus={onBoard} autoComplete="off" 
+								onChange={(e) => { this.setState({password: e.target.value}) }}
+								placeholder='Пароль' value={this.state.password} type="password" name='password' ref={this.password} />
+						 	</>)
+
+				return this.getFormTemplate(fields, this.tryLogin, 'ВОЙТИ', this.submit)
 		}
-		if (this.state.form === '') {
-			return <div className='login__form-block'>
-						<form onSubmit={(event) => {
-							event.preventDefault()
-							this.tryLogin()
-						}}>
-							<input className='login__form-block__input' onBlur={offBoard} onFocus={onBoard} autoComplete="off" onChange={(e) => { this.setState({login: e.target.value}) }}
-								   placeholder='Логин' value={this.state.login} type="text" name='login' ref={this.login} />
-							<input className='login__form-block__input' onBlur={offBoard} onFocus={onBoard} autoComplete="off" onChange={(e) => { this.setState({password: e.target.value}) }}
-								   placeholder='Пароль' value={this.state.password} type="password" name='password' ref={this.password} />
-							<button className='login__form-block__submit' type='submit' ref={this.submit} >ВОЙТИ</button>
-						</form>
-					</div>
-		} else if (this.state.form === 'forget') {
-			return <div className='login__form-block'>
-						<form onSubmit={(event) => {
-							event.preventDefault()
-							this.sendCode(this.state.email)
-						}}>
-							<input id='email' className='login__form-block__input' onBlur={offBoard} onFocus={onBoard} autoComplete="off" onChange={(e) => { this.setState({email: e.target.value}) }}
-								   placeholder='Почта' value={this.state.email} type="email" name='email' />
-							<button className='login__form-block__submit' type='submit' ref={this.submit} >ОТПРАВИТЬ КОД</button>
-						</form>
-					</div>
-		} else if (this.state.form === 'loading') {
-			return <div style={{ marginLeft: '15vw', textAlign: 'left', color: '#FFF', fontSize: '3vw'}}>Loading...</div>
-		} else if (this.state.form === 'code') {
-			return <div className='login__form-block'>
-					<form>
-						<input className='login__form-block__input' onBlur={offBoard} onFocus={onBoard} autoComplete="off" onChange={(e) => {
-							this.setState({tryCode: e.target.value})
-						}}
-							   placeholder='Введите код' maxLength='4' type="text" value={this.state.tryCode} name='code'/>
-					</form>
-				   </div>
-		}
+	}
+
+	handleRecoveryBtnClick() {
+		this.setFormLogger(this.formStatus.forget, this.loggerStatus.empty)
+		this.setState({
+			password: '',
+			btnForget: 'none'
+		})
 	}
 
 	render() {
@@ -194,17 +243,14 @@ class Login extends React.Component {
 		return (
 			<div className='view'>
 				<div className='login__relative-div'>
-				<MenuHeader header='Загрузить игру' ref={this.back} />
-				{logger}
-				{form}
-				<button style={{display: this.state.btnForget}} className='login__forget-btn' onClick={() => {
-					this.setState({
-						form: 'forget',
-						logger: '',
-						password: '',
-						btnForget: 'none'
-					})
-				}} ref={this.forget}>Восстановить пароль</button>
+					<MenuHeader header='Загрузить игру' ref={this.back} />
+
+					{logger}
+					{form}
+					
+					<button style={{display: this.state.btnForget}} className='login__forget-btn' onClick={this.handleRecoveryBtnClick.bind(this)} ref={this.forget}>
+						Восстановить пароль
+					</button>
 				</div>
 			</div>
 		)

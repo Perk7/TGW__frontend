@@ -22,13 +22,28 @@ class LoadGame extends React.Component {
         load: true,
         modal: false,
         time: '',
-        loadLogger: false,
+        loadHeader: 'Loading'
     }
 
     this.redir = React.createRef();
 
     this.loadSaves = this.loadSaves.bind(this)
     this.deleteSave = this.deleteSave.bind(this)
+    this.handlerBadRequest = this.handlerBadRequest.bind(this)
+  }
+
+  handlerBadRequest() {
+    console.error('There was an error!');
+    this.setState({ 
+        loadHeader: 'Произошла ошибка',
+        load: true,
+    });
+    setTimeout(() => {
+        this.setState({ 
+            loadHeader: 'Loading',
+            load: false,
+        });
+    }, 2000)
   }
 
   loadSaves() {
@@ -47,10 +62,9 @@ class LoadGame extends React.Component {
                           load: false
                       })
                   }
-          })
-          .catch(_ => {
-              console.error('There was an error! Please re-check your form.');
-          });
+                }
+          )
+          .catch(this.handlerBadRequest);
   }
 
   startSave(time) {
@@ -60,7 +74,7 @@ class LoadGame extends React.Component {
         }
         this.setState({
             load: true,
-            loadLogger: true
+            loadHeader: 'Загрузка игровых данных'
         })
         userService.loadGame(data)
             .then(res => res.data)
@@ -70,9 +84,7 @@ class LoadGame extends React.Component {
                     this.props.create_game(parsed)
                     this.redir.current.click()
                 })
-            .catch(_ => {
-                console.log('There was an error! Please re-check your form: ');
-            });
+            .catch(this.handlerBadRequest);
   }
 
   deleteSave() {
@@ -91,6 +103,7 @@ class LoadGame extends React.Component {
                       })
                   }
           })
+          .catch(this.handlerBadRequest);
   }
 
   handleDeleteSave() {
@@ -135,7 +148,7 @@ class LoadGame extends React.Component {
     return (
         <LoadingWrap
             loading={this.state.load}
-            text={this.state.loadLogger?'Загрузка игровых данных':'Loading...'} >
+            text={this.state.loadHeader} >
             <div className='view'>
                 <MenuHeader header='Загрузить игру' />
 
