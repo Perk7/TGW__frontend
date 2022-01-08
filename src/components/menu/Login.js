@@ -80,8 +80,17 @@ class Login extends React.Component {
 
 				localStorage.setItem('login', user.login)
 				localStorage.setItem('password', user.password)
-
-				this.setFormLogger.bind(this, null, this.loggerStatus.success)
+				
+				this.setFormLogger(null, this.loggerStatus.success)
+				setTimeout(() => {
+					if (this.back.current) {
+						this.back.current.click()
+					} 
+				}, 2000);
+				this.login.current.disabled = true
+				this.password.current.disabled = true
+				this.submit.current.disabled = true
+				this.forget.current.disabled = true
 			})
 			.catch(this.setFormLogger.bind(this, null, this.loggerStatus.wrong));
 	}
@@ -145,18 +154,6 @@ class Login extends React.Component {
 
 			case this.loggerStatus.success:
 				setStyleToForm()
-
-				setTimeout(() => {
-					if (this.back.current) {
-						this.back.current.click()
-					} 
-				}, 2000);
-
-				this.login.current.disabled = true
-				this.password.current.disabled = true
-				this.submit.current.disabled = true
-				this.forget.current.disabled = true
-
 				return this.getLoggerTemplate('Авторизация прошла успешно', {color: 'limegreen'})
 
 			case this.loggerStatus.email:
@@ -193,14 +190,14 @@ class Login extends React.Component {
 		switch (this.state.form) {
 			case this.formStatus.change: 
 				fields = (<input className='login__form-block__input' onBlur={offBoard} onFocus={onBoard} autoComplete="off" 
-							onChange={(e) => { this.setState({password: e.target.value}) }}
+							onChange={e => { this.setState({password: e.target.value}) }}
 							placeholder='Новый пароль' value={this.state.password} type="password" name='password' ref={this.password} />)
 
 				return this.getFormTemplate(fields, this.changePassword.bind(this, this.state.password), 'СМЕНИТЬ ПАРОЛЬ')
 							
 			case this.formStatus.forget:
 				fields = (<input id='email' className='login__form-block__input' onBlur={offBoard} onFocus={onBoard} autoComplete="off"
-							onChange={(e) => { this.setState({email: e.target.value}) }}
+							onChange={e => { this.setState({email: e.target.value}) }}
 							placeholder='Почта' value={this.state.email} type="email" name='email' />)
 
 				return this.getFormTemplate(fields, this.sendCode.bind(this, this.state.email), 'ОТПРАВИТЬ КОД', this.submit)
@@ -210,7 +207,7 @@ class Login extends React.Component {
 
 			case this.formStatus.code:
 				fields = (<input className='login__form-block__input' onBlur={offBoard} onFocus={onBoard} autoComplete="off" 
-							onChange={(e) => { this.setState({tryCode: e.target.value}) }}
+							onChange={e => { this.setState({tryCode: e.target.value}) }}
 							placeholder='Введите код' maxLength='4' type="text" value={this.state.tryCode} name='code'/>)
 
 				return this.getFormTemplate(fields, this.checkEqualCode, 'ПОДТВЕРДИТЬ')
@@ -218,10 +215,10 @@ class Login extends React.Component {
 			default:
 				fields = (<>
 							<input className='login__form-block__input' onBlur={offBoard} onFocus={onBoard} autoComplete="off" 
-								onChange={(e) => { this.setState({login: e.target.value}) }}
+								onChange={e => { this.setState({login: e.target.value}) }}
 								placeholder='Логин' value={this.state.login} type="text" name='login' ref={this.login} />
 							<input className='login__form-block__input' onBlur={offBoard} onFocus={onBoard} autoComplete="off" 
-								onChange={(e) => { this.setState({password: e.target.value}) }}
+								onChange={e => { this.setState({password: e.target.value}) }}
 								placeholder='Пароль' value={this.state.password} type="password" name='password' ref={this.password} />
 						 	</>)
 
@@ -243,7 +240,7 @@ class Login extends React.Component {
 		return (
 			<div className='view'>
 				<div className='login__relative-div'>
-					<MenuHeader header='Загрузить игру' ref={this.back} />
+					<MenuHeader header='Войти' ref={this.back} />
 
 					{logger}
 					{form}
