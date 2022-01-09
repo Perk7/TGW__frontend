@@ -1,10 +1,16 @@
 import React from 'react';
-import MenuHeader from '../../elements/MenuHeader';
-import UserService from "../../RequestService";
-import {change_user, auth} from "../../storage/actions";
-import {offBoard, onBoard} from "../../otherFunctions";
-import { connect } from 'react-redux'
+
+import { connect } from 'react-redux';
 import {mapStateToProps} from "../../storage/reduxGet";
+import {change_user, auth} from "../../storage/actions";
+
+import MenuHeader from '../../elements/MenuHeader';
+import LoggerTemplate from '../../elements/build/LoggerTemplate';
+import FormTemplate from '../../elements/build/FormTemplate';
+import FormField from '../../elements/build/FormField';
+
+import UserService from "../../RequestService";
+import {offBoard, onBoard} from "../../otherFunctions";
 
 const userService = new UserService()
 
@@ -129,10 +135,6 @@ class Login extends React.Component {
 			.catch(this.setFormLogger.bind(this, this.formStatus.empty, this.loggerStatus.fail));
 	}
 
-	getLoggerTemplate(text, style) {
-		return ( <div style={style ?? {}} className='login__form-block__logger'>{text}</div> )
-	}
-
 	getLogger() {
 		let form = document.querySelector('.login__form-block')
 		const setStyleToForm = function() { 
@@ -142,22 +144,22 @@ class Login extends React.Component {
 		switch (this.state.logger) {
 			case this.loggerStatus.wrongCode:
 				setStyleToForm()
-				return this.getLoggerTemplate('Произошла ошибка')
+				return <LoggerTemplate text='Произошла ошибка' />
 
 			case this.loggerStatus.fail:
 				setStyleToForm()
-				return this.getLoggerTemplate('Неверный код')
+				return <LoggerTemplate text='Неверный код' />
 
 			case this.loggerStatus.wrong:
 				setStyleToForm()
-				return this.getLoggerTemplate('Неверный логин и(или) пароль')
+				return <LoggerTemplate text='Неверный логин и(или) пароль' />
 
 			case this.loggerStatus.success:
 				setStyleToForm()
-				return this.getLoggerTemplate('Авторизация прошла успешно', {color: 'limegreen'})
+				return <LoggerTemplate text='Авторизация прошла успешно' style={{color: 'limegreen'}} />
 
 			case this.loggerStatus.email:
-				return this.getLoggerTemplate('Пользователя с таким email не найдено')
+				return <LoggerTemplate text='Пользователя с таким email не найдено' />
 
 			default:
 				return <div style={{marginTop: '15vh'}}> </div>
@@ -172,57 +174,40 @@ class Login extends React.Component {
 		}
 	}
 
-	getFormTemplate(fields, submitFunction, submitBtnText, submitBtnRef) {
-		return (<div className='login__form-block'>
-					<form onSubmit={event => {
-						event.preventDefault()
-						submitFunction()
-					}}>
-						{fields}
-						<button className='login__form-block__submit' type='submit' ref={submitBtnRef ?? null} >{submitBtnText}</button>
-					</form>
-				</div>)
-	}
-
 	getForm() {
 		let fields = (<div style={{ marginLeft: '15vw', textAlign: 'left', color: '#FFF', fontSize: '3vw'}}>Loading...</div>)
 
 		switch (this.state.form) {
 			case this.formStatus.change: 
-				fields = (<input className='login__form-block__input' onBlur={offBoard} onFocus={onBoard} autoComplete="off" 
-							onChange={e => { this.setState({password: e.target.value}) }}
-							placeholder='Новый пароль' value={this.state.password} type="password" name='password' ref={this.password} />)
+				fields = <FormField onChange={e => this.setState({password: e.target.value}) }
+							placeholder={'Новый пароль'} type="password" value={this.state.password} name='password' ref={this.password} />
 
-				return this.getFormTemplate(fields, this.changePassword.bind(this, this.state.password), 'СМЕНИТЬ ПАРОЛЬ')
+				return <FormTemplate fields={fields} submitFunction={this.changePassword.bind(this, this.state.password)} submitBtnText={'СМЕНИТЬ ПАРОЛЬ'} />
 							
 			case this.formStatus.forget:
-				fields = (<input id='email' className='login__form-block__input' onBlur={offBoard} onFocus={onBoard} autoComplete="off"
-							onChange={e => { this.setState({email: e.target.value}) }}
-							placeholder='Почта' value={this.state.email} type="email" name='email' />)
+				fields = <FormField onChange={e => this.setState({email: e.target.value}) }
+							placeholder='Почта' value={this.state.email} type="email" name='email' />
 
-				return this.getFormTemplate(fields, this.sendCode.bind(this, this.state.email), 'ОТПРАВИТЬ КОД', this.submit)
+				return <FormTemplate fields={fields} submitFunction={this.sendCode.bind(this, this.state.email)} submitBtnText={'ОТПРАВИТЬ КОД'} ref={this.submit} />
 								
 			case this.formStatus.loading:
 				return fields
 
 			case this.formStatus.code:
-				fields = (<input className='login__form-block__input' onBlur={offBoard} onFocus={onBoard} autoComplete="off" 
-							onChange={e => { this.setState({tryCode: e.target.value}) }}
-							placeholder='Введите код' maxLength='4' type="text" value={this.state.tryCode} name='code'/>)
+				fields = <FormField onChange={e => this.setState({tryCode: e.target.value}) }
+							placeholder='Введите код' maxLength='4' type="text" value={this.state.tryCode} name='code' /> 
 
-				return this.getFormTemplate(fields, this.checkEqualCode, 'ПОДТВЕРДИТЬ')
+				return <FormTemplate fields={fields} submitFunction={this.checkEqualCode} submitBtnText={'ПОДТВЕРДИТЬ'} />
 
 			default:
 				fields = (<>
-							<input className='login__form-block__input' onBlur={offBoard} onFocus={onBoard} autoComplete="off" 
-								onChange={e => { this.setState({login: e.target.value}) }}
+							<FormField onChange={e => this.setState({login: e.target.value}) }
 								placeholder='Логин' value={this.state.login} type="text" name='login' ref={this.login} />
-							<input className='login__form-block__input' onBlur={offBoard} onFocus={onBoard} autoComplete="off" 
-								onChange={e => { this.setState({password: e.target.value}) }}
+							<FormField onChange={e => this.setState({password: e.target.value}) }
 								placeholder='Пароль' value={this.state.password} type="password" name='password' ref={this.password} />
-						 	</>)
+						</>)
 
-				return this.getFormTemplate(fields, this.tryLogin, 'ВОЙТИ', this.submit)
+				return <FormTemplate fields={fields} submitFunction={this.tryLogin} submitBtnText={'ВОЙТИ'} ref={this.submit} />
 		}
 	}
 
@@ -237,6 +222,7 @@ class Login extends React.Component {
 	render() {
 		const form = this.getForm()
 		const logger = this.getLogger()
+
 		return (
 			<div className='view'>
 				<div className='login__relative-div'>

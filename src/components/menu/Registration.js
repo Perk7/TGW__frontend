@@ -1,95 +1,87 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+
+import MenuHeader from '../../elements/MenuHeader';
+import LoggerTemplate from '../../elements/build/LoggerTemplate';
+import FormTemplate from '../../elements/build/FormTemplate';
+import FormField from '../../elements/build/FormField';
+
 import UserService from "../../RequestService";
-import {offBoard, onBoard} from "../../otherFunctions";
 
 const userService = new UserService();
 
 export default class Registration extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            login: '',
+            email: '',
+            password: '',
+
+            tryCode: '',
+            code: '',
+
+            logger: '',
+            form: 'check_email'
+        }
+
+        this.formStatus = {
+            check_email: 'check_email',
+            loading: 'loading',
+            success: 'success',
+            check_code: 'check_code'
+        }
+        this.loggerStatus = {
+            empty: '',
+            email: 'email',
+            success: 'success',
+            error: 'error',
+            code: 'code'
+        }
+
         this.login = React.createRef();
         this.password = React.createRef();
         this.email = React.createRef();
         this.back = React.createRef();
         this.submit = React.createRef();
 
-        this.state = {
-            login: '',
-            email: '',
-            password: '',
-            tryCode: '',
-
-            code: null,
-
-            logger: '',
-            form: 'check_mail'
-        }
+        this.getLogger = this.getLogger.bind(this)
+        this.getForm = this.getForm.bind(this)
 
         this.registrate = this.registrate.bind(this)
-        this.getLogger = this.getLogger.bind(this)
-        this.check_mail = this.check_mail.bind(this)
+        this.checkMail = this.checkMail.bind(this)
+        this.setFormLogger = this.setFormLogger.bind(this)
+        this.checkEqualCode = this.checkEqualCode.bind(this)
     }
 
-    check_mail() {
-        this.setState({
-            form: 'loading'
-        })
-        userService.check_mail({ "mail": this.state.email, })
-            .then((result) => {
-                let par = JSON.parse(result.data);
-                if (!par.code) {
-                    this.setState({
-                        logger: 'email',
-                        form: 'check_mail'
-                    })
-                } else {
-                    this.setState({
-                        code: par.code,
-                        form: 'check_code',
-                        logger: ''
-                    })
-                }
+    setFormLogger(newForm, newLogger) {
+		this.setState({
+			logger: newLogger ?? this.state.logger,
+			form: newForm ?? this.state.form
+		})
+	}
+
+    checkMail() {
+        this.setFormLogger(this.formStatus.loading, this.loggerStatus.empty)
+        userService.check_mail({ 'mail': this.state.email })
+            .then(result => {
+                let parsed = JSON.parse(result.data);
+                this.setState({
+                    code: parsed.code,
+                })
+                this.setFormLogger(this.formStatus.check_code)
             })
+            .catch(this.setFormLogger.bind(this, this.formStatus.check_email, this.loggerStatus.email))
     }
 
     registrate() {
-        let user = {
+        const user = {
             "login": this.state.login,
             "password": this.state.password,
             "email": this.state.email,
         };
         userService.registration(user)
-            .then((result) => {
-                let par = JSON.parse(result.data);
-                if (par.login && par.email) {
-                    this.setState({
-                        logger: 'success'
-                    })
-                } else {
-                    this.setState({
-                        logger: 'error'
-                    })
-                }
-            })
-            .catch((result) => {
-                console.log('There was an error! Please re-check your form.');
-            });
-    }
-
-    getLogger() {
-            let form = document.querySelector('.login__form-block')
-            if (this.state.logger === 'email') {
-                return <div className='login__form-block__logger'>Такой email уже используется</div>
-            }
-            if (this.state.tryCode !== '' && this.state.code !== this.state.tryCode && this.state.tryCode.length === 4) {
-                return <div className='login__form-block__logger'>Вы ввели неверный код</div>
-            }
-            if (this.state.logger === '') {
-                return <div style={{height: '5vw'}}> </div>
-            }
-            if (this.state.logger === 'success') {
-                form.classList.add('login__form-block_with-logger')
+            .then(() => {
+                this.setFormLogger(null, this.loggerStatus.success)
                 setTimeout(() => {
                     if (this.back.current) {
                         this.back.current.click()
@@ -98,50 +90,75 @@ export default class Registration extends React.Component {
                 this.login.current.disabled = true
                 this.email.current.disabled = true
                 this.password.current.disabled = true
-                this.submit.current.disabled = true
-                return <div style={{color: 'limegreen',}} className='login__form-block__logger'>Регистрация прошла успешно</div>
+                this.submit.current.disabled = true   
+            })
+            .catch(this.setFormLogger(null, this.loggerStatus.error));
+    }
+
+    getLogger() {
+            let form = document.querySelector('.login__form-block')
+            const setStyleToForm = function() { 
+                form.classList.add('login__form-block_with-logger') 
             }
-            if (this.state.logger === 'error') {
-                form.classList.add('login__form-block_with-logger')
-                return <div className='login__form-block__logger'>Такой логин уже используется</div>
+
+            switch (this.state.logger) {
+                case this.loggerStatus.email:
+                    return <LoggerTemplate text='Такой email уже используется' />
+
+                case this.loggerStatus.error:
+                    setStyleToForm()
+                    return <LoggerTemplate text='Такой логин уже используется' />
+
+                case this.loggerStatus.code:
+                    return <LoggerTemplate text='Вы ввели неверный код' />
+
+                case this.loggerStatus.success:
+                    setStyleToForm()
+                    return <LoggerTemplate style={{color: 'limegreen',}} text='Регистрация прошла успешно' />
+
+                default:
+                    return <div style={{height: '5vw'}}> </div>
             }
     }
 
-    getForm() {
-        if (this.state.form === 'check_mail') {
-            return <form onSubmit={(event) => {
-                        event.preventDefault()
-                        this.check_mail()
-                    }}>
-                        <input className='login__form-block__input' onBlur={offBoard} onFocus={onBoard} autoComplete="off" onChange={(e) => { this.setState({email: e.target.value}) }}
-                               placeholder='Почта' type="email" value={this.state.email} name='email' required />
-                        <button className='login__form-block__submit' type='submit'>ОТПРАВИТЬ КОД</button>
-                    </form>
-        }
-        if (this.state.form === 'loading') {
-            return <div style={{color: '#FFF', fontSize: '3vw'}}>Loading...</div>
-        }
-        if (this.state.code === this.state.tryCode) {
-            return <form onSubmit={(event) => {
-                event.preventDefault()
-                this.registrate()
-            }}>
-                <input className='login__form-block__input' onBlur={offBoard} onFocus={onBoard} autoComplete="off" placeholder='Почта' value={this.state.email} type="email" name='email' ref={this.email} />
-                <input className='login__form-block__input' onBlur={offBoard} onFocus={onBoard} autoComplete="off" onChange={(e) => { this.setState({login: e.target.value}) }}
-                       placeholder='Логин' value={this.state.login} type="text" name='login' ref={this.login} />
-                <input className='login__form-block__input' onBlur={offBoard} onFocus={onBoard} autoComplete="off" onChange={(e) => { this.setState({password: e.target.value}) }}
-                       placeholder='Пароль' value={this.state.password} type="password" name='password' ref={this.password} />
-                <button className='login__form-block__submit' type='submit' ref={this.submit} >ЗАРЕГИСТРИРОВАТЬСЯ</button>
-            </form>
-        }
-        if (this.state.form === 'check_code') {
+    checkEqualCode() {
+		if (this.state.tryCode === this.state.code) {
+			this.setFormLogger(this.formStatus.success, this.loggerStatus.empty)
+		} else {
+			this.setFormLogger(this.formStatus.check_email, this.loggerStatus.code)
+            this.setState({
+                email: '',
+                tryCode: '',
+            })
+		}
+	}
 
-            return <form>
-                <input className='login__form-block__input' onBlur={offBoard} onFocus={onBoard} autoComplete="off" onChange={(e) => {
-                    this.setState({tryCode: e.target.value})
-                }}
-                       placeholder='Введите код' maxLength='4' type="text" value={this.state.tryCode} name='code'/>
-            </form>
+    getForm() {
+        let fields = (<div style={{ marginLeft: '15vw', textAlign: 'left', color: '#FFF', fontSize: '3vw'}}>Loading...</div>)
+
+        switch (this.state.form) {
+            case this.formStatus.check_email:
+                fields = <FormField onChange={e => this.setState({email: e.target.value}) }
+                            placeholder={'Почта'} type={"email"} value={this.state.email} name={'email'} />
+                return <FormTemplate fields={fields} submitFunction={this.checkMail} submitBtnText={'ОТПРАВИТЬ КОД'} />
+
+            case this.formStatus.success:
+                fields = (<>
+                        <FormField placeholder={'Почта'} type={"email"} value={this.state.email} name={'email'} ref={this.email} disabled />
+                        <FormField onChange={e => this.setState({login: e.target.value}) }
+                            placeholder={'Логин'} type={"text"} value={this.state.login} name={'login'} ref={this.login} />
+                        <FormField onChange={e => this.setState({password: e.target.value}) }
+                            placeholder={'Пароль'} type={"password"} value={this.state.password} name={'password'} ref={this.password} />
+                    </>)
+                return <FormTemplate fields={fields} submitFunction={this.registrate} submitBtnText={'ЗАРЕГИСТРИРОВАТЬСЯ'} ref={this.submit} />
+
+            case this.formStatus.check_code:
+                fields = <FormField onChange={e => this.setState({tryCode: e.target.value}) }
+                            placeholder={'Введите код'} type={"text"} value={this.state.tryCode} name={'code'} maxLength='4' />
+                 return <FormTemplate fields={fields} submitFunction={this.checkEqualCode} submitBtnText={'ПОДТВЕРДИТЬ'} />
+
+            default:
+                return fields
         }
     }
 
@@ -151,14 +168,10 @@ export default class Registration extends React.Component {
 
         return (
             <div className='view'>
-                <header className='side-header'>
-                    <Link ref={this.back} to={'/home'} className='header__btn_back'>←</Link>
-                    <h1 className='side-heading'>Регистрация</h1>
-                </header>
+                <MenuHeader header='Регистрация' ref={this.back} />
+
                 {logger}
-                <div className='login__form-block'>
-                    {form}
-                </div>
+                {form}
             </div>
         )
     }
