@@ -4,13 +4,12 @@ import { connect } from 'react-redux';
 import {mapStateToProps} from "../../storage/reduxGet";
 import {change_user, auth} from "../../storage/actions";
 
-import MenuHeader from '../../elements/MenuHeader';
+import MenuHeader from '../../elements/build/MenuHeader';
 import LoggerTemplate from '../../elements/build/LoggerTemplate';
 import FormTemplate from '../../elements/build/FormTemplate';
 import FormField from '../../elements/build/FormField';
 
 import UserService from "../../RequestService";
-import {offBoard, onBoard} from "../../otherFunctions";
 
 const userService = new UserService()
 
@@ -231,7 +230,7 @@ class Login extends React.Component {
 					{logger}
 					{form}
 					
-					<button style={{display: this.state.btnForget}} className='login__forget-btn' onClick={this.handleRecoveryBtnClick.bind(this)} ref={this.forget}>
+					<button style={{display: this.state.btnForget}} className='login__forget-btn button' onClick={this.handleRecoveryBtnClick.bind(this)} ref={this.forget}>
 						Восстановить пароль
 					</button>
 				</div>

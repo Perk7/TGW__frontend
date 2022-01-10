@@ -3,9 +3,6 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.setCookie = setCookie;
-exports.getCookie = getCookie;
-exports.deleteCookie = deleteCookie;
 exports.onBoard = onBoard;
 exports.offBoard = offBoard;
 exports.getAllRegions = getAllRegions;
@@ -82,50 +79,13 @@ exports.getSouseren = getSouseren;
 
 var _identCountries = _interopRequireDefault(require("./identCountries"));
 
-var _colorMap = _interopRequireDefault(require("./colorMap"));
+var _colorMap = _interopRequireDefault(require("./map_data/colorMap"));
 
-var _movingSquad = _interopRequireDefault(require("./movingSquad"));
+var _movingSquad = _interopRequireDefault(require("./map_data/movingSquad"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function setCookie(name, value) {
-  var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-  options = _objectSpread({
-    path: "/"
-  }, options);
-
-  if (options.expires instanceof Date) {
-    options.expires = options.expires.toUTCString();
-  }
-
-  var updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
-
-  for (var optionKey in options) {
-    updatedCookie += "; " + optionKey;
-    var optionValue = options[optionKey];
-
-    if (optionValue !== true) {
-      updatedCookie += "=" + optionValue;
-    }
-  }
-
-  document.cookie = updatedCookie;
-}
-
-function getCookie(name) {
-  var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") + "=([^;]*)"));
-  return matches ? decodeURIComponent(matches[1]) : undefined;
-}
-
-function deleteCookie(name) {
-  document.cookie = name + "=; expires=Tue, 19 Jan 2000 03:14:07 GMT;";
-}
 
 function onBoard() {
   var view = document.querySelector("html");

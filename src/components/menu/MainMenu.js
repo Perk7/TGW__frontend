@@ -16,7 +16,7 @@ class MainMenu extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-        registr: (<Link className='main-scroll-view__btn main-scroll-view__btn_last' key='registration' to={'/registration'}>РЕГИСТРАЦИЯ</Link>),
+        registr: (<Link className='main-scroll-view__btn main-scroll-view__btn_last button' key='registration' to={'/registration'}>РЕГИСТРАЦИЯ</Link>),
     }
 
     this.checklog = this.checklog.bind(this)
@@ -24,9 +24,9 @@ class MainMenu extends React.Component {
 
   checklog() {
     if (!this.props.store.user) {
-        return <Link className='main-scroll-view__btn' key='login' to={'/login'}>ВОЙТИ</Link>
+        return <Link className='main-scroll-view__btn button' key='login' to={'/login'}>ВОЙТИ</Link>
     } else {
-        return <Link className='main-scroll-view__btn' key='login' to={'/logout'}>ВЫЙТИ</Link>
+        return <Link className='main-scroll-view__btn button' key='login' to={'/logout'}>ВЫЙТИ</Link>
     }
   }
 
@@ -53,8 +53,8 @@ class MainMenu extends React.Component {
 
     render() {
       const classes = this.props.store.user
-          ? 'main-scroll-view__btn main-scroll-view__btn_last'
-          : 'main-scroll-view__btn main-scroll-view__btn_last main-scroll-view__btn_disabled'
+          ? 'main-scroll-view__btn main-scroll-view__btn_last button'
+          : 'main-scroll-view__btn main-scroll-view__btn_last main-scroll-view__btn_disabled button'
       const links = [
         (<Link className={classes} key='new_game' to={'/new_game'}>КАМПАНИЯ</Link>),
         (<Link className={classes} key='load' to={'/load'}>ЗАГРУЗИТЬ ИГРУ</Link>)
@@ -67,7 +67,7 @@ class MainMenu extends React.Component {
       return (
         <div className='view'>    
               <h1 className='main-heading'>The Great War</h1>
-              <nav className='main-scroll-view'>
+              <nav className='main-scroll-view overflowing'>
                 {links.map(el => el)}
               </nav>
         </div>

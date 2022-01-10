@@ -15,11 +15,12 @@
       background-color: #FFF; } }
 
   :root {
+    --light-gray: #c4c4c4;
     --gray: #919191;
     --dark-gray: #717171;
-    --dark-black: #2b2b2b;
+
     --light-black: #555555;
-    --light-gray: #c4c4c4;
+    --dark-black: #2b2b2b;
 
     --flag: 1.777777777777778;
     --icon: 1.0625;
@@ -162,6 +163,12 @@
       padding-left: 5vw;
     }
 
+    .button:active, .button:focus {
+      outline: none;
+      -webkit-tap-highlight-color: rgba(0,0,0,0);
+      -webkit-tap-highlight-color: transparent;
+    }
+
     .header__btn_back {
       display: inline;
       background-color: #fff;
@@ -179,12 +186,6 @@
       background-color: #222;
       color: #FFF;
       animation: ButtonAnimate 0.8s ease;
-    }
-
-    .header__btn_back:active, .header__btn_back:focus {
-      outline: none;
-      -webkit-tap-highlight-color: rgba(0,0,0,0);
-      -webkit-tap-highlight-color: transparent;
     }
 
   .icons {

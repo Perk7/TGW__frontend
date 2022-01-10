@@ -15,20 +15,7 @@
     list-style: none;
     padding: 0;
     margin-top: 0;
-}
-
-.load-scroll-view > ul {
     clear: both;
-
-}
-
-.load-scroll-view::-webkit-scrollbar-thumb {
-    background-color: #bbb;
-}
-
-.load-scroll-view::-webkit-scrollbar {
-    width: 0.5vw;
-    background-color: #333;
 }
 
 .load-scroll-view__btn {
@@ -51,12 +38,6 @@
     background-color: #222;
     color: #FFF;
     animation: ButtonAnimate 0.8s ease;
-}
-
-.load-scroll-view__btn:active, .load-scroll-view__btn:focus {
-    outline: none;
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
-    -webkit-tap-highlight-color: transparent;
 }
 
 .load-scroll-view__btn_time {

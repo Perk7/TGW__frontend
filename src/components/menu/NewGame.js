@@ -1,9 +1,10 @@
 import React from 'react';
-import { Link } from "react-router-dom";
 
 import Country from '../../elements/Country.js';
+import MenuHeader from '../../elements/build/MenuHeader';
+import LoadingWrap from '../../elements/build/LoadingWrap.js';
+
 import UserService from '../../RequestService';
-import LoadingScreen from 'react-loading-screen'
 
 const userService = new UserService();
 
@@ -11,72 +12,79 @@ export default class NewGame extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			coun: [],
+			country: [],
 			countries: [],
 			load: true,
+			loadHeader: 'Loading...'
 		}
 
 		this.changeCountry = this.changeCountry.bind(this)
 		this.selectCountries = this.selectCountries.bind(this)
+		this.handleServerError = this.handleServerError.bind(this)
+	}
+
+	handleServerError() {
+		console.error('There was an error!');
+		this.setState({ 
+			loadHeader: 'Произошла ошибка',
+			load: true,
+		});
+		setTimeout(() => {
+			this.setState({ 
+				loadHeader: 'Loading',
+				load: false,
+			});
+		}, 2000)
 	}
 
 	selectCountries() {
 		userService.allCountries()
-		.then(res => res.data)
-        .then(
-	        (result) => {
-	        	let par = JSON.parse(result);
+			.then(result => {
+					let par = JSON.parse(result.data);
 
-		        this.setState({
-		          countries: par,
-		          coun: par[0].fields,
-		          load: false
-		        });
-	        },
-		)}
+					this.setState({
+						countries: par,
+						country: par[0].fields,
+						load: false
+					});
+				})
+			.catch(this.handleServerError)
+	}
 
 	componentDidMount() {
 		this.selectCountries()
 	}
 
-	changeCountry(coun, e) {
+	changeCountry(country, el) {
 		this.setState({
-			coun: coun,
-			selected: e.currentTarget
+			country: country,
+			selected: el.currentTarget
 		})
 	}
 
 	render() {
 		return (
-			<LoadingScreen
-			    loading={this.state.load}
-			    bgColor='#000'
-			    spinnerColor='#FFF'
-			    textColor='#FFF'
-
-			    text='Loading...' >
+			<LoadingWrap loading={this.state.load} text={this.state.loadHeader} >
 				<div className='dark-view'>  
 				  <div className='new-navbar'> 
-			        <header className='side-header'>
-			          <Link to={'/home'} className='header__btn_back'>←</Link>
-			          <h1 className='side-heading'>Кампания</h1>
-			        </header>
-			        <nav className='new-scroll-view'>
-			          {this.state.countries.map(e =>
-						  <button key={e.pk} onClick={(ad) =>
-							  this.changeCountry(e.fields, ad)}
-							  className={e.fields.identify === this.state.coun.identify
-								  ?'main-scroll-view__btn main-scroll-view__btn_new main-scroll-view__btn_new_active'
-								  :'main-scroll-view__btn main-scroll-view__btn_new'}>
+				  	<MenuHeader header='Кампания' />
+			
+			        <nav className='new-scroll-view overflowing'>
+			          	{this.state.countries.map(e =>
+						  <button key={e.pk} onClick={this.changeCountry.bind(this, e.fields)}
+							  className={e.fields.identify === this.state.country.identify
+								  ?'main-scroll-view__btn main-scroll-view__btn_new main-scroll-view__btn_new_active button'
+								  :'main-scroll-view__btn main-scroll-view__btn_new button'}>
 							  {e.fields.name}
-						  </button> )}
+						  </button> 
+						)}
 			        </nav>	
 			      </div> 
 			      <div className='new-countryblock'>
-					  <Country field={this.state.coun} />  
+					  <Country field={this.state.country} />  
 			      </div>
 			    </div>
-		    </LoadingScreen>
+			</LoadingWrap>
 		)
 	}
 }

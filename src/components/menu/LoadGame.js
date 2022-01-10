@@ -8,7 +8,7 @@ import {create_game} from "../../storage/actions";
 import UserService from "../../RequestService";
 
 import LoadingWrap from '../../elements/build/LoadingWrap';
-import MenuHeader from '../../elements/MenuHeader';
+import MenuHeader from '../../elements/build/MenuHeader';
 
 const userService = new UserService();
 
@@ -133,7 +133,7 @@ class LoadGame extends React.Component {
         ? (<ul>
             {this.state.saves.map(item => {
                 return (<li key={item.fields.save_date}>
-                            <div key={item.fields.save_date} className='load-scroll-view__btn' onClick={this.startSave.bind(this, item.fields.save_date)}>
+                            <div key={item.fields.save_date} className='load-scroll-view__btn button' onClick={this.startSave.bind(this, item.fields.save_date)}>
                                 {item.fields.save_name}
                                 <span className='load-scroll-view__btn_time'>
                                     {item.fields.save_date.substr(0,10)} {item.fields.save_date.substr(11,8)}
@@ -152,7 +152,7 @@ class LoadGame extends React.Component {
             <div className='view'>
                 <MenuHeader header='Загрузить игру' />
 
-                <nav className='load-scroll-view'>
+                <nav className='load-scroll-view overflowing'>
                  {savesList}
                 </nav>
 

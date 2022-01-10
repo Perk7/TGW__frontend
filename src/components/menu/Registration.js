@@ -1,6 +1,6 @@
 import React from 'react';
 
-import MenuHeader from '../../elements/MenuHeader';
+import MenuHeader from '../../elements/build/MenuHeader';
 import LoggerTemplate from '../../elements/build/LoggerTemplate';
 import FormTemplate from '../../elements/build/FormTemplate';
 import FormField from '../../elements/build/FormField';
