@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.onBoard = onBoard;
 exports.offBoard = offBoard;
+exports.deepCopy = deepCopy;
 exports.getAllRegions = getAllRegions;
 exports.getPopulation = getPopulation;
 exports.getArea = getArea;
@@ -96,6 +97,10 @@ function offBoard() {
   var view = document.querySelector("html");
   view.classList.remove("html-overflow");
   window.scrollTo(0, 0);
+}
+
+function deepCopy(obj) {
+  return JSON.parse(JSON.stringify(obj));
 }
 
 function getAllRegions(store) {

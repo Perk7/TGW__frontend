@@ -32,31 +32,31 @@ class App extends Component {
       const { history } = this.props
 
       return (
-        <div className="App">
-            <Switch>
-              <Route history={history} path='/home' component={MainMenu} />
-              <Route history={history} path='/load' component={LoadGame} />
-              <Route history={history} path='/new_game' component={NewGame} />
-              <Route history={history} path='/login' component={Login} />
-              <Route history={history} path='/logout' component={Logout} />
-              <Route history={history} path='/registration' component={Registration} />
+          <div className="App">
+              <Switch>
+                <Route history={history} path='/home' component={MainMenu} />
+                <Route history={history} path='/load' component={LoadGame} />
+                <Route history={history} path='/new_game' component={NewGame} />
+                <Route history={history} path='/login' component={Login} />
+                <Route history={history} path='/logout' component={Logout} />
+                <Route history={history} path='/registration' component={Registration} />
 
-              <Route history={history} path='/start_game' component={StartGame} />
-              
-              <Route history={history} path='/country' component={CountryGame} />
-              <Route history={history} path='/politic' component={PoliticGame} />
-              <Route history={history} path='/army' component={ArmyGame} />
-              <Route history={history} path='/economy' component={EconomyGame} />
-              <Route history={history} path='/diplomacy' component={DiplomacyGame} />
-              <Route history={history} path='/law' component={LawGame} />
-              <Route history={history} path='/social' component={SocialGame} />
-              <Route history={history} path='/transport' component={TransportGame} />
-              <Route history={history} path='/science' component={ScienceGame} />
-              <Route history={history} path='/education' component={EducationGame} />
+                <Route history={history} path='/start_game' component={StartGame} />
+                
+                <Route history={history} path='/country' component={CountryGame} />
+                <Route history={history} path='/politic' component={PoliticGame} />
+                <Route history={history} path='/army' component={ArmyGame} />
+                <Route history={history} path='/economy' component={EconomyGame} />
+                <Route history={history} path='/diplomacy' component={DiplomacyGame} />
+                <Route history={history} path='/law' component={LawGame} />
+                <Route history={history} path='/social' component={SocialGame} />
+                <Route history={history} path='/transport' component={TransportGame} />
+                <Route history={history} path='/science' component={ScienceGame} />
+                <Route history={history} path='/education' component={EducationGame} />
 
-              <Redirect from='/' to='/home' />
-            </Switch>
-        </div>
+                <Redirect from='/' to='/home' />
+              </Switch>
+          </div>
       );
     }
   }

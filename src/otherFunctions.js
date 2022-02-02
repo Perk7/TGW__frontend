@@ -13,6 +13,10 @@ export function offBoard() {
   window.scrollTo(0, 0);
 }
 
+export function deepCopy(obj) {
+  return JSON.parse(JSON.stringify(obj))
+}
+
 export function getAllRegions(store) {
   let ret = [];
   for (let i of store.country.regions) {

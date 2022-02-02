@@ -18,7 +18,6 @@ import {
     CHANGE_LAWS, SET_PEACE, SET_SOCIAL, TRANSITION_SQUAD, TRANSITION_CLEAR, CLEAR_PEACE, SWAP_REGION, CHANGE_OCCUPED, DELETE_AI_SQUAD, NEW_AI_SQUAD, CHANGE_AI_SQUAD
 } from "./types";
 import {combineReducers} from "redux";
-import Squad from "../elements/maps/Squad";
 
 function userReducer(state = false, action) {
     switch (action.type) {
