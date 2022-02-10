@@ -1,8 +1,9 @@
-import data from 'Database';
+import data from './Database';
 import { get, set, del, entries, } from 'idb-keyval';
 import { deepCopy } from '../otherFunctions';
+import { parseDate } from '../otherFunctions';
 
-export function startGame(country) {
+export async function startGame(country) {
     let newSave = {}
     newSave.country = deepCopy(data.countries[country])
     newSave.relations = deepCopy(data.relations)
@@ -24,9 +25,8 @@ export function startGame(country) {
 
     newSave.squads = deepCopy(squads)
     newSave.squadsAi = deepCopy(squadsAi)
-
     newSave.countryAi = {}
-    for (let i of data.countries) {
+    for (let i of Object.values(data.countries)) {
         if (i.name !== country) {
             i = deepCopy(i)
             newSave.countryAi[i.name] = {
@@ -112,34 +112,33 @@ export function startGame(country) {
         kazna: 10_000_000,
     }
 
-    let key = `${country} ${new Date()}`
-    set(key, newSave)
+    newSave.date = new Date()
+
+    let parsedDate = parseDate(newSave.date)
+
+    let key = `${newSave.country.name}_${parsedDate}`
+    await set(key, newSave)
 
     return get(key)
 }
 
-export function loadGame(country, time) {
-    let key = `${country} ${time}`
-    let save = get(key)
+export async function loadGame(country, time) {
+    let key = `${country}_${time}`
 
-    return save
+    return get(key)
 }
 
-export function deleteGame(country, time) {
-    let status = false
-
-    let key = `${country} ${time}`
-    del(key).then(e => status = true)
-
-    return status
+export async function deleteGame(country, time) {
+    let key = `${country}_${time}`
+    
+    return del(key)
 }
 
-export function getAllSaves() {
+export async function getAllSaves(onlyKey=false) {
     let saves = {};
 
-    entries().then(entires => {
-        entires.forEach(e => saves[e[0]] = e[1])
-    });
+    let items = await entries()
+    items.forEach(e => saves[e[0]] = e[1])
 
-    return saves
+    return onlyKey ? Object.keys(saves) : saves
 }

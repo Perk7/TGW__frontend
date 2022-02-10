@@ -77,6 +77,7 @@ exports.haveSeaside = haveSeaside;
 exports.getPeacingCountries = getPeacingCountries;
 exports.makeBattleEffects = makeBattleEffects;
 exports.getSouseren = getSouseren;
+exports.parseDate = parseDate;
 
 var _identCountries = _interopRequireDefault(require("./identCountries"));
 
@@ -2576,4 +2577,8 @@ function getSouseren(store) {
       }
     }
   }
+}
+
+function parseDate(date) {
+  return date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
 }

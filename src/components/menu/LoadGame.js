@@ -5,12 +5,10 @@ import {connect} from "react-redux";
 import {mapStateToProps} from "../../storage/reduxGet";
 import {create_game} from "../../storage/actions";
 
-import UserService from "../../RequestService";
-
 import LoadingWrap from '../../elements/build/LoadingWrap';
 import MenuHeader from '../../elements/build/MenuHeader';
 
-const userService = new UserService();
+import { deleteGame, getAllSaves, loadGame } from '../../store/HandlerDB';
 
 class LoadGame extends React.Component {
 
@@ -19,14 +17,16 @@ class LoadGame extends React.Component {
 
     this.state = {
         saves: [],
+
         load: true,
+        loadHeader: 'Loading',
         modal: false,
-        time: '',
-        loadHeader: 'Loading'
+
+        currentSave: null,
     }
 
     this.redir = React.createRef();
-
+    
     this.loadSaves = this.loadSaves.bind(this)
     this.deleteSave = this.deleteSave.bind(this)
     this.handlerBadRequest = this.handlerBadRequest.bind(this)
@@ -47,62 +47,35 @@ class LoadGame extends React.Component {
   }
 
   loadSaves() {
-      const user = {
-          login: this.props.store.auth.login,
-          password: this.props.store.auth.password
-      }
-      userService.savedGames(user)
-          .then(res => res.data)
-          .then(
-              result => {
-                  let parsed = JSON.parse(result);
-                  if (parsed.saves !== 'error') {
-                      this.setState({
-                          saves: parsed,
-                          load: false
-                      })
-                  }
-                }
-          )
-          .catch(this.handlerBadRequest);
+      getAllSaves(true)
+        .then(saves => {
+            this.setState({
+                saves: saves,
+                load: false
+            })
+        })
+        .catch(this.handlerBadRequest);
   }
 
-  startSave(time) {
-        const data = {
-            login: this.props.store.auth.login,
-            time: time,
-        }
+  startSave(country, time) {
         this.setState({
             load: true,
             loadHeader: 'Загрузка игровых данных'
         })
-        userService.loadGame(data)
-            .then(res => res.data)
-            .then(
-                result => {
-                    let parsed = JSON.parse(result);
-                    this.props.create_game(parsed)
+        loadGame(country, time)
+            .then(result => {
+                    this.props.create_game(result)
                     this.redir.current.click()
                 })
             .catch(this.handlerBadRequest);
   }
 
   deleteSave() {
-      userService.deleteSave({
-          time: this.state.time,
-          login: this.props.store.auth.login,
-      })
-          .then(res => res.data)
-          .then(
-              result => {
-                  let parsed = JSON.parse(result);
-                  if (parsed.saves !== 'error') {
-                      this.setState({
-                          saves: parsed,
-                          load: false,
-                      })
-                  }
-          })
+        if (!this.state.currentSave) {
+          return false
+        }
+        deleteGame(this.state.currentSave[0], this.state.currentSave[1])
+          .then(this.loadSaves)
           .catch(this.handlerBadRequest);
   }
 
@@ -113,33 +86,31 @@ class LoadGame extends React.Component {
         })
   }
 
-  changeModalVisible(time) {
+  changeModalVisible(save) {
     this.setState({
         modal: !this.state.modal,
-        time: time === undefined ? this.state.time : time
+        currentSave: save ?? this.state.currentSave ?? null
     })
   }
 
   componentDidMount() {
-        if (this.props.store.user) {
-            this.loadSaves()
-        } else {
-            setTimeout(this.loadSaves, 2000)
-        }
+        this.loadSaves()
   }
 
   render() {
     let savesList = this.state.saves.length > 0
         ? (<ul>
             {this.state.saves.map(item => {
-                return (<li key={item.fields.save_date}>
-                            <div key={item.fields.save_date} className='load-scroll-view__btn button' onClick={this.startSave.bind(this, item.fields.save_date)}>
-                                {item.fields.save_name}
+                let [country, time] = item.split('_')
+
+                return (<li key={time}>
+                            <div key={time} className='load-scroll-view__btn button' onClick={this.startSave.bind(this, country, time)}>
+                                {country}
                                 <span className='load-scroll-view__btn_time'>
-                                    {item.fields.save_date.substr(0,10)} {item.fields.save_date.substr(11,8)}
+                                    {time}
                                 </span>
                             </div>
-                            <div className='load-scroll-view__delete' onClick={this.changeModalVisible.bind(this, item.fields.save_date)}>а</div>
+                            <div className='load-scroll-view__delete' onClick={this.changeModalVisible.bind(this, [country, time])}>а</div>
                         </li>)
             })}
           </ul>)
@@ -162,7 +133,7 @@ class LoadGame extends React.Component {
                         <button className='popup-view__btn-block__btn popup-view__btn-block__btn_left' onClick={this.handleDeleteSave.bind(this)}>
                             ДА
                         </button>
-                        <button className='popup-view__btn-block__btn popup-view__btn-block__btn_right' onClick={this.changeModalVisible.bind(this)}>
+                        <button className='popup-view__btn-block__btn popup-view__btn-block__btn_right' onClick={this.changeModalVisible.bind(this, null)}>
                             НЕТ
                         </button>
                     </div>

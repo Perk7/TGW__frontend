@@ -1261,3 +1261,7 @@ export function getSouseren(store) {
     }
   }
 }
+
+export function parseDate(date) {
+  return date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
+}

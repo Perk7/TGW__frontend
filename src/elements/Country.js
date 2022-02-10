@@ -8,6 +8,8 @@ import {mapStateToProps} from "../storage/reduxGet";
 import LoadingScreen from "react-loading-screen";
 import SmallMap from './SmallMap';
 
+import { startGame } from '../store/HandlerDB';
+
 const userService = new UserService()
 
 class Country extends React.Component {
@@ -24,24 +26,7 @@ class Country extends React.Component {
 	}
 
 	startGame() {
-		const data = {
-			login: this.props.store.auth.login,
-			country: this.props.field.identify
-		}
-		this.setState({
-			load: true
-		})
-		userService.createGame(data)
-			.then(res => res.data)
-			.then(
-				(result) => {
-					let par = JSON.parse(result);
-					this.props.create_game(par)
-					this.redir.current.click()
-				})
-			.catch((result) => {
-				console.log('There was an error! Please re-check your form.');
-			});
+		startGame(this.props.field.identify)
 	}
 
 	render() {
